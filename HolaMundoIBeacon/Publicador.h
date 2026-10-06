@@ -24,7 +24,7 @@ private:
   // ............................................................
 public:
   EmisoraBLE laEmisora {
-	"GTI-3A", //  nombre emisora
+	"Julia Beacon", // nombre visible por Bluetooth
 	  0x004c, // fabricanteID (Apple)
 	  4 // txPower
 	  };

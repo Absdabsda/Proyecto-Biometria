@@ -3,19 +3,19 @@
     <string name="envio_inicial">Esperando una medida para enviar al servidor</string>
     <!-- Reúno los textos de la pantalla para cambiarlos sin repetirlos en Java y XML. -->
     <string name="app_name">Prueba2025</string>
-    <string name="titulo_nodo">Nodo sensor GTI3A-2025</string>
+    <string name="titulo_nodo">Nodo sensor Julia Beacon</string>
     <string name="listo_buscar">Listo para buscar BLE</string>
     <string name="boton_todos">BUSCAR TODOS LOS BEACONS</string>
     <string name="boton_detener">DETENER BÚSQUEDA</string>
-    <string name="boton_nuestro">BUSCAR GTI3A-2025</string>
-    <string name="instruccion_buscar">Pulsa BUSCAR GTI3A-2025</string>
+    <string name="boton_nuestro">BUSCAR Julia Beacon</string>
+    <string name="instruccion_buscar">Pulsa BUSCAR Julia Beacon</string>
     <string name="busqueda_detenida">Búsqueda detenida</string>
     <string name="busqueda_activa">Búsqueda activa</string>
-    <string name="buscando_nuestro">Buscando GTI3A-2025...</string>
+    <string name="buscando_nuestro">Buscando Julia Beacon...</string>
     <string name="buscando_todos">Buscando dispositivos BLE...</string>
     <string name="error_busqueda">Error al buscar. Código: %1$d</string>
     <string name="error_inicio">No se pudo buscar. Revisa Bluetooth y los permisos.</string>
-    <string name="recibiendo_nuestro">Recibiendo GTI3A-2025</string>
+    <string name="recibiendo_nuestro">Recibiendo Julia Beacon</string>
     <string name="sin_bluetooth">Este móvil no tiene Bluetooth disponible</string>
     <string name="activar_bluetooth">Activa Bluetooth y vuelve a pulsar buscar</string>
     <string name="activar_ubicacion">Activa la ubicación y vuelve a pulsar buscar</string>

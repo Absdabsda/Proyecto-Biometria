@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         if (soloNuestroDispositivo && !esNuestro) { return; }
         String nombre = registro.getDeviceName();
         if (nombre == null || nombre.isEmpty()) {
-            nombre = esNuestro ? "GTI3A-2025" : "(sin nombre)";
+            nombre = esNuestro ? "Julia Beacon" : "(sin nombre)";
         }
         String direccion = resultado.getDevice().getAddress();
         String informacion = "Nombre: " + nombre + "\nDirección: " + direccion
