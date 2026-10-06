@@ -1,0 +1,26 @@
+<resources>
+    <!-- Reúno los textos de la pantalla para cambiarlos sin repetirlos en Java y XML. -->
+    <string name="app_name">Prueba2025</string>
+    <string name="titulo_nodo">Nodo sensor GTI3A-2025</string>
+    <string name="listo_buscar">Listo para buscar BLE</string>
+    <string name="boton_todos">BUSCAR TODOS LOS BEACONS</string>
+    <string name="boton_detener">DETENER BÚSQUEDA</string>
+    <string name="boton_nuestro">BUSCAR GTI3A-2025</string>
+    <string name="instruccion_buscar">Pulsa BUSCAR GTI3A-2025</string>
+    <string name="busqueda_detenida">Búsqueda detenida</string>
+    <string name="busqueda_activa">Búsqueda activa</string>
+    <string name="buscando_nuestro">Buscando GTI3A-2025...</string>
+    <string name="buscando_todos">Buscando dispositivos BLE...</string>
+    <string name="error_busqueda">Error al buscar. Código: %1$d</string>
+    <string name="error_inicio">No se pudo buscar. Revisa Bluetooth y los permisos.</string>
+    <string name="recibiendo_nuestro">Recibiendo GTI3A-2025</string>
+    <string name="sin_bluetooth">Este móvil no tiene Bluetooth disponible</string>
+    <string name="activar_bluetooth">Activa Bluetooth y vuelve a pulsar buscar</string>
+    <string name="activar_ubicacion">Activa la ubicación y vuelve a pulsar buscar</string>
+    <string name="sin_escaner">El escáner BLE no está disponible</string>
+    <string name="revisar_permisos">Revisa los permisos de Bluetooth</string>
+    <string name="pedir_permisos">Necesito permisos de Bluetooth y ubicación para buscar</string>
+    <string name="permisos_concedidos">Permisos concedidos. Pulsa buscar para empezar.</string>
+    <string name="faltan_permisos">Faltan permisos. Puedes concederlos en los ajustes de la aplicación.</string>
+    <string name="busqueda_pausada">Búsqueda detenida. Pulsa buscar para continuar.</string>
+</resources>
