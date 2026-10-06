@@ -37,6 +37,10 @@ public final class TramaIBeacon {
 
     public int getMajor() { return major; }
     public int getMinor() { return minor; }
+    /** () --> getValor() --> valor:Z
+     * Pre: trama válida. Post: interpreta minor como entero de 16 bits con signo.
+     * Errores: ninguno. */
+    public int getValor() { return (short) minor; }
     public int getTipoMedicion() { return major >>> 8; }
     public int getContador() { return major & 0xff; }
     public byte getTxPower() { return txPower; }
@@ -47,7 +51,7 @@ public final class TramaIBeacon {
         // CO2 en el programa, aunque el sensor instalado mide O3.
         switch (getTipoMedicion()) {
             case 11:
-                return "O₃: " + minor + " ppm\nTemperatura: no enviada";
+                return "Medición gas 11: " + getValor() + " ppb (según diseño)";
             case 12:
                 // Recupero el signo, porque la temperatura puede ser negativa.
                 return "Temperatura: " + (short) minor + " °C";

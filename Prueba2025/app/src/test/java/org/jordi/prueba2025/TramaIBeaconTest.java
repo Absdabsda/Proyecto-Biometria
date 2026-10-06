@@ -30,7 +30,7 @@ public class TramaIBeaconTest {
         assertEquals(255, trama.getContador());
         assertEquals(42, trama.getMinor());
         assertEquals(-53, trama.getTxPower());
-        assertTrue(trama.getDescripcionMedicion().contains("O₃: 42 ppm"));
+        assertTrue(trama.getDescripcionMedicion().contains("42 ppb"));
     }
 
     @Test public void distingueOtroUuidAunqueCoincidanLosPrimerosQuinceBytes() {
@@ -65,6 +65,13 @@ public class TramaIBeaconTest {
     @Test public void recuperaTemperaturasNegativas() {
         TramaIBeacon trama = new TramaIBeacon(anuncio(0x0c01, -12));
         assertEquals("Temperatura: -12 °C", trama.getDescripcionMedicion());
+    }
+
+    @Test public void preserva1234YValoresConSignoParaREST() {
+        assertEquals(1234, new TramaIBeacon(anuncio(0x0b01, 1234)).getValor());
+        assertEquals(-32768, new TramaIBeacon(anuncio(0x0bff, -32768)).getValor());
+        assertEquals(32767, new TramaIBeacon(anuncio(0x0b00, 32767)).getValor());
+        assertEquals(-1, new TramaIBeacon(anuncio(0x0b00, 65535)).getValor());
     }
 
     @Test public void noAsignaPpmAUnTipoDesconocido() {

@@ -24,6 +24,14 @@
         android:text="@string/listo_buscar"
         android:textSize="16sp" />
 
+    <TextView
+        android:id="@+id/textoEnvio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/envio_inicial"
+        android:accessibilityLiveRegion="polite"
+        android:paddingBottom="8dp" />
+
     <!-- Los botones llaman a MainActivity para buscar, detener o filtrar nuestro nodo. -->
     <Button
         android:id="@+id/botonBuscarDispositivosBTLE"

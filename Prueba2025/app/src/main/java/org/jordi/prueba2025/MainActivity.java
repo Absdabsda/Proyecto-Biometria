@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private ScanCallback callbackDelEscaneo;
     private TextView textoResultados;
     private TextView textoEstado;
+    private TextView textoEnvio;
+    private LogicaFake logicaFake;
     private boolean soloNuestroDispositivo;
     private boolean actualizacionPendiente;
     private final Handler manejador = new Handler(Looper.getMainLooper());
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textoResultados = findViewById(R.id.textoResultados);
         textoEstado = findViewById(R.id.textoEstado);
+        textoEnvio = findViewById(R.id.textoEnvio);
+        logicaFake = new LogicaFake(getString(R.string.url_servidor_medida));
         // Primero pido los permisos; la búsqueda empieza cuando pulso un botón.
         if (!tengoPermisos()) {
             pedirPermisos();
@@ -144,6 +148,10 @@ public class MainActivity extends AppCompatActivity {
                     + "\nContador: " + trama.getContador()
                     + "\nMajor: " + trama.getMajor() + " | Minor: " + trama.getMinor();
             textoEstado.setText(R.string.recibiendo_nuestro);
+            // Envío solo el gas del prototipo actual; la placa también anuncia temperatura.
+            if (trama.getTipoMedicion() == 11) {
+                logicaFake.enviarMedida(trama, mensaje -> textoEnvio.setText(mensaje));
+            }
         }
         dispositivosDetectados.put(direccion, informacion);
         if (dispositivosDetectados.size() > MAX_DISPOSITIVOS) {
@@ -241,6 +249,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         elEscanner = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        logicaFake.cerrar();
+        super.onDestroy();
     }
 
     @Override
