@@ -64,7 +64,9 @@ void inicializarPlaquita () {
 // --------------------------------------------------------------
 void setup() {
 
-  Globales::elPuerto.esperarDisponible();
+  // Permito arrancar con batería, sin monitor serie conectado.
+  const unsigned long inicioSerie = millis();
+  while (!Serial && millis() - inicioSerie < 2000) { delay(10); }
 
   // 
   // 
@@ -115,6 +117,8 @@ inline void lucecitas() {
 // --------------------------------------------------------------
 namespace Loop {
   uint8_t cont = 0;
+  // Valor ficticio para comprobar el recorrido placa -> móvil -> servidor.
+  const int16_t MEDIDA_DE_PRUEBA = 1234;
 };
 
 // ..............................................................
@@ -136,16 +140,21 @@ void loop () {
   // 
   // mido y publico
   // 
-  int valorCO2 = elMedidor.medirCO2();
+  int16_t valorCO2 = MEDIDA_DE_PRUEBA;
+  elPuerto.escribir( "Medida ficticia: " );
+  elPuerto.escribir( valorCO2 );
+  elPuerto.escribir( "\n" );
   
   elPublicador.publicarCO2( valorCO2,
 							cont,
-							1000 // intervalo de emisión
+							3000 // intervalo de emisión de la medida ficticia
 							);
   
   // 
   // mido y publico
   // 
+  // Conservo los ejemplos originales, desactivados durante esta demostración.
+#if 0
   int valorTemperatura = elMedidor.medirTemperatura();
   
   elPublicador.publicarTemperatura( valorTemperatura, 
@@ -175,6 +184,7 @@ void loop () {
   esperar( 2000 );
 
   elPublicador.laEmisora.detenerAnuncio();
+#endif
   
   // 
   // 
