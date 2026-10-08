@@ -112,7 +112,7 @@ public:
 
   // .........................................................
   // .........................................................
-  void emitirAnuncioIBeacon( uint8_t * beaconUUID, int16_t major, int16_t minor, uint8_t rssi ) {
+  void emitirAnuncioIBeacon( uint8_t * beaconUUID, uint16_t major, int16_t minor, int8_t rssi ) {
 
 	//
 	//
@@ -131,12 +131,15 @@ public:
 
 	Bluefruit.setTxPower( (*this).txPower );
 	Bluefruit.setName( (*this).nombreEmisora );
+	Bluefruit.ScanResponse.clearData(); // evita acumular el nombre en cada publicación
 	Bluefruit.ScanResponse.addName(); // para que envíe el nombre de emisora (?!)
 
 	//
 	// pongo el beacon
 	//
 	Bluefruit.Advertising.setBeacon( elBeacon );
+	// Permite leer el nombre mediante escaneo, sin aceptar conexiones al beacon.
+	Bluefruit.Advertising.setType(BLE_GAP_ADV_TYPE_NONCONNECTABLE_SCANNABLE_UNDIRECTED);
 
 	//
 	// ? qué valorers poner aquí
@@ -147,7 +150,9 @@ public:
 	//
 	// empieza el anuncio, 0 = tiempo indefinido (ya lo pararán)
 	//
-	Bluefruit.Advertising.start( 0 ); 
+	if (!Bluefruit.Advertising.start( 0 )) {
+	  Globales::elPuerto.escribir("ERROR: no se pudo iniciar el anuncio BLE\n");
+	}
 	
   } // ()
 

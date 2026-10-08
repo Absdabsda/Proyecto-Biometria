@@ -87,9 +87,9 @@ public:
 	esperar( tiempoEspera );
 
 	//
-	// 3. paramos anuncio
+	// 3. mantiene el anuncio hasta que la siguiente medida lo sustituya
 	//
-	(*this).laEmisora.detenerAnuncio();
+	// No lo paro aquí: Android puede recibirlo también entre iteraciones.
   } // ()
 
   // ............................................................

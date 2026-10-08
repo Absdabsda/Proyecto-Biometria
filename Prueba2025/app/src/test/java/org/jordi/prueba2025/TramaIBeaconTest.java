@@ -7,6 +7,17 @@ import static org.junit.Assert.*;
 
 /** Compruebo el formato compartido con Arduino sin necesitar una conexión Bluetooth. */
 public class TramaIBeaconTest {
+    @Test public void interpretaBytesEmitidosPorBluefruitPara1234() {
+        // Manufacturer data tras separar 4c 00: UUID literal, Major 0b 01, Minor 04 d2.
+        byte[] datos = {0x02, 0x15, 0x45, 0x50, 0x53, 0x47, 0x2d, 0x47, 0x54, 0x49,
+            0x2d, 0x50, 0x52, 0x4f, 0x59, 0x2d, 0x33, 0x41, 0x0b, 0x01, 0x04, (byte) 0xd2, (byte) 0xcb};
+        TramaIBeacon trama = new TramaIBeacon(datos);
+        assertTrue(trama.esNuestroDispositivo());
+        assertEquals(11, trama.getTipoMedicion());
+        assertEquals(1, trama.getContador());
+        assertEquals(1234, trama.getValor());
+        assertEquals(-53, trama.getTxPower());
+    }
     private byte[] anuncio(int major, int minor) {
         byte[] datos = new byte[23];
         datos[0] = 0x02;
