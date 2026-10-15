@@ -14,8 +14,9 @@ CREATE TABLE medidas_preparacion_mvp (
 LOCK TABLES medidas WRITE, medidas_preparacion_mvp WRITE;
 INSERT INTO medidas_preparacion_mvp (medidaID, tipo, valor, fecha)
 SELECT medidaID, gas, valor, fecha FROM medidas;
-RENAME TABLE medidas TO medidas_respaldo_anterior, medidas_preparacion_mvp TO medidas;
 UNLOCK TABLES;
+-- MariaDB no admite este RENAME con LOCK TABLES activo. La captura debe seguir detenida.
+RENAME TABLE medidas TO medidas_respaldo_anterior, medidas_preparacion_mvp TO medidas;
 SELECT medidaID, tipo, valor, fecha FROM medidas ORDER BY fecha DESC, medidaID DESC LIMIT 5;
 -- La tabla activa ya no guarda UUID ni contador. El respaldo no pertenece al modelo de la aplicación.
 -- Exportar el respaldo fuera del esquema de entrega antes de retirarlo manualmente.
