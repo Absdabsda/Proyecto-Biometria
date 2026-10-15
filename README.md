@@ -41,6 +41,11 @@ se conserva el nombre de proyecto necesario para Android Studio y Arduino IDE.
 
 ## Pruebas y despliegue
 
+Flujo de Git: main contiene la entrega verificada; develop sirve de base de desarrollo.
+Cada cambio se trabaja en una rama y se integra mediante pull request con las pruebas
+automáticas aprobadas. Las ramas codex/ conservan las revisiones realizadas en esta sesión.
+Este flujo no acredita una frecuencia histórica de commits que no se haya producido.
+
 ```sh
 node --test servidor/tests/medidas.test.mjs test/gui.test.mjs
 php servidor/tests/rest.php

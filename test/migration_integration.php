@@ -1,4 +1,5 @@
 <?php
+/** Integración de migración: crea una base desechable, compara las filas y la elimina al terminar. */
 declare(strict_types=1);
 $dsn = getenv('PBIO_TEST_DSN');
 if (!$dsn || getenv('PBIO_TEST_DATABASE') !== 'pbio_test') {

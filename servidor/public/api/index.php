@@ -1,4 +1,5 @@
 <?php
+/** Entrada REST: configura el transporte y delega las operaciones al componente de comunicación. */
 declare(strict_types=1);
 ini_set('display_errors', '0');
 header('Content-Type: application/json; charset=utf-8');
@@ -17,9 +18,13 @@ if (!is_file($raiz . '/servidorREST/ReglasREST.php') || !is_file($raiz . '/logic
 require_once $raiz . '/logica/Logica.php';
 require_once $raiz . '/servidorREST/ReglasREST.php';
 
-/** () --> conectarLogica() --> logica:Logica
+/** -------------------
+ * Descripción: construye el componente de negocio con la configuración privada de persistencia.
+ * Diseño: conectarLogica() --> logica:Logica
+ * Parámetros: ninguno; la configuración procede del directorio privado del despliegue.
  * Pre: configuración privada y PDO MySQL. Post: conexión estricta en UTC.
- * Errores: configuración incompleta o conexión fallida. */
+ * Errores: configuración incompleta o conexión fallida.
+ * ------------------- */
 function conectarLogica(): Logica {
     global $raiz;
     $config = require $raiz . '/config.php';

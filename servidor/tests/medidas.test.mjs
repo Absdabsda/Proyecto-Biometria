@@ -1,3 +1,4 @@
+/** Pruebas aisladas del proxy: contrato, límites y errores con transporte inyectado sin red real. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { obtenerMedidas, listarMedidas } from '../../src/frontend_business_logic/medidas.mjs';
