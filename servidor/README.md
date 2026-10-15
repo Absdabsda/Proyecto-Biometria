@@ -73,6 +73,6 @@ php tests/rest.php
 node --test tests/medidas.test.mjs
 ```
 
-Las pruebas PHP verifican adaptación HTTP y validaciones con lógica simulada, sin BD. Las de navegador prueban su cliente con fetch simulado. La comprobación SQL, la configuración de Plesk y el recorrido real placa-teléfono-servidor requieren el entorno real. La interfaz queda pendiente del wireframe.
+Las pruebas PHP verifican adaptación HTTP y validaciones con lógica simulada, sin BD. Las de navegador prueban su cliente con fetch simulado. La persistencia y la migración se prueban con MySQL en CI. La pantalla dispone de pruebas de estados y actualización; Plesk y el recorrido físico requieren su entorno real.
 
 Verificación del 16/10/2026: 10 pruebas web y 19 pruebas Android superadas; APK generado. Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions. GET del alojamiento responde con medidas 1234 antiguas; no se modificaron datos remotos. La prueba física nueva placa-móvil-servidor sigue pendiente.

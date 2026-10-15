@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { obtenerMedidas, listarMedidas } from '../../../../src/frontend_business_logic/medidas.mjs';
+import { obtenerMedidas, listarMedidas } from '../../src/frontend_business_logic/medidas.mjs';
 
 test('interfaz pública coincide con listarMedidas del servidor', () => {
     assert.equal(obtenerMedidas, listarMedidas);

@@ -37,7 +37,7 @@ No se promete una calificación: las pruebas físicas y la valoración docente s
 ## Prioridad de demostración
 
 1. Mantener 1234 en el firmware y mostrar la recepción Android.
-2. Mostrar el aviso de guardado y una fila nueva en el servidor; conservar su contador e ID.
+2. Mostrar el aviso de guardado y una fila nueva en el servidor; conservar su tipo, valor, fecha e ID.
 3. Abrir la pantalla de medidas tras desplegar y actualizar la tabla.
 4. Enseñar diseños, separación de clases y pruebas; declarar qué verificaciones son físicas y cuáles automáticas.
 

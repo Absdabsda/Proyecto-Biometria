@@ -31,7 +31,7 @@ final class Logica {
             }
         }
         if ($tipoPermitido !== null && $entrada['tipo'] !== $tipoPermitido) {
-            throw new InvalidArgumentException('Código de gas no permitido.');
+            throw new InvalidArgumentException('Tipo de medida no permitido.');
         }
         return $entrada;
     }
