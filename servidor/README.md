@@ -54,7 +54,7 @@ $medidaPrueba = @{ tipo=11; valor=1234 } | ConvertTo-Json
 Invoke-RestMethod -Method Post -Uri 'https://jvaldeo.upv.edu.es/api/index.php?ruta=medida' -ContentType 'application/json; charset=utf-8' -Body $medidaPrueba
 ```
 
-Ese POST guarda una fila real de prueba: anota su medidaID para identificarla. No prueba BLE. Para la prueba completa, instala de nuevo Prueba2025, recibe el beacon en el teléfono y observa «Medida 1234 guardada en el servidor». Consulta GET o phpMyAdmin y verifica que coincida.
+Ese POST guarda una fila real de prueba: anota su medidaID para identificarla. No prueba BLE. Para la prueba completa, instala la aplicación Android del proyecto src/android/Prueba2025, recibe el beacon en el teléfono y observa «Medida 1234 guardada en el servidor». Consulta GET o phpMyAdmin y verifica que coincida.
 
 ## Contrato y límites
 

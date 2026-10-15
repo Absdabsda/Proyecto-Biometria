@@ -20,6 +20,30 @@ Usa exclusivamente tabla `medidas` de database_design.md, con columnas medidaID,
 tipo, valor y fecha. No almacena identificadores de placa ni contadores de anuncios.
 Implementación: `src/business_logic/Logica.php`; dependencia de persistencia PDO.
 
+```text
+                       -------- Logica ----------------------
+                       | bd: Persistencia
+                       | tipo_permitido: N | Ausente
+                       |
+bd:Persistencia, tipo_permitido:N|Ausente --> __construct() -->
+                       |
+entrada:MedidaEntrada --> guardarMedida() -->
+medida:Medida         <--
+                       |
+limit:N              --> listarMedidas() <--
+medidas:[Medida]      <--
+                       |
+entrada:MedidaEntrada, tipo_permitido:N|Ausente --> validarMedida() --x
+entrada:MedidaEntrada <--
+                       |
+                       | fila:RegistroSQL --> serializar() --x
+                       | medida:Medida    <--
+                       ---------------------------------------
+```
+
+Persistencia representa la conexión a las cuatro columnas del diseño de base de datos.
+serializar es privado: conserva ID decimal textual y convierte la fecha de recepción a UTC.
+
 ## Design Clarifications
 
 - El código 11 identifica el tipo del prototipo sin afirmar una identificación química.

@@ -1,3 +1,4 @@
+/** Ejemplo docente de sesiones web; el Sprint 0 activo utiliza src/gui/ y src/business_logic/. */
 // ---------------------------------------------------
 //
 // versión fake de una función de la lógica

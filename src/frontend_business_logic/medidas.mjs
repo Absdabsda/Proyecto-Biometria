@@ -1,5 +1,7 @@
 /** -------------------
- * limit:N, fetchImpl:Funcion --> listarMedidas() --> medidas:[Medida]
+ * Descripción: consulta y valida las medidas persistidas, aislando la comunicación de la GUI.
+ * Diseño: limit:N --> listarMedidas() --> medidas:[Medida]
+ * Parámetros: límite de dominio; fetchImpl es una dependencia de implementación inyectable.
  * Pre: limit entero 1..100. Post: datos reales de REST; no toca el DOM.
  * Errores: límite, red, HTTP o respuesta inválida.
  * ------------------- */

@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 /** -------------------
+ * Descripción: traduce las peticiones REST a operaciones de negocio y sus resultados a HTTP.
+ * Parámetros: método, ruta, tipo de contenido, cuerpo JSON, consulta y fábrica de negocio.
  * metodo:Text, ruta:Text, tipo:Text, cuerpo:Text, query:Objeto, fabrica:Funcion
  * --> atenderPeticion() --> (estado:N, respuesta:Objeto|[Medida])
  * Pre: fábrica devuelve Logica o equivalente. Post: adapta HTTP sin SQL.

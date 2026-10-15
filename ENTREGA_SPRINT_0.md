@@ -12,6 +12,10 @@ almacenarse en la tabla activa. Existe un respaldo privado de la base y de los a
 
 ## Demostración final con placa y móvil
 
+Realizada por Julia el 16/10/2026: beacon detectado y subidas inmediatas.
+Comprobación de la web: ID 81, tipo 11, valor 1234, fecha local 01:53:27.
+La siguiente secuencia permite repetir la demostración ante el profesor.
+
 1. Instalar el APK debug actualizado.
 2. Encender la placa que anuncia 1234; activar Bluetooth, ubicación y los permisos de la app.
 3. Pulsar «Buscar nuestro dispositivo» y comprobar 1234, tipo 11 y el contador local.
@@ -38,7 +42,7 @@ se abrió inicialmente en Codex. La carpeta envolvente tiene otro historial y no
 se debe publicar sobre el repositorio real.
 
 Si se usa el ZIP, extraer en una carpeta sin tildes, por ejemplo
-C:/Users/Julia/Downloads/Proyecto-Biometria-Sprint0, y abrir Prueba2025 con Android Studio.
+C:/Users/Julia/Downloads/Proyecto-Biometria-Sprint0, y abrir src/android/Prueba2025 con Android Studio.
 
 La migración del alojamiento ya se aplicó: **no volver a ejecutar migrar_mvp.sql**
 sobre esa misma base. Es un procedimiento de actualización de una sola ejecución

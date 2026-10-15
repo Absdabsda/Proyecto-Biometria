@@ -30,14 +30,14 @@ tipo y valor a negocio. Los errores de validación y persistencia se tratan por 
 | src/frontend_business_logic/ | Proxy de lectura web |
 | src/gui/ | Pantalla web |
 | test/ | Integración SQL, migración y estados de la pantalla |
-| Prueba2025/ | Proyecto Android completo, con GUI, proxy y adaptador separados |
-| HolaMundoIBeacon/ | Sketch Arduino y clases de apoyo |
+| src/android/Prueba2025/ | Proyecto Android completo, con GUI, proxy y adaptador separados |
+| src/firmware/HolaMundoIBeacon/ | Sketch Arduino y clases de apoyo |
 | servidor/ | Entrada pública, despliegue y pruebas REST y web |
 | bd/ | Instalación, prueba SQL y migración desde el esquema anterior |
 | outputs/2026-10-16/ | Informe de revisión |
 
-El material docente adicional se conserva con sus atribuciones. Android y Arduino
-mantienen sus carpetas de proyecto originales, documentadas en sus diseños.
+El material docente adicional se conserva con sus atribuciones. Los componentes activos se encuentran en src/. Dentro de android/ y firmware/
+se conserva el nombre de proyecto necesario para Android Studio y Arduino IDE.
 
 ## Pruebas y despliegue
 
@@ -49,7 +49,7 @@ python scripts/preparar_plesk.py
 
 La integración SQL y la migración se ejecutan con bases desechables en GitHub Actions,
 contra MySQL 8.4 y MariaDB 10.11. La configuración de pruebas está en el workflow.
-Android Studio: abrir Prueba2025; para compilar y probar, usar Gradle 8.7 y SDK 34.
+Android Studio: abrir src/android/Prueba2025; para compilar y probar, usar Gradle 8.7 y SDK 34.
 En este Windows hay que trabajar en una carpeta sin tildes para cargar sus pruebas.
 
 El generador crea `output/plesk-servidor.zip`. Editar las fuentes de src/ y regenerar;
@@ -67,6 +67,7 @@ Seguir `servidor/README.md` y `bd/README.md` para una instalación nueva.
 - Respaldo SQL y de archivos guardados fuera de httpdocs. La tabla anterior se conserva
   temporalmente como respaldo y no forma parte del modelo de la aplicación.
 
-La demostración física actual placa-móvil-servidor debe comprobarse aparte con una
-fila nueva de hoy; los registros antiguos no prueban una recepción actual.
+Julia confirmó la prueba física placa-móvil-servidor en esta sesión. Se observaron
+filas nuevas en la web: ID 81, tipo 11, valor 1234, 16/10/2026 a las 01:53:27
+(Europe/Madrid). La pantalla publicada utiliza tonos morados.
 Consultar `ENTREGA_SPRINT_0.md` para la prueba final.

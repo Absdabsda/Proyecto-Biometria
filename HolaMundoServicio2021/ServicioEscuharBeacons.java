@@ -1,3 +1,4 @@
+/** Ejemplo docente de servicio Android; no forma parte de la aplicación activa del Sprint 0. */
 package org.jordi.holamundoservicio;
 
 import android.app.IntentService;

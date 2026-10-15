@@ -1,3 +1,4 @@
+/** Medidor: proporciona valores constantes de ejemplo; no realiza adquisición física. */
 // -*- mode: c++ -*-
 
 #ifndef MEDIDOR_H_INCLUIDO

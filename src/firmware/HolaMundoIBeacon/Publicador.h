@@ -1,3 +1,4 @@
+/** Publicador: codifica tipo, contador y valor en los campos del anuncio iBeacon. */
 // -*- mode: c++ -*-
 
 // --------------------------------------------------------------
