@@ -34,6 +34,14 @@ jobs:
           PBIO_TEST_USER: root
           PBIO_TEST_PASSWORD: prueba_ci
         run: php test/backend_integration.php
+      - name: Probar migración MVP sin pérdida de medidas
+        env:
+          PBIO_TEST_DSN: mysql:host=127.0.0.1;port=3306;dbname=pbio_test;charset=utf8mb4
+          PBIO_TEST_DATABASE: pbio_test
+          PBIO_TEST_USER: root
+          PBIO_TEST_PASSWORD: prueba_ci
+          PBIO_MIGRATION_FILE: bd/migrar_mvp.sql
+        run: php test/migration_integration.php
       - name: Verificar paquete Plesk
         run: python scripts/preparar_plesk.py
   android:

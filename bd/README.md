@@ -1,43 +1,41 @@
-# Base de datos del Sprint 0
+# Base de datos mínima viable — Sprint 0
 
-## Importar en Plesk
+La tabla activa `medidas` tiene únicamente:
 
-1. En el dominio de Plesk, entra en **Bases de datos** y crea una base MySQL/MariaDB y su usuario. Guarda nombre, usuario, contraseña y servidor para configurar el backend. No los subas a GitHub.
-2. Abre **phpMyAdmin** y selecciona esa base.
-3. En **Importar**, selecciona `crear.sql` y ejecútalo. Creará la tabla `medidas`; no crea el servidor REST.
-4. Importa `prueba.sql`. Las columnas de comprobación deben valer `1`. La inserción de ejemplo tiene valor **1234** y se revierte al terminar. El contador autoincremental puede dejar un hueco: es normal.
+| Campo | Tipo | Finalidad |
+| --- | --- | --- |
+| medidaID | BIGINT UNSIGNED, PK, AUTO_INCREMENT | Identificador textual en la API |
+| tipo | TINYINT UNSIGNED | Código de medida; 11 en el prototipo actual |
+| valor | SMALLINT | Medida ficticia 1234, rango con signo de 16 bits |
+| fecha | TIMESTAMP(3), fecha actual | Recepción en el servidor, UTC |
 
-No es necesario subir los SQL a la carpeta pública de la web.
+UUID y contador pertenecen a la identificación y filtrado BLE del móvil; no se
+almacenan en la tabla activa. El tipo 11 no demuestra una identificación química.
 
-## Qué representa una fila
+## Instalación nueva
 
-`medidaID` es la clave primaria automática. `uuid` identifica el proyecto, no una placa individual. `gas` es el byte alto de Major y `contador` el bajo. `valor` es Minor interpretado como entero de 16 bits con signo. `fecha` es la recepción en la base de datos.
+Seleccionar la base en phpMyAdmin e importar `crear.sql`. No crea usuarios ni
+el alojamiento. Configurar las credenciales exclusivamente en el config.php privado.
+Ejecutar `prueba.sql` para insertar y revertir una medida de prueba.
 
-1234 es un ejemplo de valor; no se fija por defecto en la tabla. El móvil deberá enviar lo que realmente reciba, y cambiar la placa a 1235 deberá producir una medida con valor 1235.
+## Actualizar la base publicada
 
-La unidad del PDF es ppb. La app actual indica ppb según diseño; la unidad física sigue pendiente de contrastarse con el sensor. El código 11 aparece en el emisor existente con el nombre CO2 y en Android como O3. El diseño deja CODIGO_O3 pendiente; por eso este SQL permite cualquier código de gas entre 0 y 255 hasta resolver esa correspondencia. Una vez confirmada, hay que añadir la restricción de gas y la misma validación en Logica. No se considera cerrado ese requisito.
+No se ha ejecutado esta migración en Plesk desde la revisión.
 
-## Zona horaria y comprobaciones del motor
+1. Exportar la base actual con phpMyAdmin y detener temporalmente la captura del móvil.
+2. Confirmar que la tabla actual tiene medidaID, uuid, gas, valor, contador y fecha.
+3. Ejecutar una sola vez `migrar_mvp.sql`: copia ID, gas como tipo, valor y fecha,
+   y cambia los nombres de forma atómica. La tabla anterior queda como respaldo.
+4. Subir inmediatamente el backend MVP generado por `scripts/preparar_plesk.py`.
+5. Consultar GET y verificar que conserva los IDs, valores y fechas anteriores,
+   y que una nueva medida se guarda con tipo 11 y valor 1234.
+6. Exportar el respaldo fuera del esquema de entrega antes de retirarlo. La
+   aplicación utiliza solo `medidas`, con sus cuatro columnas.
 
-El backend debe ejecutar `SET SESSION time_zone = '+00:00'` en cada conexión. TIMESTAMP representa el instante y MySQL lo muestra según la zona de la conexión. La API debe devolver ISO 8601 UTC; la página lo convierte a la hora local.
+Si ya existe medidas_preparacion_mvp o medidas_respaldo_anterior, no repetir la
+migración ni borrar tablas a ciegas: revisar su estado primero. DDL no es reversible
+mediante ROLLBACK. El respaldo permite recuperar el esquema anterior si es necesario.
 
-En phpMyAdmin ejecuta `SELECT VERSION(), @@SESSION.sql_mode;` y `SHOW CREATE TABLE medidas;`. Usa modo estricto en las conexiones del backend (`STRICT_TRANS_TABLES`) para que los valores fuera de rango no se recorten silenciosamente.
-
-Para comprobar restricciones, prueba cada inserción por separado en una base de prueba, con modo estricto activo:
-
-```sql
-SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION';
-INSERT INTO medidas (uuid, gas, valor, contador) VALUES ('EPSG-GTI-PROY-3A',11,1234,256);
-INSERT INTO medidas (uuid, gas, valor, contador) VALUES ('EPSG-GTI-PROY-3A',11,32768,1);
-INSERT INTO medidas (uuid, gas, valor, contador) VALUES ('UUID-INVALIDO',11,1234,1);
-```
-
-Las tres deben fallar. Si la tercera entra, el motor no está aplicando CHECK. Estas pruebas negativas aún no se han ejecutado contra tu Plesk. La lógica del servidor debe validar siempre tipos, UUID y rangos antes de insertar.
-
-La base no deduplica anuncios BLE: no hay clave única por UUID/contador/valor porque el contador se reutiliza. El móvil debe aplicar la ventana de 60 segundos del diseño.
-
-## Cómo conecta con REST
-
-Android (cliente REST) envía un POST con `uuid`, `gas`, `valor` y `contador`. El servidor REST recibe JSON y llama a Logica; Logica valida e inserta usando parámetros SQL. GET devuelve las medidas ordenadas por `fecha DESC, medidaID DESC`. La página consulta GET. El móvil y el navegador no reciben las credenciales de la base ni acceden directamente a MySQL.
-
-El servidor y el envío Android ya están implementados. La página web de consulta y la lectura física del sensor permanecen pendientes. La implementación usa PHP, pendiente de contrastar con el enunciado concreto. El esquema canónico está en `src/database/crear.sql` en la raíz del repositorio; esta carpeta conserva una copia compatible.
+Los clientes actualizados aceptan la respuesta del servidor antiguo y del MVP;
+la API MVP también admite el anuncio antiguo del móvil, descarta sus metadatos y
+entrega solo el modelo mínimo. Esta compatibilidad no añade columnas a la base.

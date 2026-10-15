@@ -38,19 +38,20 @@ $fin = strpos($esquema, ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
 $bd->exec(substr($esquema, $inicio, $fin - $inicio + strlen(') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;')));
 $bd->beginTransaction();
 try {
+    verificar($bd->query('SHOW COLUMNS FROM medidas')->fetchAll(PDO::FETCH_COLUMN) === ['medidaID', 'tipo', 'valor', 'fecha'], 'El esquema no es mínimo viable.');
     $logica = new Logica($bd);
-    $entrada = ['uuid' => 'EPSG-GTI-PROY-3A', 'gas' => 11, 'valor' => 1234, 'contador' => 1];
+    $entrada = ['tipo' => 11, 'valor' => 1234];
     $cantidadInicial = (int) $bd->query('SELECT COUNT(*) FROM medidas')->fetchColumn();
     $primera = $logica->guardarMedida($entrada);
     verificar($primera['valor'] === 1234 && is_string($primera['medidaID']), 'No conserva el valor o ID.');
     verificar(preg_match('/^\d{4}-\d{2}-\d{2}T.*\.\d{3}Z$/', $primera['fecha']) === 1, 'Fecha no UTC.');
-    $segunda = $logica->guardarMedida(array_replace($entrada, ['valor' => -32768, 'contador' => 255]));
-    $tercera = $logica->guardarMedida(array_replace($entrada, ['valor' => 32767, 'contador' => 0]));
+    $segunda = $logica->guardarMedida(array_replace($entrada, ['valor' => -32768]));
+    $tercera = $logica->guardarMedida(array_replace($entrada, ['valor' => 32767]));
     $lista = $logica->listarMedidas(2);
     verificar(count($lista) === 2, 'No aplica el límite.');
     verificar($lista[0]['medidaID'] === $tercera['medidaID'] && $lista[1]['medidaID'] === $segunda['medidaID'], 'Orden incorrecto.');
     foreach ([0, 101] as $limite) { rechazar(fn() => $logica->listarMedidas($limite)); }
-    foreach ([['valor' => 32768], ['contador' => -1], ['gas' => 256], ['uuid' => "' OR 1=1 --"], ['extra' => 1]] as $cambio) {
+    foreach ([['valor' => 32768], ['tipo' => -1], ['tipo' => 256], ['valor' => "' OR 1=1 --"], ['extra' => 1]] as $cambio) {
         rechazar(fn() => $logica->guardarMedida(array_replace($entrada, $cambio)));
     }
     rechazar(fn() => (new Logica($bd, 12))->guardarMedida($entrada));

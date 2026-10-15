@@ -6,6 +6,6 @@ return [
     'database' => 'jvaldeo_pbio',
     'user' => 'pbio_app',
     'password' => '',
-    // Pendiente de confirmación del firmware. null admite códigos 0..255.
-    'codigo_o3' => null,
+    // Tipo del prototipo: 11. null admite tipos 0..255 sin atribuirles una identificación química.
+    'tipo_permitido' => null,
 ];

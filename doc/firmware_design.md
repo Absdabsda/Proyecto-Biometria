@@ -11,7 +11,7 @@ medirTemperatura() --> Z
 valor: Z, contador: N, tiempo_espera: N --> publicarCO2()
 valor: Z, contador: N, tiempo_espera: N --> publicarTemperatura()
 ```
-Código: `Sprint_0/Proyecto-Biometria/HolaMundoIBeacon/`.
+Código: `HolaMundoIBeacon/`.
 El loop activo emite MEDIDA_DE_PRUEBA=1234; no llama a Medidor para adquirir el gas. Medidor conserva constantes de ejemplo 235 y -12. Es un simulador, no una adquisición real del sensor.
 Publicador emite UUID EPSG-GTI-PROY-3A, tipo 11 o 12 en byte alto de major,
 contador en byte bajo, valor en minor y referencia -53.

@@ -24,7 +24,17 @@ function atenderPeticion(string $metodo, string $ruta, string $tipo, string $cue
             }
             $objeto = json_decode($cuerpo, false, 16, JSON_THROW_ON_ERROR);
             if (!is_object($objeto)) { throw new InvalidArgumentException('Se requiere un objeto JSON.'); }
-            return [201, $fabrica()->guardarMedida((array) $objeto)];
+            $entrada = (array) $objeto;
+            if (array_key_exists('uuid', $entrada) || array_key_exists('gas', $entrada) || array_key_exists('contador', $entrada)) {
+                $claves = array_keys($entrada);
+                sort($claves);
+                if ($claves !== ['contador', 'gas', 'uuid', 'valor'] || $entrada['uuid'] !== 'EPSG-GTI-PROY-3A'
+                    || !is_int($entrada['contador']) || $entrada['contador'] < 0 || $entrada['contador'] > 255) {
+                    throw new InvalidArgumentException('Anuncio de compatibilidad inválido.');
+                }
+                $entrada = ['tipo' => $entrada['gas'], 'valor' => $entrada['valor']];
+            }
+            return [201, $fabrica()->guardarMedida($entrada)];
         }
         $limite = $query['limit'] ?? '50';
         if (!is_string($limite) || !preg_match('/^[1-9][0-9]{0,2}$/D', $limite) || (int) $limite > 100) {

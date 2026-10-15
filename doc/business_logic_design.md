@@ -3,33 +3,33 @@
 ## Component Design
 
 ```text
-MedidaEntrada = (uuid: Text, gas: N, valor: Z, contador: N)
-Medida = (medidaID: Text, uuid: Text, gas: N, valor: Z, contador: N, fecha: Text)
+MedidaEntrada = (tipo: N, valor: Z)
+Medida = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
 ```
-UUID exacto `EPSG-GTI-PROY-3A`; gas y contador 0..255; valor -32768..32767.
-`medidaID` es texto decimal para preservar el rango BIGINT. Fecha ISO 8601 UTC.
+tipo 0..255; valor -32768..32767. ID decimal positivo como texto y fecha ISO 8601 UTC.
 
 ```text
 entrada: MedidaEntrada --> guardarMedida() --> medida: Medida
 limit: N --> listarMedidas() --> medidas: [Medida]
-entrada: MedidaEntrada, codigo_o3: N | Ausente --> validarMedida() --> entrada: MedidaEntrada
+entrada: MedidaEntrada, tipo_permitido: N | Ausente --> validarMedida() --> MedidaEntrada
 ```
-`guardarMedida`: valida exactamente cuatro campos, inserta una fila y recupera ID y fecha.
-`listarMedidas`: exige 1 <= limit <= 100 (por defecto 50); orden fecha e ID descendentes.
-Errores de dominio: entrada inválida. Errores de persistencia: operación fallida.
-Persistencia: tabla `medidas` de `database_design.md`, columnas `medidaID`, `uuid`, `gas`, `valor`, `contador`, `fecha`.
-Implementación: `src/business_logic/Logica.php`. Dependencia externa de persistencia: PDO.
-
+`guardarMedida` valida exactamente tipo y valor, inserta una fila y recupera ID y fecha.
+`listarMedidas` exige límite 1..100 (defecto 50), orden fecha e ID descendentes.
+Errores: entrada inválida o persistencia no disponible.
+Usa exclusivamente tabla `medidas` de database_design.md, con columnas medidaID,
+tipo, valor y fecha. No almacena identificadores de placa ni contadores de anuncios.
+Implementación: `src/business_logic/Logica.php`; dependencia de persistencia PDO.
 
 ## Design Clarifications
 
-- Las operaciones de persistencia se realizan con parámetros enlazados.
-- El código de gas O3 está pendiente; configuración ausente acepta 0..255.
-- Las firmas describen la interfaz pública de dominio; la conexión es una dependencia de construcción.
+- El código 11 identifica el tipo del prototipo sin afirmar una identificación química.
+- El filtrado y la deduplicación BLE ocurren en el móvil; no forman parte de la base.
+- Las operaciones usan parámetros enlazados. ID y fecha los genera la base de datos.
+- La conexión es una dependencia de construcción; las firmas públicas usan tipos de dominio.
 
 ## General Rules
 
 - Programming Language: PHP 7.4 o superior.
-- Function/Method Headers: incluir diseño lógico, precondiciones, poscondiciones y errores en un bloque delimitado por `-------------------`.
-- Code Readability: nombres claros y código autoexplicativo; comentarios adicionales solo cuando aporten contexto.
-- Automated Testing: generar pruebas unitarias o de integración para todas las funciones críticas, con límites y errores.
+- Function/Method Headers: incluir descripción, diseño lógico y parámetros en un bloque delimitado por `-------------------`.
+- Code Readability: nombres claros y código autoexplicativo.
+- Automated Testing: probar funciones críticas, límites, errores y persistencia de forma independiente.

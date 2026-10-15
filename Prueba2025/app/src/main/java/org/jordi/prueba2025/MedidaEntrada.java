@@ -2,6 +2,8 @@ package org.jordi.prueba2025;
 
 /** Datos de dominio compartidos con guardarMedida del backend; no contienen transporte. */
 public final class MedidaEntrada {
+    public final int tipo;
+    // Metadatos locales para filtrar/deduplicar BLE y adaptar el servidor anterior; no se persisten.
     public final String uuid;
     public final int gas;
     public final int valor;
@@ -19,9 +21,19 @@ public final class MedidaEntrada {
             throw new IllegalArgumentException("Medida fuera del contrato del proyecto");
         }
         this.uuid = uuid;
+        this.tipo = gas;
         this.gas = gas;
         this.valor = valor;
         this.contador = contador;
+    }
+
+    /** -------------------
+     * tipo:N, valor:Z --> MedidaEntrada() --> MedidaEntrada
+     * Descripción: construye la entrada de dominio del modelo mínimo viable.
+     * Parámetros: tipo 0..255 y valor -32768..32767; los metadatos locales usan valores de compatibilidad.
+     * ------------------- */
+    public MedidaEntrada(int tipo, int valor) {
+        this("EPSG-GTI-PROY-3A", tipo, valor, 0);
     }
 
     /** -------------------

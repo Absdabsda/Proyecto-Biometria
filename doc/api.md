@@ -1,44 +1,44 @@
-# API de medidas del Sprint 0
+# API mínima viable — Sprint 0
 
-Base publicada consultada: `https://jvaldeo.upv.edu.es/api/index.php`.
-El navegador y Android usan esta API; solo el servidor posee las credenciales SQL.
+## Modelo
 
-## Guardar medida
+Entrada de dominio: `{"tipo":11,"valor":1234}`.
+Respuesta: `{"medidaID":"31","tipo":11,"valor":1234,"fecha":"2026-10-08T22:28:50.690Z"}`.
+La tabla activa solo tiene estos cuatro campos. El tipo es un código 0..255,
+valor un entero -32768..32767. ID y fecha se generan en el servidor.
 
-`POST ?ruta=medida`, Content-Type `application/json`:
+## Operaciones
 
-```json
-{"uuid":"EPSG-GTI-PROY-3A","gas":11,"valor":1234,"contador":1}
-```
+- POST `/api/index.php?ruta=medida`, application/json, hasta 4096 bytes: guarda y devuelve 201.
+- GET `/api/index.php?ruta=medidas&limit=50`: devuelve 200 y hasta 1..100 filas,
+  ordenadas por fecha e ID descendentes; `[]` si la base está vacía.
+- Con rewrite, `/api/medida` y `/api/medidas` son equivalentes.
 
-Campos exactos. gas y contador enteros 0..255; valor entero -32768..32767.
-El valor 1234 es la medida ficticia del sprint; el servidor acepta otros valores
-del rango para permitir comprobar el recorrido sin valores fijados en la API.
-Devuelve 201 con medidaID textual, los cuatro campos y fecha ISO 8601 UTC.
+## Compatibilidad durante la actualización
 
-## Consultar medidas
-
-`GET ?ruta=medidas&limit=50`, límite entero 1..100, por defecto 50.
-Devuelve 200 con lista ordenada por fecha e ID descendentes, o `[]` si no hay medidas.
-Las rutas `/api/medida` y `/api/medidas` son equivalentes cuando rewrite está habilitado.
+El móvil existente envía {uuid, gas, valor, contador}. La comunicación MVP admite
+ese objeto exacto, valida el UUID del proyecto y el contador, transforma gas en tipo
+y pasa únicamente {tipo, valor} a negocio. La base no almacena los metadatos BLE.
+Android actualizado acepta tanto la respuesta antigua como la MVP y comprueba tipo y valor.
+El proxy web normaliza gas a tipo y entrega solo las cuatro propiedades MVP a la GUI.
 
 ## Errores
 
-| Estado | Significado |
+| Estado | Motivo |
 | --- | --- |
 | 400 | JSON, estructura, tipos, rangos o límite inválidos |
 | 404 | Ruta desconocida |
-| 405 | Método incorrecto; cabecera Allow indica el admitido |
-| 413 | Cuerpo mayor de 4096 bytes |
-| 415 | Contenido distinto de application/json |
+| 405 | Método incorrecto; cabecera Allow |
+| 413 | Cuerpo >4096 bytes |
+| 415 | Tipo de contenido incorrecto |
 | 500 | Configuración o persistencia no disponible; sin detalles privados |
 
-Los errores contienen `codigo` y `mensaje`. La escritura es un prototipo académico
-sin autenticación; la deduplicación del móvil no impone unicidad en el servidor.
-No se añade una clave única por contador porque este se reutiliza al alcanzar 255.
+Errores con codigo y mensaje. Prototipo académico sin autenticación de escritura.
+No hay garantía de entrega exactamente una vez ni clave única por anuncio BLE.
 
-## Evidencia de consulta
+## Estado del alojamiento
 
-El 16/10/2026 se consultó GET limit=5: respondió con cinco filas, IDs 31 a 27,
-valor 1234 y fechas del 08/10/2026. Esta consulta no insertó ni alteró datos y no
-demuestra una recepción BLE nueva de hoy.
+GET publicado consultado el 16/10/2026 devolvió cinco filas antiguas, IDs 31..27,
+valor 1234. Esa respuesta aún contenía uuid, gas y contador: el alojamiento sigue
+con el esquema anterior hasta aplicar bd/migrar_mvp.sql y subir el backend MVP.
+Esta revisión no ha ejecutado cambios de datos o esquema en Plesk.

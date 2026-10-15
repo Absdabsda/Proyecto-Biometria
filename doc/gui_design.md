@@ -9,7 +9,7 @@ actualizar()
 
 Pantalla web con título, explicación de la medida ficticia 1234, botón Actualizar,
 estado accesible y tabla de las últimas 50 medidas. Muestra ID textual, fecha local,
-código de gas, valor ficticio y contador. Al abrir consulta mediante `listarMedidas(limit: N) -> [Medida]`
+tipo de medida y valor ficticio. Al abrir consulta mediante `listarMedidas(limit: N) -> [Medida]`
 del componente frontend_business_logic. No contiene operaciones de transporte.
 
 Estados: cargando (botón deshabilitado), lista, lista vacía y error recuperable.

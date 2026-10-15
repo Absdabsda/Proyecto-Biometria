@@ -56,8 +56,8 @@ public final class PeticionarioREST implements LogicaFake.Transporte {
                 }
             }
             JSONObject fila = new JSONObject(new String(respuesta.toByteArray(), StandardCharsets.UTF_8));
-            if (!entrada.uuid.equals(fila.getString("uuid")) || entrada.gas != fila.getInt("gas")
-                    || entrada.valor != fila.getInt("valor") || entrada.contador != fila.getInt("contador")) {
+            int tipoRecibido = fila.has("tipo") ? fila.getInt("tipo") : fila.getInt("gas");
+            if (entrada.gas != tipoRecibido || entrada.valor != fila.getInt("valor")) {
                 throw new IOException("La respuesta no coincide con la medida enviada");
             }
             return new Medida(fila.getString("medidaID"), entrada, fila.getString("fecha"));

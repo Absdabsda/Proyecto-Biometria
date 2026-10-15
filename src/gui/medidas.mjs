@@ -24,7 +24,7 @@ export function iniciarPantalla(documento, listar = listarMedidas) {
             const medidas = await listar(50);
             for (const medida of medidas) {
                 const fila = documento.createElement('tr');
-                for (const valor of [medida.medidaID, new Date(medida.fecha).toLocaleString('es-ES'), medida.gas, medida.valor, medida.contador]) {
+                for (const valor of [medida.medidaID, new Date(medida.fecha).toLocaleString('es-ES'), medida.tipo, medida.valor]) {
                     const celda = documento.createElement('td');
                     celda.textContent = String(valor);
                     fila.appendChild(celda);

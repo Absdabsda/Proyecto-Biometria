@@ -4,7 +4,14 @@
 
 El README anterior mencionaba una propuesta Node.js que no se puede contrastar con los adjuntos actuales. Esta implementación adapta el lenguaje a PHP 7.4 o superior, siguiendo el servidor PHP del repositorio y el alojamiento Plesk. `servidorREST/ReglasREST.php` adapta HTTP; `logica/Logica.php` valida y accede mediante SQL parametrizado; `public/api/index.php` configura el servidor y la conexión. No se mezcla Bluetooth con persistencia. Pendiente validar esta adaptación en la entrega académica.
 
-El código del gas continúa pendiente: se preserva el byte recibido. Android envía solo tipo 11 del prototipo actual; no se afirma que esté confirmado como O3. `codigo_o3=null` admite 0..255 en el servidor; cuando se confirme el código, debe fijarse en configuración, Android y SQL. Valor 1234 no está fijado en el programa: llega de Minor. La etiqueta de la medida 11 se expresa en ppb según el diseño y debe contrastarse con firmware. La fecha se asigna en BD al recibir; ID BIGINT se devuelve como texto para conservar precisión en navegador.
+## Modelo mínimo viable
+
+La base activa guarda solo medidaID, tipo, valor y fecha. El UUID y el contador
+se usan localmente en BLE; la capa de comunicación acepta el formato antiguo,
+convierte gas a tipo y descarta los metadatos antes de persistir.
+La tabla publicada actual necesita `bd/migrar_mvp.sql` antes de usar este backend.
+Exportar primero la base y detener la captura durante el cambio; seguir `bd/README.md`.
+No ejecutar solo crear.sql sobre la tabla antigua: no migra sus columnas.
 
 ## Subida a Plesk
 
@@ -43,7 +50,7 @@ Abre `https://jvaldeo.upv.edu.es/api/index.php?ruta=medidas&limit=50`: debe devo
 En Windows, para probar un POST desde PowerShell:
 
 ```powershell
-$medidaPrueba = @{ uuid='EPSG-GTI-PROY-3A'; gas=11; valor=1234; contador=1 } | ConvertTo-Json
+$medidaPrueba = @{ tipo=11; valor=1234 } | ConvertTo-Json
 Invoke-RestMethod -Method Post -Uri 'https://jvaldeo.upv.edu.es/api/index.php?ruta=medida' -ContentType 'application/json; charset=utf-8' -Body $medidaPrueba
 ```
 
@@ -53,7 +60,7 @@ Ese POST guarda una fila real de prueba: anota su medidaID para identificarla. N
 
 Rutas lógicas: POST `/medida`, GET `/medidas?limit=50`. Con `.htaccess` funcionan como `/api/medida` y `/api/medidas`. Para evitar depender de rewrite en Plesk, los clientes usan `/api/index.php?ruta=medida` y `/api/index.php?ruta=medidas&limit=50`; el significado es el mismo.
 
-POST acepta exactamente UUID, gas, valor y contador y responde 201 con la fila. GET responde 200 con lista ordenada por fecha e ID descendentes. Errores: 400 validación/JSON, 404 ruta, 405 método, 413 tamaño, 415 tipo, 500 acceso interno. El cuerpo se limita a 4096 bytes. No se habilita CORS: navegador del mismo origen; Android no necesita CORS.
+POST acepta tipo y valor y responde 201 con ID, tipo, valor y fecha; admite el anuncio antiguo como compatibilidad sin almacenarlo. GET responde 200 con lista ordenada por fecha e ID descendentes. Errores: 400 validación/JSON, 404 ruta, 405 método, 413 tamaño, 415 tipo, 500 acceso interno. El cuerpo se limita a 4096 bytes. No se habilita CORS: navegador del mismo origen; Android no necesita CORS.
 
 Es un prototipo sin autenticación de escritura. Quien conozca el endpoint puede enviar medidas; no proporciona atribución verificable de una placa. Antes de darle uso real habría que definir autenticación y límites de uso.
 
@@ -68,4 +75,4 @@ node --test tests/medidas.test.mjs
 
 Las pruebas PHP verifican adaptación HTTP y validaciones con lógica simulada, sin BD. Las de navegador prueban su cliente con fetch simulado. La comprobación SQL, la configuración de Plesk y el recorrido real placa-teléfono-servidor requieren el entorno real. La interfaz queda pendiente del wireframe.
 
-Verificación del 16/10/2026: 9 pruebas web y 19 pruebas Android superadas; APK generado. Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions. GET del alojamiento responde con medidas 1234 antiguas; no se modificaron datos remotos. La prueba física nueva placa-móvil-servidor sigue pendiente.
+Verificación del 16/10/2026: 10 pruebas web y 19 pruebas Android superadas; APK generado. Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions. GET del alojamiento responde con medidas 1234 antiguas; no se modificaron datos remotos. La prueba física nueva placa-móvil-servidor sigue pendiente.

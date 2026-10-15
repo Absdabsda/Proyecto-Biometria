@@ -10,7 +10,7 @@ Error = (codigo: Text, mensaje: Text)
 peticion: Peticion --> atenderPeticion() --> respuesta: Respuesta
 ```
 Implementación: `src/communication/ReglasREST.php`; punto de entrada `servidor/public/api/index.php`.
-POST `/medida`: JSON MedidaEntrada, delega guardarMedida, devuelve 201 y Medida.
+POST `/medida`: JSON {tipo, valor}, delega guardarMedida y devuelve 201 con medidaID, tipo, valor y fecha. También acepta el anuncio antiguo {uuid, gas, valor, contador}: valida su identificación y contador, convierte gas en tipo y descarta esos metadatos antes de llamar al negocio.
 GET `/medidas?limit=50`: delega listarMedidas, devuelve 200 y lista.
 Alternativa sin rewrite: `index.php?ruta=medida` y `index.php?ruta=medidas`.
 Errores 400 datos/JSON, 404 ruta, 405 método, 413 cuerpo >4096 bytes, 415 tipo y 500 interno.

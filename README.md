@@ -48,7 +48,7 @@ y regenerar el paquete. No subir contraseñas, configuración privada, APK ni ca
 
 ## Resultado del 16 de octubre de 2026
 
-- 9 pruebas web superadas: 6 del proxy y 3 de la pantalla.
+- 10 pruebas web superadas: 7 del proxy y 3 de la pantalla.
 - 19 pruebas Android superadas con Gradle; APK debug generado desde una ruta sin tildes.
 - Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions.
 - GET del servidor publicado responde con medidas 1234 ya almacenadas; no se insertaron datos.
@@ -56,5 +56,9 @@ y regenerar el paquete. No subir contraseñas, configuración privada, APK ni ca
 
 El sprint confirmado usa la medida ficticia 1234. Para la demostración, comprobar
 en el móvil el valor recibido, el aviso de guardado y una fila nueva con el mismo
-contador en el servidor. Los datos antiguos por sí solos no prueban un envío actual.
+tipo y valor en el servidor. Los datos antiguos por sí solos no prueban un envío actual.
 Consultar `doc/api.md`, los diseños y el informe de `outputs/2026-10-16/`.
+
+## Aclaración del modelo mínimo viable
+
+La autora confirmó que se exige tipo de medida. La tabla activa queda en medidaID, tipo, valor y fecha, sin UUID ni contador. La migración del alojamiento aún requiere acceso a phpMyAdmin y subida del backend coordinada; las consultas actuales siguen usando el esquema anterior. Ver bd/README.md y bd/migrar_mvp.sql.

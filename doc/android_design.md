@@ -3,8 +3,8 @@
 ## Component Design
 
 ```text
-MedidaEntrada = (uuid: Text, gas: N, valor: Z, contador: N)
-Medida = (medidaID: Text, uuid: Text, gas: N, valor: Z, contador: N, fecha: Text)
+MedidaEntrada = (tipo: N, valor: Z)
+Medida = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
 Trama = (uuid: [N]_16, major: N, minor: N, tx_power: Z)
 
 datos: [N] --> esIBeacon() --> B
@@ -44,10 +44,10 @@ medida:Medida  <--
 
 MainActivity posee el escáner, los textos y el proxy. TramaIBeacon interpreta
 23 bytes de fabricante: 02 15, UUID 16, major 2, minor 2, potencia 1. Los métodos
-de Utilidades combinan bytes big endian. MedidaEntrada valida UUID y rangos;
+de Utilidades combinan bytes big endian. MedidaEntrada representa tipo y valor; conserva adicionalmente metadatos locales de adquisición para filtrar y deduplicar BLE, que no se persisten;
 Medida valida el ID textual positivo y la fecha UTC. LogicaFake coordina la cola
 serial y deduplicación; PeticionarioREST implementa su interfaz Transporte,
-convierte JSON y verifica estado 201, contenido de la medida y respuesta <=4096 bytes.
+envía el anuncio compatible con el servidor anterior y verifica estado 201, tipo/valor confirmados y respuesta <=4096 bytes. Acepta tipo del MVP o gas de la respuesta anterior; ID y fecha se reciben del servidor.
 MainActivity no realiza peticiones de red ni conoce la base de datos.
 
 Pantalla: botones buscar todos, buscar el proyecto y detener; muestra estado,

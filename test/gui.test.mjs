@@ -15,7 +15,7 @@ test('la pantalla presenta 1234 y mantiene el identificador grande como texto', 
     const doc = pantalla();
     const app = iniciarPantalla(doc, async limite => {
         assert.equal(limite, 50);
-        return [{medidaID: '9007199254740993', fecha: '2026-10-16T00:00:00.000Z', gas: 11, valor: 1234, contador: 1}];
+        return [{medidaID: '9007199254740993', fecha: '2026-10-16T00:00:00.000Z', tipo: 11, valor: 1234}];
     });
     await app.lista;
     const celdas = doc.elementos.medidas.children[0].children;
@@ -45,7 +45,7 @@ test('no superpone consultas ni conserva filas al fallar la actualización', asy
     const app = iniciarPantalla(doc, () => { llamadas++; return new Promise(resolve => { completar = resolve; }); });
     await app.actualizar();
     assert.equal(llamadas, 1);
-    completar([{medidaID: '1', fecha: '2026-10-16T00:00:00.000Z', gas: 11, valor: 1234, contador: 1}]);
+    completar([{medidaID: '1', fecha: '2026-10-16T00:00:00.000Z', tipo: 11, valor: 1234}]);
     await app.lista;
     assert.equal(doc.elementos.medidas.children.length, 1);
     const fallida = iniciarPantalla(doc, async () => { throw Error(); });

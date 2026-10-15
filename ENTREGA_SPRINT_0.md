@@ -6,7 +6,7 @@ Autora: Julia Valén de Oliveira. Demostración: medida ficticia **1234**.
 
 - Android compila y sus 19 pruebas automáticas pasan desde una ruta sin tildes.
 - El firmware compila para SparkFun Pro nRF52840 Mini con Adafruit nRF52 1.7.0.
-- Pasan 9 pruebas web y las pruebas PHP y MySQL de GitHub Actions.
+- Pasan 10 pruebas web y las pruebas PHP y MySQL de GitHub Actions.
 - El servidor publicado responde a GET y contiene medidas 1234 antiguas.
 
 ## Demostración que debes realizar con tu placa y tu móvil
@@ -16,7 +16,7 @@ Autora: Julia Valén de Oliveira. Demostración: medida ficticia **1234**.
 3. Pulsa «Buscar nuestro dispositivo». Debe aparecer el valor 1234 y su contador.
 4. Comprueba el mensaje «Medida 1234 guardada en el servidor».
 5. Consulta `https://jvaldeo.upv.edu.es/api/index.php?ruta=medidas&limit=5` y compara
-   el contador y la fecha de una fila nueva. Una fila de días anteriores no sirve como prueba del envío actual.
+   el tipo, valor y fecha de una fila nueva. Una fila de días anteriores no sirve como prueba del envío actual.
 6. Conserva capturas o vídeo de la placa, la recepción y la nueva fila si el profesor los pide.
 
 ## Web y alojamiento
@@ -44,3 +44,7 @@ en Android Studio. El SDK local se configura en Android Studio y no se publica.
 Los diseños están en `doc/`, los tests en `test/`, `servidor/tests/` y
 `Prueba2025/app/src/test/`. El informe explica las verificaciones y límites sin
 atribuir a las pruebas automáticas una demostración física que no se ha observado.
+
+## Aclaración del modelo mínimo viable
+
+La autora confirmó que se exige tipo de medida. La tabla activa queda en medidaID, tipo, valor y fecha, sin UUID ni contador. La migración del alojamiento aún requiere acceso a phpMyAdmin y subida del backend coordinada; las consultas actuales siguen usando el esquema anterior. Ver bd/README.md y bd/migrar_mvp.sql.

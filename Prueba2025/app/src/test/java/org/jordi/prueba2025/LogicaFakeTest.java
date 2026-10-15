@@ -79,6 +79,7 @@ public class LogicaFakeTest {
     }
 
     @Test public void contratoDeEntradaYResultadoPreservaLimitesYRechazaDatosInvalidos() {
+        assertEquals(11, new MedidaEntrada(11, 1234).tipo);
         assertEquals(-32768, new MedidaEntrada(entrada.uuid, 0, -32768, 0).valor);
         assertEquals(32767, new MedidaEntrada(entrada.uuid, 255, 32767, 255).valor);
         for (int[] datos : new int[][]{{-1, 0, 0}, {256, 0, 0}, {11, 32768, 0}, {11, -32769, 0}, {11, 0, 256}}) {
