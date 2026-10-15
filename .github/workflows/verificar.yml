@@ -3,6 +3,19 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   pruebas:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: prueba_ci
+          MYSQL_DATABASE: pbio_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -pprueba_ci"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -14,5 +27,12 @@ jobs:
         run: php servidor/tests/rest.php
       - name: Probar proxy web
         run: node --test servidor/tests/medidas.test.mjs
+      - name: Probar persistencia con MySQL real y rollback
+        env:
+          PBIO_TEST_DSN: mysql:host=127.0.0.1;port=3306;dbname=pbio_test;charset=utf8mb4
+          PBIO_TEST_DATABASE: pbio_test
+          PBIO_TEST_USER: root
+          PBIO_TEST_PASSWORD: prueba_ci
+        run: php test/backend_integration.php
       - name: Verificar paquete Plesk
         run: python scripts/preparar_plesk.py
