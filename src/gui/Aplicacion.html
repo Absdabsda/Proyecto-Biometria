@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medidas · Sprint 0</title>
+  <style>
+    :root { font: 16px/1.5 system-ui, sans-serif; color: #16332d; background: #f2f6f3; }
+    body { margin: 0; padding: 24px; }
+    main { max-width: 1000px; margin: 32px auto; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    h1 { margin: 4px 0; font-size: clamp(1.8rem, 5vw, 2.5rem); }
+    p { margin: 8px 0; }
+    .etiqueta { color: #42645a; font-weight: 600; }
+    button { font: inherit; padding: 10px 20px; border: 0; border-radius: 8px; color: white; background: #176047; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    button:focus-visible { outline: 3px solid #d09b16; outline-offset: 3px; }
+    .tabla { margin-top: 24px; background: white; border: 1px solid #d3dfd8; border-radius: 12px; overflow: auto; }
+    table { border-collapse: collapse; width: 100%; text-align: left; white-space: nowrap; }
+    caption { text-align: left; padding: 18px; font-weight: 600; }
+    th, td { padding: 14px 18px; border-top: 1px solid #e1e9e4; }
+    th { background: #eaf1ed; }
+    .nota, footer { color: #4c625b; font-size: .9rem; }
+    footer { margin-top: 24px; }
+    #estado { min-height: 1.5em; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div><p class="etiqueta">Biometría y Medio Ambiente · Sprint 0</p><h1>Medidas recibidas</h1></div>
+      <button id="actualizar" type="button">Actualizar</button>
+    </header>
+    <p>Últimos anuncios guardados por el servidor, del más reciente al más antiguo.</p>
+    <p class="nota">La placa del Sprint 0 emite la medida ficticia 1234. El código de gas se muestra sin asignarle una identificación química confirmada.</p>
+    <p id="estado" role="status" aria-live="polite">Preparando consulta…</p>
+    <div class="tabla">
+      <table><caption>Últimas 50 medidas</caption>
+        <thead><tr><th scope="col">ID</th><th scope="col">Fecha de recepción</th><th scope="col">Tipo de medida</th><th scope="col">Valor ficticio</th></tr></thead>
+        <tbody id="medidas"></tbody>
+      </table>
+    </div>
+    <footer>Julia Valén de Oliveira · Las fechas se muestran en la hora local del navegador.</footer>
+  </main>
+  <script type="module" src="./medidas.js"></script>
+</body>
+</html>

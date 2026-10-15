@@ -53,6 +53,11 @@ namespace Globales {
 
 // --------------------------------------------------------------
 // --------------------------------------------------------------
+/** -------------------
+ * Descripción: Reserva la inicialización específica de la placa; no realiza acciones en este prototipo.
+ * Diseño: inicializarPlaquita()
+ * Parámetros: ninguno.
+ * ------------------- */
 void inicializarPlaquita () {
 
   // de momento nada
@@ -62,6 +67,11 @@ void inicializarPlaquita () {
 // --------------------------------------------------------------
 // setup()
 // --------------------------------------------------------------
+/** -------------------
+ * Descripción: Arranca la emisora y el medidor sin bloquear indefinidamente si falta el monitor serie.
+ * Diseño: setup()
+ * Parámetros: ninguno.
+ * ------------------- */
 void setup() {
 
   // Permito arrancar con batería, sin monitor serie conectado.
@@ -99,6 +109,11 @@ void setup() {
 
 // --------------------------------------------------------------
 // --------------------------------------------------------------
+/** -------------------
+ * Descripción: Ejecuta el patrón luminoso de diagnóstico.
+ * Diseño: lucecitas()
+ * Parámetros: ninguno.
+ * ------------------- */
 inline void lucecitas() {
   using namespace Globales;
 
@@ -123,6 +138,11 @@ namespace Loop {
 
 // ..............................................................
 // ..............................................................
+/** -------------------
+ * Descripción: Incrementa el contador y anuncia la medida ficticia 1234 con el tipo 11.
+ * Diseño: loop()
+ * Parámetros: ninguno.
+ * ------------------- */
 void loop () {
 
   using namespace Loop;

@@ -27,7 +27,7 @@ function conectarLogica(): Logica {
         $config['user'], $config['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false]);
     $bd->exec("SET SESSION time_zone = '+00:00'");
     $bd->exec("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'");
-    return new Logica($bd, $config['codigo_o3'] ?? null);
+    return new Logica($bd, $config['tipo_permitido'] ?? $config['codigo_o3'] ?? null);
 }
 
 // Algunos servidores entregan PATH_INFO vacío: la ruta explícita tiene prioridad.

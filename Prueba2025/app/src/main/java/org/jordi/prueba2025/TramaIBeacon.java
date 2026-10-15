@@ -13,11 +13,21 @@ public final class TramaIBeacon {
     private final int minor;
     private final byte txPower;
 
+    /** -------------------
+     * Descripción: Comprueba longitud exacta y cabecera antes de leer los campos.
+     * Diseño: datos:[N] --> esIBeacon() --> B
+     * Parámetros: datos:[N].
+     * ------------------- */
     public static boolean esIBeacon(byte[] datos) {
         // Antes de leer compruebo la cabecera 02 15 y los 23 bytes necesarios.
         return datos != null && datos.length == 23 && datos[0] == 0x02 && datos[1] == 0x15;
     }
 
+    /** -------------------
+     * Descripción: Valida y copia UUID, major, minor y potencia de una trama de fabricante.
+     * Diseño: datosFabricante:[N] --> TramaIBeacon() --> TramaIBeacon
+     * Parámetros: datosFabricante:[N].
+     * ------------------- */
     public TramaIBeacon(byte[] datosFabricante) {
         if (!esIBeacon(datosFabricante)) {
             throw new IllegalArgumentException("Los datos no son una trama iBeacon válida");
@@ -30,22 +40,67 @@ public final class TramaIBeacon {
         txPower = datosFabricante[22];
     }
 
+    /** -------------------
+     * Descripción: Compara los dieciséis bytes completos del UUID del proyecto.
+     * Diseño: esNuestroDispositivo() --> B
+     * Parámetros: ninguno.
+     * ------------------- */
     public boolean esNuestroDispositivo() {
         // Comparo los 16 bytes completos con el mismo identificador de Arduino.
         return Arrays.equals(uuid, UUID_PROYECTO);
     }
 
+    /** -------------------
+     * Descripción: Devuelve el campo major sin signo.
+     * Diseño: getMajor() --> Z
+     * Parámetros: ninguno.
+     * ------------------- */
     public int getMajor() { return major; }
+    /** -------------------
+     * Descripción: Devuelve el campo minor sin signo.
+     * Diseño: getMinor() --> Z
+     * Parámetros: ninguno.
+     * ------------------- */
     public int getMinor() { return minor; }
     /** () --> getValor() --> valor:Z
      * Pre: trama válida. Post: interpreta minor como entero de 16 bits con signo.
      * Errores: ninguno. */
+    /** -------------------
+     * Descripción: Interpreta minor como entero con signo de dieciséis bits.
+     * Diseño: getValor() --> Z
+     * Parámetros: ninguno.
+     * ------------------- */
     public int getValor() { return (short) minor; }
+    /** -------------------
+     * Descripción: Extrae el byte alto de major.
+     * Diseño: getTipoMedicion() --> Z
+     * Parámetros: ninguno.
+     * ------------------- */
     public int getTipoMedicion() { return major >>> 8; }
+    /** -------------------
+     * Descripción: Extrae el byte bajo de major.
+     * Diseño: getContador() --> Z
+     * Parámetros: ninguno.
+     * ------------------- */
     public int getContador() { return major & 0xff; }
+    /** -------------------
+     * Descripción: Devuelve la potencia de referencia con signo.
+     * Diseño: getTxPower() --> Z
+     * Parámetros: ninguno.
+     * ------------------- */
     public byte getTxPower() { return txPower; }
+    /** -------------------
+     * Descripción: Devuelve una copia defensiva del UUID.
+     * Diseño: getUUID() --> [N]
+     * Parámetros: ninguno.
+     * ------------------- */
     public byte[] getUUID() { return uuid.clone(); }
 
+    /** -------------------
+     * Descripción: Describe gas, temperatura u otro código sin atribuirle una unidad no definida.
+     * Diseño: getDescripcionMedicion() --> Text
+     * Parámetros: ninguno.
+     * ------------------- */
     public String getDescripcionMedicion() {
         // Conservo el código 11 para la placa del proyecto. Antes se llamaba
         // CO2 en el programa, aunque el sensor instalado mide O3.
