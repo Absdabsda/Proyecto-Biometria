@@ -2,7 +2,7 @@
 
 ## Decisiones y correspondencia con los diseños
 
-El PDF propone Node.js. Esta implementación adapta el lenguaje a PHP 7.4 o superior, siguiendo el servidor PHP del repositorio y el alojamiento Plesk. `servidorREST/ReglasREST.php` adapta HTTP; `logica/Logica.php` valida y accede mediante SQL parametrizado; `public/api/index.php` configura el servidor y la conexión. No se mezcla Bluetooth con persistencia. Pendiente validar esta adaptación en la entrega académica.
+El README anterior mencionaba una propuesta Node.js que no se puede contrastar con los adjuntos actuales. Esta implementación adapta el lenguaje a PHP 7.4 o superior, siguiendo el servidor PHP del repositorio y el alojamiento Plesk. `servidorREST/ReglasREST.php` adapta HTTP; `logica/Logica.php` valida y accede mediante SQL parametrizado; `public/api/index.php` configura el servidor y la conexión. No se mezcla Bluetooth con persistencia. Pendiente validar esta adaptación en la entrega académica.
 
 El código del gas continúa pendiente: se preserva el byte recibido. Android envía solo tipo 11 del prototipo actual; no se afirma que esté confirmado como O3. `codigo_o3=null` admite 0..255 en el servidor; cuando se confirme el código, debe fijarse en configuración, Android y SQL. Valor 1234 no está fijado en el programa: llega de Minor. La etiqueta de la medida 11 se expresa en ppb según el diseño y debe contrastarse con firmware. La fecha se asigna en BD al recibir; ID BIGINT se devuelve como texto para conservar precisión en navegador.
 
@@ -12,11 +12,11 @@ Necesitas PHP habilitado y extensión `pdo_mysql`, base `jvaldeo_pbio` con la ta
 
 En el Administrador de archivos del dominio:
 
-El paquete `plesk-servidor.zip` contiene `httpdocs` y `pbio_privado`. Puedes subirlo y extraerlo en la carpeta que contiene `httpdocs`; antes revisa que no tengas ya `api/index.php` con otro contenido. Después renombra `pbio_privado/config.example.php` como `config.php` y configura la contraseña. El paquete no contiene credenciales reales ni la página visible pendiente del wireframe.
+Generar desde la raíz con `python scripts/preparar_plesk.py`. El nuevo paquete `output/plesk-servidor.zip` contiene `httpdocs` y `pbio_privado`. Puedes subirlo y extraerlo en la carpeta que contiene `httpdocs`; antes revisa que no tengas ya `api/index.php` con otro contenido. Después renombra `pbio_privado/config.example.php` como `config.php` y configura la contraseña. El paquete no contiene credenciales reales ni la página visible pendiente del wireframe.
 
 1. Entra en `httpdocs` y sube/descomprime el contenido de `public`: debe quedar `httpdocs/api/index.php` y `httpdocs/ux/logicaFake/medidas.mjs`. No subas todo el repositorio ni Android.
 2. Vuelve a la carpeta que contiene `httpdocs` y crea `pbio_privado` a su lado.
-3. Dentro de `pbio_privado`, sube las carpetas `logica` y `servidorREST`.
+3. Dentro de `pbio_privado`, extrae las carpetas `logica` y `servidorREST` del paquete generado; contienen la implementación canónica de `src/`, no los adaptadores locales.
 4. Sube `config.example.php` a `pbio_privado`, renómbralo `config.php` y escribe tu contraseña en el campo `password`. Mantén los demás datos si coinciden con Plesk. No compartas la contraseña. Configuración y lógica quedan fuera de la carpeta pública.
 5. Si aparece una restricción `open_basedir`, el administrador del alojamiento debe permitir la lectura de `pbio_privado`; no publiques config.php como solución.
 
@@ -68,4 +68,4 @@ node --test tests/medidas.test.mjs
 
 Las pruebas PHP verifican adaptación HTTP y validaciones con lógica simulada, sin BD. Las de navegador prueban su cliente con fetch simulado. La comprobación SQL, la configuración de Plesk y el recorrido real placa-teléfono-servidor requieren el entorno real. La interfaz queda pendiente del wireframe.
 
-Verificación local realizada: se generó el APK debug y pasaron 4 pruebas del adaptador web. Gradle no pudo cargar la clase de pruebas Android; ejecutadas directamente con Java/JUnit pasaron las 13 pruebas del parser, incluidas 1234 y los límites con signo. No hay PHP instalado localmente, por lo que las pruebas PHP no se han ejecutado. Tampoco se ha conectado al servidor ni a la BD de Plesk.
+Verificación del 16/10/2026: 6 pruebas del cliente web y 14 pruebas Java/JUnit del parser superadas mediante ejecución directa. No se ha compilado el APK en esta revisión. PHP no está disponible localmente: las pruebas PHP y la integración con MySQL quedan pendientes. No se ha conectado a Plesk ni verificado el recorrido físico. El workflow de GitHub permite comprobar sintaxis PHP y pruebas REST en un entorno con PHP.

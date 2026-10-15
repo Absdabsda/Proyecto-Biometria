@@ -1,0 +1,31 @@
+# Archivos del sistema
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# Configuración local y credenciales
+.env
+.env.*
+!.env.example
+local.properties
+**/config.php
+*.jks
+*.keystore
+
+# IDE y compilaciones
+.idea/
+.gradle/
+build/
+.cxx/
+*.iml
+*.apk
+*.aab
+
+# Copias locales de metadatos Git
+.git-backup/
+
+# Informes temporales y paquetes de despliegue generados
+tmp/
+output/
+**/plesk-servidor.zip

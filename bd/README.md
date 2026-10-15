@@ -15,7 +15,7 @@ No es necesario subir los SQL a la carpeta pública de la web.
 
 1234 es un ejemplo de valor; no se fija por defecto en la tabla. El móvil deberá enviar lo que realmente reciba, y cambiar la placa a 1235 deberá producir una medida con valor 1235.
 
-La unidad del PDF es ppb. La app existente dice ppm: hay que corregir y contrastar esa etiqueta con el firmware. El código 11 aparece en el emisor existente con el nombre CO2 y en Android como O3. El diseño deja CODIGO_O3 pendiente; por eso este SQL permite cualquier código de gas entre 0 y 255 hasta resolver esa correspondencia. Una vez confirmada, hay que añadir la restricción de gas y la misma validación en Logica. No se considera cerrado ese requisito.
+La unidad del PDF es ppb. La app actual indica ppb según diseño; la unidad física sigue pendiente de contrastarse con el sensor. El código 11 aparece en el emisor existente con el nombre CO2 y en Android como O3. El diseño deja CODIGO_O3 pendiente; por eso este SQL permite cualquier código de gas entre 0 y 255 hasta resolver esa correspondencia. Una vez confirmada, hay que añadir la restricción de gas y la misma validación en Logica. No se considera cerrado ese requisito.
 
 ## Zona horaria y comprobaciones del motor
 
@@ -40,4 +40,4 @@ La base no deduplica anuncios BLE: no hay clave única por UUID/contador/valor p
 
 Android (cliente REST) envía un POST con `uuid`, `gas`, `valor` y `contador`. El servidor REST recibe JSON y llama a Logica; Logica valida e inserta usando parámetros SQL. GET devuelve las medidas ordenadas por `fecha DESC, medidaID DESC`. La página consulta GET. El móvil y el navegador no reciben las credenciales de la base ni acceden directamente a MySQL.
 
-Los ejemplos actuales son puntos de partida: PeticionarioREST hace peticiones HTTP y el ejemplo PHP devuelve saludos. Falta implementar los endpoints de medidas, Logica, el envío desde Prueba2025 y la página. El PDF propone Node.js para backend; el repositorio contiene ejemplos PHP. La tecnología de despliegue debe concretarse antes de implementar el servidor.
+El servidor y el envío Android ya están implementados. La página web de consulta y la lectura física del sensor permanecen pendientes. La implementación usa PHP, pendiente de contrastar con el enunciado concreto. El esquema canónico está en `src/database/crear.sql` en la raíz del repositorio; esta carpeta conserva una copia compatible.

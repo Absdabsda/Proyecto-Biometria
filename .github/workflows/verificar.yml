@@ -1,0 +1,18 @@
+name: Verificar servidor y cliente
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar sintaxis PHP
+        run: find src servidor -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Probar validación y adaptación REST
+        run: php servidor/tests/rest.php
+      - name: Probar proxy web
+        run: node --test servidor/tests/medidas.test.mjs
+      - name: Verificar paquete Plesk
+        run: python scripts/preparar_plesk.py
