@@ -1,36 +1,45 @@
-# Aplicaciones de Biometría y Medio Ambiente
+# Aplicaciones de Biometría y Medio Ambiente — Sprint 0
 
 Autora: Julia Valén de Oliveira.
-Repositorio de entrega: https://github.com/Absdabsda/Proyecto-Biometria
 
-## Prototipo actual
+La placa anuncia la medida ficticia **1234** mediante iBeacon. Android reconoce
+el proyecto, interpreta tipo y valor y envía la medida al servidor. El backend PHP
+la guarda en una base mínima de cuatro campos: **medidaID, tipo, valor y fecha**.
+El UUID y el contador se utilizan localmente para BLE; no se guardan en la tabla activa.
 
-El firmware emite un valor ficticio **1234** en una trama iBeacon. La aplicación Android
-reconoce el UUID del proyecto, interpreta el valor con signo y lo envía a un servidor PHP.
-El servidor valida y guarda las medidas en MySQL/MariaDB y permite consultarlas.
-La medida ficticia es deliberada en el Sprint 0. La pantalla web de consulta está implementada y utiliza un proxy separado.
+## Aplicación publicada
+
+- Web: https://jvaldeo.upv.edu.es/ux/Aplicacion.html
+- API: https://jvaldeo.upv.edu.es/api/index.php?ruta=medidas&limit=50
+- Contrato y compatibilidad: `doc/api.md`.
+
+La web consume un proxy separado; la GUI no realiza peticiones de red directamente.
+La API admite tanto {tipo, valor} como el anuncio anterior del móvil. Solo se pasan
+tipo y valor a negocio. Los errores de validación y persistencia se tratan por separado.
 
 ## Estructura
 
 | Ruta | Contenido |
 | --- | --- |
-| `author.md` | Autoría |
-| `doc/` | Diseños y límites de cada componente |
-| `context/` | Notación y formato del revisor facilitados en el ZIP |
-| `src/business_logic/` | Validación, persistencia y consulta PHP |
-| `src/communication/` | Adaptación de peticiones REST |
-| `src/database/` | Esquema SQL canónico |
-| `src/frontend_business_logic/` | Proxy web de consulta |
-| `src/gui/` | Pantalla web de medidas |
-| `test/` | Pruebas de persistencia y pantalla |
-| `Prueba2025/` | Proyecto Android completo |
-| `HolaMundoIBeacon/` | Firmware Arduino/Bluefruit |
-| `servidor/` | Entrada pública, configuración de ejemplo y pruebas |
-| `outputs/2026-10-16/` | Informe de revisión |
+| author.md | Autoría |
+| doc/ | Diseños de componentes y API |
+| context/ | Notación lógica y formato de tablas del revisor |
+| src/business_logic/ | Validación y acceso SQL independiente del transporte |
+| src/communication/ | Adaptación de la API REST |
+| src/database/ | Esquema mínimo canónico |
+| src/frontend_business_logic/ | Proxy de lectura web |
+| src/gui/ | Pantalla web |
+| test/ | Integración SQL, migración y estados de la pantalla |
+| Prueba2025/ | Proyecto Android completo, con GUI, proxy y adaptador separados |
+| HolaMundoIBeacon/ | Sketch Arduino y clases de apoyo |
+| servidor/ | Entrada pública, despliegue y pruebas REST y web |
+| bd/ | Instalación, prueba SQL y migración desde el esquema anterior |
+| outputs/2026-10-16/ | Informe de revisión |
 
-Los demás ejemplos docentes se conservan con sus atribuciones.
+El material docente adicional se conserva con sus atribuciones. Android y Arduino
+mantienen sus carpetas de proyecto originales, documentadas en sus diseños.
 
-## Verificación reproducible
+## Pruebas y despliegue
 
 ```sh
 node --test servidor/tests/medidas.test.mjs test/gui.test.mjs
@@ -38,27 +47,26 @@ php servidor/tests/rest.php
 python scripts/preparar_plesk.py
 ```
 
-Abrir `Prueba2025` con Android Studio para compilar y ejecutar
-las pruebas Android. Requiere SDK 34, JDK compatible con Gradle 8.7 y sus dependencias.
-Las pruebas del parser no requieren Bluetooth; la prueba completa sí requiere placa y móvil.
+La integración SQL y la migración se ejecutan con bases desechables en GitHub Actions,
+contra MySQL 8.4 y MariaDB 10.11. La configuración de pruebas está en el workflow.
+Android Studio: abrir Prueba2025; para compilar y probar, usar Gradle 8.7 y SDK 34.
+En este Windows hay que trabajar en una carpeta sin tildes para cargar sus pruebas.
 
-El paquete generado es `output/plesk-servidor.zip`; seguir el README del servidor.
-Los archivos públicos del proxy son copias generadas: editar `src/frontend_business_logic/medidas.mjs`
-y regenerar el paquete. No subir contraseñas, configuración privada, APK ni carpetas temporales.
+El generador crea `output/plesk-servidor.zip`. Editar las fuentes de src/ y regenerar;
+las copias públicas son generadas. Nunca publicar config.php, contraseñas ni APK en Git.
+Seguir `servidor/README.md` y `bd/README.md` para una instalación nueva.
 
-## Resultado del 16 de octubre de 2026
+## Verificación del 16/10/2026
 
-- 10 pruebas web superadas: 7 del proxy y 3 de la pantalla.
-- 19 pruebas Android superadas con Gradle; APK debug generado desde una ruta sin tildes.
-- Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions.
-- GET del servidor publicado responde con medidas 1234 ya almacenadas; no se insertaron datos.
-- Firmware compilado para SparkFun Pro nRF52840 Mini con Adafruit nRF52 1.7.0; falta confirmar placa física y carga.
+- 19 pruebas Android superadas con Gradle y APK debug generado.
+- 10 pruebas web superadas, incluidos errores, vacío, recuperación y compatibilidad.
+- Sintaxis PHP, adaptación REST, persistencia y migración comprobadas en CI.
+- Firmware compilado para SparkFun Pro nRF52840 Mini, Adafruit nRF52 1.7.0; no se ha cargado en placa desde esta revisión.
+- Plesk actualizado: tabla activa de cuatro columnas, 31 filas antiguas preservadas
+  y comparadas por ID, tipo, valor y fecha; API y pantalla funcionando.
+- Respaldo SQL y de archivos guardados fuera de httpdocs. La tabla anterior se conserva
+  temporalmente como respaldo y no forma parte del modelo de la aplicación.
 
-El sprint confirmado usa la medida ficticia 1234. Para la demostración, comprobar
-en el móvil el valor recibido, el aviso de guardado y una fila nueva con el mismo
-tipo y valor en el servidor. Los datos antiguos por sí solos no prueban un envío actual.
-Consultar `doc/api.md`, los diseños y el informe de `outputs/2026-10-16/`.
-
-## Aclaración del modelo mínimo viable
-
-La autora confirmó que se exige tipo de medida. La tabla activa queda en medidaID, tipo, valor y fecha, sin UUID ni contador. La migración del alojamiento aún requiere acceso a phpMyAdmin y subida del backend coordinada; las consultas actuales siguen usando el esquema anterior. Ver bd/README.md y bd/migrar_mvp.sql.
+La demostración física actual placa-móvil-servidor debe comprobarse aparte con una
+fila nueva de hoy; los registros antiguos no prueban una recepción actual.
+Consultar `ENTREGA_SPRINT_0.md` para la prueba final.

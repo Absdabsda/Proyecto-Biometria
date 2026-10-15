@@ -20,7 +20,7 @@ Ejecutar `prueba.sql` para insertar y revertir una medida de prueba.
 
 ## Actualizar la base publicada
 
-No se ha ejecutado esta migración en Plesk desde la revisión.
+La migración ya se aplicó en Plesk el 16/10/2026 y conservó las 31 medidas. No repetirla en ese alojamiento. Los pasos siguientes sirven para otras instalaciones con el esquema anterior.
 
 1. Exportar la base actual con phpMyAdmin y detener temporalmente la captura del móvil.
 2. Confirmar que la tabla actual tiene medidaID, uuid, gas, valor, contador y fecha.

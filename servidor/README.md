@@ -9,7 +9,7 @@ El README anterior mencionaba una propuesta Node.js que no se puede contrastar c
 La base activa guarda solo medidaID, tipo, valor y fecha. El UUID y el contador
 se usan localmente en BLE; la capa de comunicación acepta el formato antiguo,
 convierte gas a tipo y descarta los metadatos antes de persistir.
-La tabla publicada actual necesita `bd/migrar_mvp.sql` antes de usar este backend.
+La tabla publicada se migró el 16/10/2026. Una instalación anterior nueva necesita `bd/migrar_mvp.sql` antes de usar este backend.
 Exportar primero la base y detener la captura durante el cambio; seguir `bd/README.md`.
 No ejecutar solo crear.sql sobre la tabla antigua: no migra sus columnas.
 
@@ -75,4 +75,4 @@ node --test tests/medidas.test.mjs
 
 Las pruebas PHP verifican adaptación HTTP y validaciones con lógica simulada, sin BD. Las de navegador prueban su cliente con fetch simulado. La persistencia y la migración se prueban con MySQL en CI. La pantalla dispone de pruebas de estados y actualización; Plesk y el recorrido físico requieren su entorno real.
 
-Verificación del 16/10/2026: 10 pruebas web y 19 pruebas Android superadas; APK generado. Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions. GET del alojamiento responde con medidas 1234 antiguas; no se modificaron datos remotos. La prueba física nueva placa-móvil-servidor sigue pendiente.
+Verificación del 16/10/2026: 10 pruebas web y 19 pruebas Android superadas; APK generado. Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions. GET del alojamiento responde con medidas 1234 antiguas; se migró el esquema preservando las 31 filas antiguas; no se insertaron medidas desde el agente. La prueba física nueva placa-móvil-servidor sigue pendiente.
