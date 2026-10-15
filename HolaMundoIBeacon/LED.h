@@ -10,6 +10,11 @@
 
 // ----------------------------------------------------------
 // ----------------------------------------------------------
+/** -------------------
+ * Descripción: Espera el intervalo indicado en milisegundos.
+ * Diseño: tiempo:Z --> esperar()
+ * Parámetros: tiempo:Z.
+ * ------------------- */
 void esperar (long tiempo) {
   delay (tiempo);
 }
@@ -24,6 +29,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Configura el pin del LED y su estado inicial.
+   * Diseño: numero:Z --> LED() --> LED
+   * Parámetros: numero:Z.
+   * ------------------- */
   LED (int numero)
 	: numeroLED (numero), encendido(false)
   {
@@ -33,6 +43,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Activa el LED y conserva su estado encendido.
+   * Diseño: encender()
+   * Parámetros: ninguno.
+   * ------------------- */
   void encender () {
 	digitalWrite(numeroLED, HIGH); 
 	encendido = true;
@@ -40,6 +55,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Desactiva el LED y conserva su estado apagado.
+   * Diseño: apagar()
+   * Parámetros: ninguno.
+   * ------------------- */
   void apagar () {
 	  digitalWrite(numeroLED, LOW);
 	  encendido = false;
@@ -47,6 +67,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Invierte el estado actual del LED.
+   * Diseño: alternar()
+   * Parámetros: ninguno.
+   * ------------------- */
   void alternar () {
 	if (encendido) {
 	  apagar();
@@ -57,6 +82,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Enciende el LED durante el intervalo y después lo apaga.
+   * Diseño: tiempo:Z --> brillar()
+   * Parámetros: tiempo:Z.
+   * ------------------- */
   void brillar (long tiempo) {
 	encender ();
 	esperar(tiempo); 

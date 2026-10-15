@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
+    /** -------------------
+     * Descripción: Inicializa la pantalla y el proxy de medidas; solicita permisos necesarios.
+     * Diseño: savedInstanceState:Bundle --> onCreate()
+     * Parámetros: savedInstanceState:Bundle.
+     * ------------------- */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -69,13 +74,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Los dos botones comparten el mismo proceso. Solo cambia el filtro de resultados.
+    /** -------------------
+     * Descripción: Inicia la búsqueda de todos los anuncios compatibles.
+     * Diseño: vista:View --> botonBuscarDispositivosBTLEPulsado()
+     * Parámetros: vista:View.
+     * ------------------- */
     public void botonBuscarDispositivosBTLEPulsado(View vista) { iniciarBusqueda(false); }
+    /** -------------------
+     * Descripción: Inicia la búsqueda filtrada al UUID del proyecto.
+     * Diseño: vista:View --> botonBuscarNuestroDispositivoBTLEPulsado()
+     * Parámetros: vista:View.
+     * ------------------- */
     public void botonBuscarNuestroDispositivoBTLEPulsado(View vista) { iniciarBusqueda(true); }
+    /** -------------------
+     * Descripción: Detiene la búsqueda y actualiza el estado visible.
+     * Diseño: vista:View --> botonDetenerBusquedaDispositivosBTLEPulsado()
+     * Parámetros: vista:View.
+     * ------------------- */
     public void botonDetenerBusquedaDispositivosBTLEPulsado(View vista) {
         detenerBusqueda();
         textoEstado.setText(R.string.busqueda_detenida);
     }
 
+    /** -------------------
+     * Descripción: Valida permisos y adaptador, limpia resultados y registra un único escaneo.
+     * Diseño: soloNuestro:B --> iniciarBusqueda()
+     * Parámetros: soloNuestro:B.
+     * ------------------- */
     private void iniciarBusqueda(boolean soloNuestro) {
         // Paro la búsqueda anterior para no registrar dos escaneos al cambiar de botón.
         detenerBusqueda();
@@ -90,15 +115,30 @@ public class MainActivity extends AppCompatActivity {
         textoEstado.setText(R.string.busqueda_activa);
         callbackDelEscaneo = new ScanCallback() {
             @Override
+            /** -------------------
+             * Descripción: Entrega un resultado individual al procesamiento de la pantalla.
+             * Diseño: tipo:Z, resultado:ScanResult --> onScanResult()
+             * Parámetros: tipo:Z, resultado:ScanResult.
+             * ------------------- */
             public void onScanResult(int tipo, ScanResult resultado) {
                 recibirResultado(this, resultado);
             }
             @Override
+            /** -------------------
+             * Descripción: Procesa los anuncios entregados en lote por Android.
+             * Diseño: resultados:List<ScanResult> --> onBatchScanResults()
+             * Parámetros: resultados:List<ScanResult>.
+             * ------------------- */
             public void onBatchScanResults(List<ScanResult> resultados) {
                 // También proceso los resultados si el móvil los entrega en un lote.
                 for (ScanResult resultado : resultados) { recibirResultado(this, resultado); }
             }
             @Override
+            /** -------------------
+             * Descripción: Detiene el escaneo fallido y comunica su código a la pantalla.
+             * Diseño: codigo:Z --> onScanFailed()
+             * Parámetros: codigo:Z.
+             * ------------------- */
             public void onScanFailed(int codigo) {
                 ScanCallback origen = this;
                 runOnUiThread(() -> {
@@ -120,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /** -------------------
+     * Descripción: Descarta resultados de escaneos antiguos y procesa el actual en el hilo principal.
+     * Diseño: origen:ScanCallback, resultado:ScanResult --> recibirResultado()
+     * Parámetros: origen:ScanCallback, resultado:ScanResult.
+     * ------------------- */
     private void recibirResultado(ScanCallback origen, ScanResult resultado) {
         runOnUiThread(() -> {
             // Descarto los avisos que llegan tarde de una búsqueda ya detenida.
@@ -127,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /** -------------------
+     * Descripción: Interpreta iBeacon, actualiza filas y delega el envío de tipo 11 al proxy.
+     * Diseño: resultado:ScanResult --> mostrarDispositivo()
+     * Parámetros: resultado:ScanResult.
+     * ------------------- */
     private void mostrarDispositivo(ScanResult resultado) {
         ScanRecord registro = resultado.getScanRecord();
         if (registro == null) { return; }
@@ -150,7 +200,14 @@ public class MainActivity extends AppCompatActivity {
             textoEstado.setText(R.string.recibiendo_nuestro);
             // Envío solo el gas del prototipo actual; la placa también anuncia temperatura.
             if (trama.getTipoMedicion() == 11) {
-                logicaFake.enviarMedida(trama, mensaje -> textoEnvio.setText(mensaje));
+                textoEnvio.setText("Enviando medida " + trama.getValor() + "...");
+                logicaFake.guardarMedida(MedidaEntrada.desdeTrama(trama)).whenComplete((medida, error) ->
+                    runOnUiThread(() -> {
+                        if (isDestroyed()) return;
+                        textoEnvio.setText(error == null
+                            ? "Medida " + medida.entrada.valor + " guardada en el servidor"
+                            : "No se pudo guardar. Se reintentará al recibir otro anuncio.");
+                    }));
             }
         }
         dispositivosDetectados.put(direccion, informacion);
@@ -165,6 +222,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /** -------------------
+     * Descripción: Comprueba Bluetooth y ubicación y obtiene el escáner disponible.
+     * Diseño: prepararEscanner() --> B
+     * Parámetros: ninguno.
+     * ------------------- */
     private boolean prepararEscanner() {
         BluetoothManager gestor = getSystemService(BluetoothManager.class);
         BluetoothAdapter adaptador = gestor == null ? null : gestor.getAdapter();
@@ -198,6 +260,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /** -------------------
+     * Descripción: Selecciona los permisos según la versión de Android.
+     * Diseño: permisosNecesarios() --> [Text]
+     * Parámetros: ninguno.
+     * ------------------- */
     private String[] permisosNecesarios() {
         // En Android 12 o superior añado los permisos de dispositivos cercanos.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -210,6 +277,11 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION};
     }
 
+    /** -------------------
+     * Descripción: Comprueba que todos los permisos requeridos estén concedidos.
+     * Diseño: tengoPermisos() --> B
+     * Parámetros: ninguno.
+     * ------------------- */
     private boolean tengoPermisos() {
         // Compruebo todos; que se conceda el primero no garantiza los demás.
         for (String permiso : permisosNecesarios()) {
@@ -220,12 +292,22 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /** -------------------
+     * Descripción: Solicita al sistema los permisos de la búsqueda.
+     * Diseño: pedirPermisos()
+     * Parámetros: ninguno.
+     * ------------------- */
     private void pedirPermisos() {
         textoEstado.setText(R.string.pedir_permisos);
         ActivityCompat.requestPermissions(this, permisosNecesarios(), CODIGO_PETICION_PERMISOS);
     }
 
     @Override
+    /** -------------------
+     * Descripción: Refleja en pantalla el resultado de la solicitud de permisos.
+     * Diseño: codigo:Z, permisos:[Text], resultados:[Z] --> onRequestPermissionsResult()
+     * Parámetros: codigo:Z, permisos:[Text], resultados:[Z].
+     * ------------------- */
     public void onRequestPermissionsResult(int codigo, String[] permisos, int[] resultados) {
         super.onRequestPermissionsResult(codigo, permisos, resultados);
         if (codigo == CODIGO_PETICION_PERMISOS) {
@@ -235,6 +317,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /** -------------------
+     * Descripción: Cancela avisos pendientes y libera el escaneo actual.
+     * Diseño: detenerBusqueda()
+     * Parámetros: ninguno.
+     * ------------------- */
     private void detenerBusqueda() {
         ScanCallback anterior = callbackDelEscaneo;
         callbackDelEscaneo = null;
@@ -252,12 +339,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    /** -------------------
+     * Descripción: Cierra el proxy cuando termina la actividad.
+     * Diseño: onDestroy()
+     * Parámetros: ninguno.
+     * ------------------- */
     protected void onDestroy() {
         logicaFake.cerrar();
         super.onDestroy();
     }
 
     @Override
+    /** -------------------
+     * Descripción: Detiene Bluetooth al dejar de estar visible la actividad.
+     * Diseño: onStop()
+     * Parámetros: ninguno.
+     * ------------------- */
     protected void onStop() {
         // Dejo de usar Bluetooth cuando la pantalla de la aplicación ya no se ve.
         detenerBusqueda();

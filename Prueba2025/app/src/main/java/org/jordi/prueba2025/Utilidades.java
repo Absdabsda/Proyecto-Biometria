@@ -2,8 +2,18 @@ package org.jordi.prueba2025;
 
 /** Conversiones usadas por la trama, a partir de las utilidades de Jordi Bataller i Mascarell. */
 public final class Utilidades {
+    /** -------------------
+     * Descripción: Impide crear instancias de la clase de conversiones.
+     * Diseño: Utilidades() --> Utilidades
+     * Parámetros: ninguno.
+     * ------------------- */
     private Utilidades() { }
 
+    /** -------------------
+     * Descripción: Combina entre uno y cuatro bytes en orden big endian; rechaza entrada vacía.
+     * Diseño: bytes:[N] --> bytesToInt() --> Z
+     * Parámetros: bytes:[N].
+     * ------------------- */
     public static int bytesToInt(byte[] bytes) {
         // Major y Minor llegan en orden big endian: primero el byte de mayor peso.
         // Quito el signo de cada byte para leer FF FF como 65535.

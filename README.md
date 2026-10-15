@@ -8,7 +8,7 @@ Repositorio de entrega: https://github.com/Absdabsda/Proyecto-Biometria
 El firmware emite un valor ficticio **1234** en una trama iBeacon. La aplicación Android
 reconoce el UUID del proyecto, interpreta el valor con signo y lo envía a un servidor PHP.
 El servidor valida y guarda las medidas en MySQL/MariaDB y permite consultarlas.
-La lectura de un sensor físico y la interfaz web de consulta no están terminadas.
+La medida ficticia es deliberada en el Sprint 0. La pantalla web de consulta está implementada y utiliza un proxy separado.
 
 ## Estructura
 
@@ -21,6 +21,8 @@ La lectura de un sensor físico y la interfaz web de consulta no están terminad
 | `src/communication/` | Adaptación de peticiones REST |
 | `src/database/` | Esquema SQL canónico |
 | `src/frontend_business_logic/` | Proxy web de consulta |
+| `src/gui/` | Pantalla web de medidas |
+| `test/` | Pruebas de persistencia y pantalla |
 | `Prueba2025/` | Proyecto Android completo |
 | `HolaMundoIBeacon/` | Firmware Arduino/Bluefruit |
 | `servidor/` | Entrada pública, configuración de ejemplo y pruebas |
@@ -31,7 +33,7 @@ Los demás ejemplos docentes se conservan con sus atribuciones.
 ## Verificación reproducible
 
 ```sh
-node --test servidor/tests/medidas.test.mjs
+node --test servidor/tests/medidas.test.mjs test/gui.test.mjs
 php servidor/tests/rest.php
 python scripts/preparar_plesk.py
 ```
@@ -44,13 +46,15 @@ El paquete generado es `output/plesk-servidor.zip`; seguir el README del servido
 Los archivos públicos del proxy son copias generadas: editar `src/frontend_business_logic/medidas.mjs`
 y regenerar el paquete. No subir contraseñas, configuración privada, APK ni carpetas temporales.
 
-## Resultado local del 16 de octubre de 2026
+## Resultado del 16 de octubre de 2026
 
-- 6 pruebas del cliente web superadas.
-- 14 pruebas Java/JUnit del parser superadas mediante ejecución directa.
-- PHP y base de datos no ejecutados en esta revisión: no hay PHP disponible en el entorno local.
-- No se ha comprobado el recorrido físico BLE, el alojamiento ni la compilación completa Android.
-- El workflow incluido comprueba PHP y JavaScript cuando se ejecuta en GitHub Actions.
+- 9 pruebas web superadas: 6 del proxy y 3 de la pantalla.
+- 19 pruebas Android superadas con Gradle; APK debug generado desde una ruta sin tildes.
+- Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions.
+- GET del servidor publicado responde con medidas 1234 ya almacenadas; no se insertaron datos.
+- Firmware compilado para SparkFun Pro nRF52840 Mini con Adafruit nRF52 1.7.0; falta confirmar placa física y carga.
 
-La adecuación al sprint concreto requiere el enunciado: los adjuntos recibidos describen
-el agente revisor, no los requisitos funcionales de la entrega.
+El sprint confirmado usa la medida ficticia 1234. Para la demostración, comprobar
+en el móvil el valor recibido, el aviso de guardado y una fila nueva con el mismo
+contador en el servidor. Los datos antiguos por sí solos no prueban un envío actual.
+Consultar `doc/api.md`, los diseños y el informe de `outputs/2026-10-16/`.

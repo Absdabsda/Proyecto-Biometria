@@ -22,7 +22,7 @@ Implementación `src/frontend_business_logic/medidas.mjs`.
 
 - La asincronía y la inyección del cliente de pruebas son detalles de implementación.
 - `obtenerMedidas` se conserva como alias de compatibilidad.
-- No existe todavía pantalla web propia de consulta; no se presenta el ejemplo de login como producto terminado.
+- La pantalla propia de consulta está en src/gui/ y consume exclusivamente listarMedidas; los ejemplos docentes de login no forman parte del flujo del producto.
 
 ## General Rules
 

@@ -3,7 +3,6 @@
 Las pruebas del servidor con entradas simuladas están en `servidor/tests/rest.php`;
 las del proxy web en `servidor/tests/medidas.test.mjs` y las del parser Android en
 `Prueba2025/app/src/test/java/org/jordi/prueba2025/TramaIBeaconTest.java`.
-En la copia envolvente local, las dos primeras carpetas están bajo `Sprint_0/Proyecto-Biometria/`.
 
 `backend_integration.php` ejercita la lógica de negocio contra MySQL real usando
 el esquema de `src/database/crear.sql`. Se ejecuta en GitHub Actions con una base

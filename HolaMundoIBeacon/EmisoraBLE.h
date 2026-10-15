@@ -38,6 +38,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Configura nombre, fabricante y potencia de la emisora.
+   * Diseño: nombreEmisora_:Text, fabricanteID_:N, txPower_:Z --> EmisoraBLE() --> EmisoraBLE
+   * Parámetros: nombreEmisora_:Text, fabricanteID_:N, txPower_:Z.
+   * ------------------- */
   EmisoraBLE( const char * nombreEmisora_, const uint16_t fabricanteID_,
 			  const int8_t txPower_ ) 
 	:
@@ -72,6 +77,11 @@ public:
 	
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Inicializa Bluefruit y configura la emisora para anunciar.
+   * Diseño: encenderEmisora()
+   * Parámetros: ninguno.
+   * ------------------- */
   void encenderEmisora() {
 	// Serial.println ( "Bluefruit.begin() " );
 	 Bluefruit.begin(); 
@@ -82,6 +92,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Inicializa Bluefruit y configura la emisora para anunciar.
+   * Diseño: cbce:CallbackConexionEstablecida, cbct:CallbackConexionTerminada --> encenderEmisora()
+   * Parámetros: cbce:CallbackConexionEstablecida, cbct:CallbackConexionTerminada.
+   * ------------------- */
   void encenderEmisora( CallbackConexionEstablecida cbce,
 						CallbackConexionTerminada cbct ) {
 
@@ -94,6 +109,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Detiene el anuncio BLE actual.
+   * Diseño: detenerAnuncio()
+   * Parámetros: ninguno.
+   * ------------------- */
   void detenerAnuncio() {
 
 	if ( (*this).estaAnunciando() ) {
@@ -106,12 +126,22 @@ public:
   // .........................................................
   // estaAnunciando() -> Boleano
   // .........................................................
+  /** -------------------
+   * Descripción: Consulta si Bluefruit está anunciando.
+   * Diseño: estaAnunciando() --> B
+   * Parámetros: ninguno.
+   * ------------------- */
   bool estaAnunciando() {
 	return Bluefruit.Advertising.isRunning();
   } // ()
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Construye el anuncio iBeacon a partir de UUID, major, minor y referencia de potencia.
+   * Diseño: beaconUUID:[N], major:N, minor:Z, rssi:Z --> emitirAnuncioIBeacon()
+   * Parámetros: beaconUUID:[N], major:N, minor:Z, rssi:Z.
+   * ------------------- */
   void emitirAnuncioIBeacon( uint8_t * beaconUUID, uint16_t major, int16_t minor, int8_t rssi ) {
 
 	//
@@ -205,6 +235,11 @@ public:
 
 	const uint8_t tamanyoCarga = strlen( carga );
   */
+  /** -------------------
+   * Descripción: Publica una carga libre de ejemplo limitada por el tamaño recibido.
+   * Diseño: carga:Text, tamanyoCarga:N --> emitirAnuncioIBeaconLibre()
+   * Parámetros: carga:Text, tamanyoCarga:N.
+   * ------------------- */
   void emitirAnuncioIBeaconLibre( const char * carga, const uint8_t tamanyoCarga ) {
 
 	(*this).detenerAnuncio(); 
@@ -267,6 +302,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Añade el servicio al anuncio BLE e informa del resultado.
+   * Diseño: servicio:ServicioEnEmisora --> anyadirServicio() --> B
+   * Parámetros: servicio:ServicioEnEmisora.
+   * ------------------- */
   bool anyadirServicio( ServicioEnEmisora & servicio ) {
 
 	Globales::elPuerto.escribir( " Bluefruit.Advertising.addService( servicio ); \n");
@@ -286,12 +326,22 @@ public:
   
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Añade un servicio y sus características al conjunto configurado.
+   * Diseño: servicio:ServicioEnEmisora --> anyadirServicioConSusCaracteristicas() --> B
+   * Parámetros: servicio:ServicioEnEmisora.
+   * ------------------- */
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio ) { 
 	return (*this).anyadirServicio( servicio );
   } // 
 
   // .........................................................
   template <typename ... T>
+  /** -------------------
+   * Descripción: Añade un servicio y sus características al conjunto configurado.
+   * Diseño: servicio:ServicioEnEmisora, caracteristica:ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicas() --> B
+   * Parámetros: servicio:ServicioEnEmisora, caracteristica:ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica].
+   * ------------------- */
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio,
 											 ServicioEnEmisora::Caracteristica & caracteristica,
 											 T& ... restoCaracteristicas) {
@@ -304,6 +354,11 @@ public:
 
   // .........................................................
   template <typename ... T>
+  /** -------------------
+   * Descripción: Añade el servicio con características y lo activa.
+   * Diseño: servicio:ServicioEnEmisora, caracteristica:// ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicasYActivar() --> B
+   * Parámetros: servicio:ServicioEnEmisora, caracteristica:// ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica].
+   * ------------------- */
   bool anyadirServicioConSusCaracteristicasYActivar( ServicioEnEmisora & servicio,
 													 // ServicioEnEmisora::Caracteristica & caracteristica,
 													 T& ... restoCaracteristicas) {
@@ -318,12 +373,22 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Registra el manejador del evento de conexión.
+   * Diseño: cb:CallbackConexionEstablecida --> instalarCallbackConexionEstablecida()
+   * Parámetros: cb:CallbackConexionEstablecida.
+   * ------------------- */
   void instalarCallbackConexionEstablecida( CallbackConexionEstablecida cb ) {
 	Bluefruit.Periph.setConnectCallback( cb );
   } // ()
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Registra el manejador del evento de desconexión.
+   * Diseño: cb:CallbackConexionTerminada --> instalarCallbackConexionTerminada()
+   * Parámetros: cb:CallbackConexionTerminada.
+   * ------------------- */
   void instalarCallbackConexionTerminada( CallbackConexionTerminada cb ) {
 	Bluefruit.Periph.setDisconnectCallback( cb );
   } // ()

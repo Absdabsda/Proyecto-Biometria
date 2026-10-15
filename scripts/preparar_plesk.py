@@ -9,6 +9,12 @@ OUTPUT.parent.mkdir(exist_ok=True)
 client = ROOT / 'src/frontend_business_logic/medidas.mjs'
 # Copia generada para que el directorio public sea autocontenido.
 (SERVER / 'public/ux/logicaFake/medidas.mjs').write_bytes(client.read_bytes())
+gui = ROOT / 'src/gui'
+if gui.exists():
+    (SERVER / 'public/ux/Aplicacion.html').write_bytes((gui / 'Aplicacion.html').read_bytes())
+    (SERVER / 'public/ux/medidas.js').write_text(
+        (gui / 'medidas.mjs').read_text(encoding='utf-8').replace('../frontend_business_logic/medidas.mjs', './logicaFake/medidas.mjs'),
+        encoding='utf-8')
 with ZipFile(OUTPUT, 'w', ZIP_DEFLATED) as archive:
     for file in sorted((SERVER / 'public').rglob('*')):
         if file.is_file():

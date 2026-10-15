@@ -12,9 +12,9 @@ Necesitas PHP habilitado y extensión `pdo_mysql`, base `jvaldeo_pbio` con la ta
 
 En el Administrador de archivos del dominio:
 
-Generar desde la raíz con `python scripts/preparar_plesk.py`. El nuevo paquete `output/plesk-servidor.zip` contiene `httpdocs` y `pbio_privado`. Puedes subirlo y extraerlo en la carpeta que contiene `httpdocs`; antes revisa que no tengas ya `api/index.php` con otro contenido. Después renombra `pbio_privado/config.example.php` como `config.php` y configura la contraseña. El paquete no contiene credenciales reales ni la página visible pendiente del wireframe.
+Generar desde la raíz con `python scripts/preparar_plesk.py`. El nuevo paquete `output/plesk-servidor.zip` contiene `httpdocs` y `pbio_privado`. Puedes subirlo y extraerlo en la carpeta que contiene `httpdocs`; antes revisa que no tengas ya `api/index.php` con otro contenido. Después renombra `pbio_privado/config.example.php` como `config.php` y configura la contraseña. El paquete no contiene credenciales reales e incluye la pantalla de consulta de medidas.
 
-1. Entra en `httpdocs` y sube/descomprime el contenido de `public`: debe quedar `httpdocs/api/index.php` y `httpdocs/ux/logicaFake/medidas.mjs`. No subas todo el repositorio ni Android.
+1. Entra en `httpdocs` y sube/descomprime el contenido de `public`: debe quedar `httpdocs/api/index.php` , `httpdocs/ux/logicaFake/medidas.mjs`, `httpdocs/ux/Aplicacion.html` y `httpdocs/ux/medidas.js`. No subas todo el repositorio ni Android.
 2. Vuelve a la carpeta que contiene `httpdocs` y crea `pbio_privado` a su lado.
 3. Dentro de `pbio_privado`, extrae las carpetas `logica` y `servidorREST` del paquete generado; contienen la implementación canónica de `src/`, no los adaptadores locales.
 4. Sube `config.example.php` a `pbio_privado`, renómbralo `config.php` y escribe tu contraseña en el campo `password`. Mantén los demás datos si coinciden con Plesk. No compartas la contraseña. Configuración y lógica quedan fuera de la carpeta pública.
@@ -34,7 +34,7 @@ carpeta-del-dominio/
     ux/logicaFake/medidas.mjs
 ```
 
-La web visible y sus estilos se añadirán al recibir el wireframe. El archivo de conexión ya está listo para usarse desde `ux/Aplicacion.html`.
+La pantalla visible está en `ux/Aplicacion.html`; consume el proxy de medidas y permite actualizar la tabla. Sus fuentes canónicas están en `src/gui/`.
 
 ## Probar después de subir
 
@@ -68,4 +68,4 @@ node --test tests/medidas.test.mjs
 
 Las pruebas PHP verifican adaptación HTTP y validaciones con lógica simulada, sin BD. Las de navegador prueban su cliente con fetch simulado. La comprobación SQL, la configuración de Plesk y el recorrido real placa-teléfono-servidor requieren el entorno real. La interfaz queda pendiente del wireframe.
 
-Verificación del 16/10/2026: 6 pruebas del cliente web y 14 pruebas Java/JUnit del parser superadas mediante ejecución directa. No se ha compilado el APK en esta revisión. PHP no está disponible localmente: las pruebas PHP y la integración con MySQL quedan pendientes. No se ha conectado a Plesk ni verificado el recorrido físico. El workflow de GitHub permite comprobar sintaxis PHP y pruebas REST en un entorno con PHP.
+Verificación del 16/10/2026: 9 pruebas web y 19 pruebas Android superadas; APK generado. Sintaxis PHP, pruebas REST y persistencia con MySQL real superadas en GitHub Actions. GET del alojamiento responde con medidas 1234 antiguas; no se modificaron datos remotos. La prueba física nueva placa-móvil-servidor sigue pendiente.

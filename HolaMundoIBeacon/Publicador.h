@@ -45,6 +45,11 @@ public:
 
   // ............................................................
   // ............................................................
+  /** -------------------
+   * Descripción: Construye la emisora sin activarla antes de setup.
+   * Diseño: Publicador() --> Publicador
+   * Parámetros: ninguno.
+   * ------------------- */
   Publicador( ) {
 	// ATENCION: no hacerlo aquí. (*this).laEmisora.encenderEmisora();
 	// Pondremos un método para llamarlo desde el setup() más tarde
@@ -52,12 +57,22 @@ public:
 
   // ............................................................
   // ............................................................
+  /** -------------------
+   * Descripción: Inicializa Bluefruit y configura la emisora para anunciar.
+   * Diseño: encenderEmisora()
+   * Parámetros: ninguno.
+   * ------------------- */
   void encenderEmisora() {
 	(*this).laEmisora.encenderEmisora();
   } // ()
 
   // ............................................................
   // ............................................................
+  /** -------------------
+   * Descripción: Empaqueta tipo 11 y contador en major y valor con signo en minor.
+   * Diseño: valorCO2:Z, contador:N, tiempoEspera:Z --> publicarCO2()
+   * Parámetros: valorCO2:Z, contador:N, tiempoEspera:Z.
+   * ------------------- */
   void publicarCO2( int16_t valorCO2, uint8_t contador,
 					long tiempoEspera ) {
 
@@ -94,6 +109,11 @@ public:
 
   // ............................................................
   // ............................................................
+  /** -------------------
+   * Descripción: Empaqueta tipo 12 y contador, anuncia durante el intervalo y detiene el anuncio.
+   * Diseño: valorTemperatura:Z, contador:N, tiempoEspera:Z --> publicarTemperatura()
+   * Parámetros: valorTemperatura:Z, contador:N, tiempoEspera:Z.
+   * ------------------- */
   void publicarTemperatura( int16_t valorTemperatura,
 							uint8_t contador, long tiempoEspera ) {
 

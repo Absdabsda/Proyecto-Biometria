@@ -3,30 +3,70 @@
 ## Component Design
 
 ```text
+MedidaEntrada = (uuid: Text, gas: N, valor: Z, contador: N)
+Medida = (medidaID: Text, uuid: Text, gas: N, valor: Z, contador: N, fecha: Text)
 Trama = (uuid: [N]_16, major: N, minor: N, tx_power: Z)
+
 datos: [N] --> esIBeacon() --> B
 datos: [N] --> TramaIBeacon() --> Trama
+getMajor() --> N
+getMinor() --> N
 getValor() --> Z
 getTipoMedicion() --> N
 getContador() --> N
+getTxPower() --> Z
+getUUID() --> [N]_16
+getDescripcionMedicion() --> Text
 esNuestroDispositivo() --> B
-trama: Trama --> enviarMedida()
+trama: Trama --> desdeTrama() --> MedidaEntrada
+entrada: MedidaEntrada --> guardarMedida() --> Medida
 cerrar()
 ```
-Código existente: `Prueba2025/app/src/main/java/org/jordi/prueba2025/`.
-Trama exacta de 23 bytes: 02 15, UUID 16, major 2, minor 2, potencia 1.
-Tipo = major >> 8; contador = major & 255; valor = minor con signo de 16 bits.
-Pantalla: botones buscar todos, buscar el proyecto y detener; muestra estado, RSSI y medida.
-MainActivity gestiona permisos y BLE; delega envío a LogicaFake y PeticionarioREST.
-Solo envía tipo 11. Deduplicación 60 s tras éxito, reintento mínimo 10 s, una petición en curso.
 
+La firma de `guardarMedida` coincide con business_logic_design.md. En Java se
+devuelve CompletableFuture<Medida>; la promesa representa la asincronía, no cambia
+el resultado lógico. Medida agrupa los campos de entrada mediante `entrada`.
+
+```text
+              -------- LogicaFake --------------------
+              | intentos: [Intento]
+              | pendiente: Intento | Ausente
+              | cerrada: B
+              |
+              |
+entrada:MedidaEntrada --> guardarMedida() -->
+medida:Medida  <--
+              |
+              |
+              cerrar() -->
+              ---------------------------------------
+```
+
+MainActivity posee el escáner, los textos y el proxy. TramaIBeacon interpreta
+23 bytes de fabricante: 02 15, UUID 16, major 2, minor 2, potencia 1. Los métodos
+de Utilidades combinan bytes big endian. MedidaEntrada valida UUID y rangos;
+Medida valida el ID textual positivo y la fecha UTC. LogicaFake coordina la cola
+serial y deduplicación; PeticionarioREST implementa su interfaz Transporte,
+convierte JSON y verifica estado 201, contenido de la medida y respuesta <=4096 bytes.
+MainActivity no realiza peticiones de red ni conoce la base de datos.
+
+Pantalla: botones buscar todos, buscar el proyecto y detener; muestra estado,
+RSSI, tipo, valor y contador. Solicita permisos según versión, comprueba Bluetooth
+y ubicación, ignora callbacks antiguos y detiene el escaneo en onStop.
+
+Solo transmite tipo 11. Un anuncio repetido comparte la misma operación en curso.
+Éxitos se reutilizan 60 s; fallos permiten un nuevo intento a los 10 s. Solo hay
+una operación distinta en curso. Cerrar impide nuevos envíos y cancela el resultado
+pendiente. Una inserción remota ya iniciada puede terminar; no hay cola offline ni
+garantía de entrega exactamente una vez.
 
 ## Design Clarifications
 
-- El proyecto Gradle conserva su ubicación para evitar romper Android Studio. Su adaptación completa a src/ está pendiente.
-- El proxy Android todavía no comparte nombre y firma exactos con guardarMedida del servidor.
-- No existe almacenamiento offline; cerrar no garantiza cancelar una inserción ya iniciada.
-- Las cabeceras de todos los métodos Android aún necesitan adecuación formal.
+- Código en `Prueba2025/app/src/main/java/org/jordi/prueba2025/`.
+- Se conserva la ubicación del proyecto Android para facilitar su apertura en Android Studio.
+- 19 pruebas Android automáticas: 14 del parser y 5 del proxy y los datos de dominio.
+- En este Windows, Gradle necesita una ruta sin tildes para cargar correctamente sus pruebas.
+- La API aloja la fecha de recepción; el móvil no inventa ID ni fecha de persistencia.
 
 ## General Rules
 

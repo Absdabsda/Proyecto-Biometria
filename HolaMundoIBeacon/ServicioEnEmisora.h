@@ -29,6 +29,11 @@ T *  alReves( T * p, int n ) {
 
 // ----------------------------------------------------
 // ----------------------------------------------------
+/** -------------------
+ * Descripción: Copia el texto en orden inverso hasta el máximo de bytes permitido.
+ * Diseño: pString:Text, pUint:[N], tamMax:Z --> stringAUint8AlReves() --> [N]
+ * Parámetros: pString:Text, pUint:[N], tamMax:Z.
+ * ------------------- */
 uint8_t * stringAUint8AlReves( const char * pString, uint8_t * pUint, int tamMax ) {
 
 	int longitudString =  strlen( pString );
@@ -77,6 +82,11 @@ public:
 
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Construye y configura una característica del servicio BLE.
+	 * Diseño: nombreCaracteristica_:Text --> Caracteristica() --> Caracteristica
+	 * Parámetros: nombreCaracteristica_:Text.
+	 * ------------------- */
 	Caracteristica( const char * nombreCaracteristica_ )
 	  :
 	  laCaracteristica( stringAUint8AlReves( nombreCaracteristica_, &uuidCaracteristica[0], 16 ) )
@@ -86,6 +96,11 @@ public:
 
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Construye y configura una característica del servicio BLE.
+	 * Diseño: nombreCaracteristica_:Text, props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N --> Caracteristica() --> Caracteristica
+	 * Parámetros: nombreCaracteristica_:Text, props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N.
+	 * ------------------- */
 	Caracteristica( const char * nombreCaracteristica_ ,
 					uint8_t props,
 					SecureMode_t permisoRead,
@@ -101,6 +116,11 @@ public:
 	// .........................................................
 	// CHR_PROPS_WRITE , CHR_PROPS_READ ,  CHR_PROPS_NOTIFY 
 	// .........................................................
+	/** -------------------
+	 * Descripción: Configura las propiedades de lectura, escritura y notificación.
+	 * Diseño: props:N --> asignarPropiedades()
+	 * Parámetros: props:N.
+	 * ------------------- */
 	void asignarPropiedades ( uint8_t props ) {
 	  // no puedo escribir AUN si el constructor llama a esto: Serial.println( " laCaracteristica.setProperties( props ); ");
 	  (*this).laCaracteristica.setProperties( props );
@@ -109,6 +129,11 @@ public:
 	// .........................................................
 	// SECMODE_OPEN, SECMODE_NO_ACCESS (Bluefruit nRF52 1.7.0)
 	// .........................................................
+	/** -------------------
+	 * Descripción: Configura los permisos de lectura y escritura.
+	 * Diseño: permisoRead:SecureMode_t, permisoWrite:SecureMode_t --> asignarPermisos()
+	 * Parámetros: permisoRead:SecureMode_t, permisoWrite:SecureMode_t.
+	 * ------------------- */
 	void asignarPermisos( SecureMode_t permisoRead, SecureMode_t permisoWrite ) {
 	  // no puedo escribir AUN si el constructor llama a esto: Serial.println( "laCaracteristica.setPermission( permisoRead, permisoWrite ); " );
 	  (*this).laCaracteristica.setPermission( permisoRead, permisoWrite );
@@ -116,6 +141,11 @@ public:
 
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Configura la longitud de los datos de la característica.
+	 * Diseño: tam:N --> asignarTamanyoDatos()
+	 * Parámetros: tam:N.
+	 * ------------------- */
 	void asignarTamanyoDatos( uint8_t tam ) {
 	  // no puedo escribir AUN si el constructor llama a esto: Serial.print( " (*this).laCaracteristica.setFixedLen( tam = " );
 	  // no puedo escribir AUN si el constructor llama a esto: Serial.println( tam );
@@ -126,6 +156,11 @@ public:
   public:
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Aplica conjuntamente propiedades, permisos y longitud.
+	 * Diseño: props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N --> asignarPropiedadesPermisosYTamanyoDatos()
+	 * Parámetros: props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N.
+	 * ------------------- */
 	void asignarPropiedadesPermisosYTamanyoDatos( uint8_t props,
 												 SecureMode_t permisoRead,
 												 SecureMode_t permisoWrite, 
@@ -138,6 +173,11 @@ public:
 
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Escribe los datos en la característica y devuelve la cantidad aceptada.
+	 * Diseño: str:Text --> escribirDatos() --> N
+	 * Parámetros: str:Text.
+	 * ------------------- */
 	uint16_t escribirDatos( const char * str ) {
 	  // Serial.print( " return (*this).laCaracteristica.write( str  = " );
 	  // Serial.println( str );
@@ -151,6 +191,11 @@ public:
 
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Notifica los datos a los clientes suscritos y devuelve el resultado.
+	 * Diseño: str:Text --> notificarDatos() --> N
+	 * Parámetros: str:Text.
+	 * ------------------- */
 	uint16_t notificarDatos( const char * str ) {
 	  
 	  uint16_t r = laCaracteristica.notify( &str[0] );
@@ -160,12 +205,22 @@ public:
 
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Registra el manejador de escritura de la característica.
+	 * Diseño: cb:CallbackCaracteristicaEscrita --> instalarCallbackCaracteristicaEscrita()
+	 * Parámetros: cb:CallbackCaracteristicaEscrita.
+	 * ------------------- */
 	void instalarCallbackCaracteristicaEscrita( CallbackCaracteristicaEscrita cb ) {
 	  (*this).laCaracteristica.setWriteCallback( cb );
 	} // ()
 
 	// .........................................................
 	// .........................................................
+	/** -------------------
+	 * Descripción: Activa la característica configurada.
+	 * Diseño: activar()
+	 * Parámetros: ninguno.
+	 * ------------------- */
 	void activar() {
 	  err_t error = (*this).laCaracteristica.begin();
 	  Globales::elPuerto.escribir(  " (*this).laCaracteristica.begin(); error = " );
@@ -200,6 +255,11 @@ public:
   
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Construye el servicio a partir de su identificador textual.
+   * Diseño: nombreServicio_:Text --> ServicioEnEmisora() --> ServicioEnEmisora
+   * Parámetros: nombreServicio_:Text.
+   * ------------------- */
   ServicioEnEmisora( const char * nombreServicio_ )
 	:
 	elServicio( stringAUint8AlReves( nombreServicio_, &uuidServicio[0], 16 ) )
@@ -209,6 +269,11 @@ public:
   
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Muestra el UUID del servicio en el puerto serie para diagnóstico.
+   * Diseño: escribeUUID()
+   * Parámetros: ninguno.
+   * ------------------- */
   void escribeUUID() {
 	Serial.println ( "**********" );
 	for (int i=0; i<= 15; i++) {
@@ -219,12 +284,22 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Añade una característica a la colección del servicio.
+   * Diseño: car:Caracteristica --> anyadirCaracteristica()
+   * Parámetros: car:Caracteristica.
+   * ------------------- */
   void anyadirCaracteristica( Caracteristica & car ) {
 	(*this).lasCaracteristicas.push_back( & car );
   } // ()
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: Activa el servicio y cada característica registrada.
+   * Diseño: activarServicio()
+   * Parámetros: ninguno.
+   * ------------------- */
   void activarServicio( ) {
 	// entiendo que al llegar aquí ya ha sido configurado
 	// todo: características y servicio

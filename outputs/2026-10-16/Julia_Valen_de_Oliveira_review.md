@@ -1,40 +1,42 @@
-# Revisión del proyecto — Julia Valén de Oliveira
+# Revisión del Sprint 0 — Julia Valén de Oliveira
 
-Fecha: 16/10/2026. Criterios: PDF del revisor y especificaciones del ZIP facilitados por la autora.
-GitHub revisado: Absdabsda/Proyecto-Biometria, main, commit 6da03a88b272fafe49b0d6a842082549a54506bb.
-Resultado: **cumplimiento parcial; no se certifica la entrega completa**.
+Fecha: 16/10/2026. Alcance confirmado: medida ficticia 1234.
+Criterios: rúbrica aportada por la autora y documentos del revisor.
+Repositorio: Absdabsda/Proyecto-Biometria. Rama propuesta: codex/revision-sprint-2026-10-16.
+No se promete una calificación: las pruebas físicas y la valoración docente se realizan aparte.
 
-## Verificaciones aprobadas en la propuesta corregida
+## Verificaciones aprobadas
 
-- ✅ Autoría: `author.md` contiene Julia Valén de Oliveira y se conservan las atribuciones docentes.
-- ✅ Diseños: se añaden diseños independientes de comunicación, negocio, BD, proxy web, Android y firmware.
-- ✅ Formato documental: los seis diseños incluyen Component Design, Design Clarifications y General Rules con lenguaje, encabezados, legibilidad y pruebas.
-- ✅ Backend: `src/business_logic/Logica.php` no importa ni invoca transporte; comunicación delega en negocio y este utiliza PDO y la tabla documentada.
-- ✅ Base de datos: diseño con TABLE, DESCRIPTION, COLUMNS, PRIMARY KEY, FOREIGN KEYS y CONSTRAINTS, coherente con SQL.
-- ✅ Proxy web: `listarMedidas(limit: N) -> [Medida]` coincide con el subconjunto de lectura del backend; se conserva el alias anterior.
-- ✅ Encabezados de la lógica y comunicación PHP y del proxy web: bloques delimitados por guiones con diseño lógico.
-- ✅ Pruebas ejecutadas: 6 de JavaScript y 14 Java/JUnit del parser, todas satisfactorias.
-- ✅ Despliegue: paquete regenerable con configuración de ejemplo privada; las fuentes canónicas se incorporan al paquete.
+- ✅ Proyecto: author.md, doc/, src/, test/ y README con despliegue y ejecución de pruebas.
+- ✅ Diseños: comunicación, negocio, base de datos, proxy web, GUI, Android y firmware; formato y reglas explícitos.
+- ✅ Base de datos: tabla medidas, PK, restricciones y columnas alineadas con SQL y lógica; se conserva BIGINT como texto en los clientes.
+- ✅ Lógica: backend separado de transporte; utiliza PDO y consultas parametrizadas. Proxy web listarMedidas y proxy Android guardarMedida comparten las firmas lógicas del backend.
+- ✅ API: GET y POST separados, validación de JSON y rangos, límites de cuerpo, errores definidos y documentación específica en doc/api.md.
+- ✅ Interfaz web: pantalla propia; utiliza exclusivamente el proxy, sin fetch ni SQL en la GUI.
+- ✅ Android: GUI, proxy y transporte en clases distintas; permisos y ciclo de vida gestionados; deduplicación y reintentos verificables.
+- ✅ Comentarios: se incorporan cabeceras de descripción, diseño y parámetros en las funciones activas Android y firmware; se preservan las atribuciones docentes.
+- ✅ Pruebas web: 9 superadas, incluidos vacío, error, recuperación, concurrencia e identificadores grandes.
+- ✅ Pruebas Android: 19 superadas con Gradle desde ruta sin tildes; APK debug generado.
+- ✅ Backend: sintaxis PHP, pruebas REST y prueba contra MySQL real superadas en GitHub Actions. La integración usa base desechable y rollback.
+- ✅ Servidor publicado: GET limit=5 respondió con IDs 31..27 y valor 1234, de fechas previas. Consulta sin modificaciones.
+- ✅ Arduino, alcance: el loop activo anuncia 1234 ficticio; es coherente con el Sprint 0 confirmado. No se exige sustituirlo por lectura física del sensor para esta demostración.
 
-## Incumplimientos y comprobaciones pendientes
+## Pendientes y límites
 
-- ❌ Estructura completa: Android y firmware siguen fuera de `src/`.
-  Corrección: migrar los proyectos a `src/android/` y `src/firmware/`, actualizando rutas y verificando sus compilaciones.
-- ❌ Paridad del proxy Android: `enviarMedida(trama)` no coincide con `guardarMedida(entrada)` del backend.
-  Corrección: definir un DTO de dominio y una interfaz equivalente; mantener la asincronía como detalle del adaptador.
-- ❌ Encabezados de Android y firmware: no todos los métodos incluyen el diseño lógico con delimitadores exigidos.
-  Corrección: documentar todas las funciones de producción y contrastarlas con sus diseños.
-- ❌ Cobertura crítica incompleta: no hay pruebas ejecutadas de persistencia, ciclo de vida Android, envío/deduplicación ni firmware.
-  Corrección: añadir y ejecutar pruebas con MySQL de prueba, entorno Android y placa; ejecutar las pruebas PHP existentes.
-- ❌ Interfaz web de medidas: solo existe el proxy y ejemplos docentes; falta pantalla propia.
-  Corrección: implementar la pantalla conforme al enunciado, consumiendo exclusivamente el proxy.
-- ❌ Sensor físico: el loop activo transmite 1234 ficticio; los métodos de Medidor también son simulados.
-  Corrección: si el sprint exige lectura real, conectar y calibrar el sensor con sus especificaciones. Confirmar gas y unidades.
-- ❌ Validación de entrega: falta el enunciado y número del sprint; no es posible confirmar el alcance ni si PHP está permitido.
-  Corrección: contrastar requisitos funcionales y tecnología con el enunciado real antes de dar por terminada la entrega.
+- ❌ Prueba física actual: no hay placa conectada y no se ha observado el envío actual desde el teléfono.
+  Acción: ejecutar el APK, recibir 1234, comprobar aviso de guardado y comparar contador y fecha con una fila nueva.
+- ❌ Organización estricta del revisor: Android y firmware conservan sus carpetas originales fuera de src/.
+  Acción: valorar la migración solo si se exige estrictamente; actualizar rutas y recompilar al moverlos. El backend y la web sí están en src/.
+- ❌ Historial/GitFlow: se utiliza una rama de cambios real; no se ha acreditado la frecuencia histórica de trabajo ni un flujo completo del equipo.
+  Acción: explicar el historial real en la revisión; no inventar commits ni evidencias de trabajo.
+- ❌ Despliegue de la propuesta: subir una rama no actualiza Plesk ni main automáticamente.
+  Acción: revisar e integrar la propuesta y desplegar el nuevo paquete público/privado; mantener config.php privado.
+- ✅ Compilación Arduino: superada para SparkFun Pro nRF52840 Mini; no se detectó una placa conectada.
+  Acción: seleccionar la placa real antes de cargar; no se ha cargado firmware desde esta revisión.
 
-## Límites de la revisión
+## Prioridad de demostración
 
-No se ejecutó PHP, MySQL, compilación Android completa, prueba física BLE ni prueba contra Plesk.
-Las modificaciones se preparan localmente; este informe no prueba que estén publicadas en main.
-El repositorio abierto en Codex y el de GitHub tienen historiales y estructuras distintos; la propuesta para GitHub debe partir de su main real.
+1. Mantener 1234 en el firmware y mostrar la recepción Android.
+2. Mostrar el aviso de guardado y una fila nueva en el servidor; conservar su contador e ID.
+3. Abrir la pantalla de medidas tras desplegar y actualizar la tabla.
+4. Enseñar diseños, separación de clases y pruebas; declarar qué verificaciones son físicas y cuáles automáticas.

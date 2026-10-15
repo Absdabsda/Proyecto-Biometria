@@ -6,7 +6,7 @@ final class Logica {
     private ?int $codigoO3;
 
     /** -------------------
- * bd:PDO, codigoO3:N|null --> __construct() --> Logica
+ * bd:Persistencia, codigoO3:N|Ausente --> __construct() --> Logica
      * Pre: conexión configurada en UTC. Post: conserva dependencias. Errores: tipos.
  * ------------------- */
     public function __construct(PDO $bd, ?int $codigoO3 = null) {
