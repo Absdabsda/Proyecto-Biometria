@@ -1,50 +1,45 @@
-# Preparar la entrega del Sprint 0
+# Entrega del Sprint 0 — Julia Valén de Oliveira
 
-Autora: Julia Valén de Oliveira. Demostración: medida ficticia **1234**.
+## Estado preparado
 
-## Lo que ya está comprobado
+El proyecto conserva la medida ficticia 1234. GitHub contiene diseños, comentarios,
+API documentada, pruebas y clientes separados por responsabilidades. La pantalla
+de consulta y el backend mínimo están publicados en Plesk.
 
-- Android compila y sus 19 pruebas automáticas pasan desde una ruta sin tildes.
-- El firmware compila para SparkFun Pro nRF52840 Mini con Adafruit nRF52 1.7.0.
-- Pasan 10 pruebas web y las pruebas PHP y MySQL de GitHub Actions.
-- El servidor publicado responde a GET y contiene medidas 1234 antiguas.
+La tabla activa solo contiene medidaID, tipo, valor y fecha. Se conservaron y
+compararon las 31 medidas anteriores. UUID y contador se utilizan en BLE, sin
+almacenarse en la tabla activa. Existe un respaldo privado de la base y de los archivos.
 
-## Demostración que debes realizar con tu placa y tu móvil
+## Demostración final con placa y móvil
 
-1. Confirma el modelo de placa antes de cargar el firmware. No se ha cargado nada desde esta revisión.
-2. Instala el APK debug nuevo. Activa Bluetooth, ubicación y los permisos que solicite Android.
-3. Pulsa «Buscar nuestro dispositivo». Debe aparecer el valor 1234 y su contador.
-4. Comprueba el mensaje «Medida 1234 guardada en el servidor».
-5. Consulta `https://jvaldeo.upv.edu.es/api/index.php?ruta=medidas&limit=5` y compara
-   el tipo, valor y fecha de una fila nueva. Una fila de días anteriores no sirve como prueba del envío actual.
-6. Conserva capturas o vídeo de la placa, la recepción y la nueva fila si el profesor los pide.
+1. Instalar el APK debug actualizado.
+2. Encender la placa que anuncia 1234; activar Bluetooth, ubicación y los permisos de la app.
+3. Pulsar «Buscar nuestro dispositivo» y comprobar 1234, tipo 11 y el contador local.
+4. Comprobar «Medida 1234 guardada en el servidor».
+5. Abrir https://jvaldeo.upv.edu.es/ux/Aplicacion.html y pulsar Actualizar.
+6. Verificar una fila nueva con tipo 11, valor 1234 y fecha de hoy. Conservar captura o vídeo si se solicita.
 
-## Web y alojamiento
+No cargar firmware para un modelo de placa no confirmado. El sketch se ha compilado
+para SparkFun Pro nRF52840 Mini; esa compilación no identifica la placa física.
 
-`output/plesk-servidor.zip` se genera con `python scripts/preparar_plesk.py`.
-Incluye `httpdocs/ux/Aplicacion.html`, su módulo y el proxy, junto con la API y
-la lógica privada. Sigue `servidor/README.md`. No sobrescribas tu `config.php`
-privado con la plantilla: conserva los datos de conexión actuales.
+## Qué enseñar en la revisión
 
-Si solo necesitas añadir la pantalla al servidor ya funcional, copia los tres
-archivos generados de `httpdocs/ux/` conservando su estructura. Después abre
-`https://jvaldeo.upv.edu.es/ux/Aplicacion.html` y pulsa Actualizar.
-La propuesta no se despliega en Plesk por el mero hecho de subirla a GitHub.
+- README, author.md, doc/, src/ y test/.
+- Tabla mínima y diseño de BD coincidente con la implementación.
+- Backend de negocio independiente de la API; lógica fake separada en Android y web.
+- Operaciones POST y GET en doc/api.md y su uso por los clientes.
+- Pruebas automáticas: 19 Android, 10 web, PHP/REST, persistencia y migración.
+- Comentarios de descripción, diseño y parámetros; atribuciones del material docente.
 
-## GitHub y pruebas
+## Copia local y nuevas instalaciones
 
-Los cambios parten del historial real de `Absdabsda/Proyecto-Biometria`, no del
-repositorio envolvente abierto originalmente en Codex. Usa la rama o PR de revisión
-que acompaña la entrega. No copies la carpeta envolvente `Sprint_0` sobre la raíz de GitHub.
+El repositorio real es Proyecto-Biometria, dentro de Sprint_0 en la carpeta que
+se abrió inicialmente en Codex. La carpeta envolvente tiene otro historial y no
+se debe publicar sobre el repositorio real.
 
-Para trabajar con Android en este Windows, extrae el ZIP en una carpeta **sin tildes**,
-por ejemplo `C:/Users/Julia/Downloads/Proyecto-Biometria-Sprint0`, y abre `Prueba2025`
-en Android Studio. El SDK local se configura en Android Studio y no se publica.
+Si se usa el ZIP, extraer en una carpeta sin tildes, por ejemplo
+C:/Users/Julia/Downloads/Proyecto-Biometria-Sprint0, y abrir Prueba2025 con Android Studio.
 
-Los diseños están en `doc/`, los tests en `test/`, `servidor/tests/` y
-`Prueba2025/app/src/test/`. El informe explica las verificaciones y límites sin
-atribuir a las pruebas automáticas una demostración física que no se ha observado.
-
-## Aclaración del modelo mínimo viable
-
-La autora confirmó que se exige tipo de medida. La tabla activa queda en medidaID, tipo, valor y fecha, sin UUID ni contador. La migración del alojamiento aún requiere acceso a phpMyAdmin y subida del backend coordinada; las consultas actuales siguen usando el esquema anterior. Ver bd/README.md y bd/migrar_mvp.sql.
+La migración del alojamiento ya se aplicó: **no volver a ejecutar migrar_mvp.sql**
+sobre esa misma base. Es un procedimiento de actualización de una sola ejecución
+para instalaciones que aún tengan el esquema anterior.

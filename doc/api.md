@@ -38,7 +38,8 @@ No hay garantía de entrega exactamente una vez ni clave única por anuncio BLE.
 
 ## Estado del alojamiento
 
-GET publicado consultado el 16/10/2026 devolvió cinco filas antiguas, IDs 31..27,
-valor 1234. Esa respuesta aún contenía uuid, gas y contador: el alojamiento sigue
-con el esquema anterior hasta aplicar bd/migrar_mvp.sql y subir el backend MVP.
-Esta revisión no ha ejecutado cambios de datos o esquema en Plesk.
+El 16/10/2026 se aplicó la migración al alojamiento MariaDB 10.11 y se actualizó
+el backend. Se conservaron las 31 filas anteriores, comparadas por ID, tipo, valor
+y fecha. GET devuelve únicamente medidaID, tipo, valor y fecha. La pantalla publicada
+muestra las mismas medidas. Hay respaldo SQL y de archivos fuera de httpdocs.
+La prueba de una medida física nueva se realiza aparte.
