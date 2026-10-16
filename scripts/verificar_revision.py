@@ -1,3 +1,10 @@
+"""Nombre: verificar_revision.py
+Descripción: Herramienta de construcción o auditoría reproducible del Sprint 0.
+Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+Aportación: Automatización de la entrega y comprobaciones de la rúbrica oficial.
+"""
 """Audita requisitos estáticos del revisor; no sustituye pruebas ni revisión humana."""
 from pathlib import Path
 import re
@@ -68,6 +75,44 @@ def cabeceras(fichero):
     return len(encontrados)
 
 
+def verificar_cabecera_archivo(archivo):
+    """-------------------
+    Descripción: exige los seis metadatos de fichero de la rúbrica oficial.
+    Diseño: archivo:Text --> verificar_cabecera_archivo()
+    Parámetros: ruta de una fuente propia/adaptada; no interpreta licencias de terceros.
+    -------------------"""
+    encabezado = archivo.read_text(encoding='utf-8-sig')[:1600]
+    for campo in ['Nombre', 'Descripción', 'Copyright', 'Fecha', 'Autor', 'Aportación']:
+        exigir(re.search(re.escape(campo) + r':\s*[^\s\n]+', encabezado),
+               f'{archivo.name}: falta {campo} en la cabecera.')
+    nombre = re.search(r'Nombre:\s*([^\n\r]+)', encabezado)[1].strip()
+    exigir(nombre == archivo.name, f'{archivo.name}: Nombre no coincide con el fichero.')
+    exigir(re.search(r'Fecha:\s*\d{4}-\d{2}-\d{2}', encabezado),
+           f'{archivo.name}: fecha de revisión no reconocible.')
+
+
+def verificar_documentos_rubrica(raiz):
+    """-------------------
+    Descripción: exige criterios por componente y trazabilidad de esta revisión.
+    Diseño: raiz:Text --> verificar_documentos_rubrica()
+    Parámetros: raíz del repositorio o de un fixture aislado; no utiliza red.
+    -------------------"""
+    documentos = ['acceptance_test.md','architecture.md','ai_traceability.md','rubrica_correcta_revision.md']
+    for nombre in documentos:
+        exigir((raiz / 'doc' / nombre).is_file(), 'Falta documento de rúbrica: '+nombre)
+    aceptacion = (raiz / 'doc/acceptance_test.md').read_text(encoding='utf-8')
+    for componente in ['firmware','android','business_logic','database','communication','frontend_business_logic','gui']:
+        exigir(re.search(r'\|\s*'+componente+r'\s*\|', aceptacion),
+               'Falta criterio de aceptación: '+componente)
+    prompts = ['01_database','02_business_logic','03_communication','04_android',
+               '05_frontend','06_gui','07_firmware','08_auditoria']
+    for nombre in prompts:
+        exigir((raiz / 'doc/prompts' / (nombre+'.md')).is_file(), 'Falta prompt: '+nombre)
+    traza = (raiz / 'doc/ai_traceability.md').read_text(encoding='utf-8')
+    exigir('después de la' in traza and 'implementación inicial' in traza,
+           'La trazabilidad debe distinguir los prompts actuales de la implementación inicial.')
+
+
 def main():
     """-------------------
     Descripción: contrasta estructura, contratos, capas, artefactos y documentación.
@@ -75,6 +120,7 @@ def main():
     Parámetros: ninguno; lee el repositorio sin escribir ni consultar el alojamiento.
     -------------------"""
     exigir('Julia Valén de Oliveira' in (ROOT / 'author.md').read_text(encoding='utf-8'), 'Autoría incorrecta.')
+    verificar_documentos_rubrica(ROOT)
     componentes = ['communication', 'business_logic', 'database', 'frontend_business_logic', 'gui', 'android', 'firmware']
     for componente in componentes:
         exigir((ROOT / 'src' / componente).is_dir(), f'Falta src/{componente}.')
@@ -92,8 +138,6 @@ def main():
             if fichero.suffix not in {'.php', '.java', '.h'}:
                 continue
             for clase in re.findall(r'\b(?:class|interface)\s+(\w+)', sin_comentarios(fichero.read_text(encoding='utf-8'))):
-                if clase == 'MainActivity':
-                    continue  # El documento del revisor excluye la verificación formal de GUI.
                 exigir(re.search(r'-{3,}\s+' + re.escape(clase) + r'\b', contenido), f'Falta diagrama formal de {clase}.')
     esquema = (ROOT / 'src/database/crear.sql').read_text(encoding='utf-8')
     columnas = re.findall(r'^\s+(\w+)\s+(?:BIGINT|TINYINT|SMALLINT|TIMESTAMP)\b', esquema, re.M)
@@ -106,6 +150,9 @@ def main():
     interfaz = 'limit: N --> listarMedidas() --> medidas: [Medida]'
     for componente in ['business_logic', 'frontend_business_logic']:
         exigir(interfaz in (ROOT / 'doc' / (componente + '_design.md')).read_text(encoding='utf-8'), 'Las firmas lógicas del proxy y negocio no coinciden.')
+        exigir('entrada: MedidaEntrada --> guardarMedida() --> medida: Medida' in
+               (ROOT / 'doc' / (componente + '_design.md')).read_text(encoding='utf-8'),
+               'Las firmas lógicas de guardarMedida en Android y negocio no coinciden.')
     gui = sin_comentarios((ROOT / 'src/gui/medidas.mjs').read_text(encoding='utf-8'))
     exigir(not re.search(r'\b(?:fetch|XMLHttpRequest|WebSocket)\s*\(', gui), 'La GUI contiene comunicación directa.')
     exigir("from '../frontend_business_logic/medidas.mjs'" in (ROOT / 'src/gui/medidas.mjs').read_text(encoding='utf-8'), 'La GUI no importa el proxy.')
@@ -114,7 +161,7 @@ def main():
     exigir('HttpURLConnection' not in (android / 'MainActivity.java').read_text(encoding='utf-8'), 'La GUI Android conoce el transporte.')
     exigir((ROOT / 'src/gui/Aplicacion.html').read_bytes() == (ROOT / 'servidor/public/ux/Aplicacion.html').read_bytes(), 'La pantalla generada no coincide con su fuente.')
     exigir((ROOT / 'src/frontend_business_logic/medidas.mjs').read_bytes() == (ROOT / 'servidor/public/ux/logicaFake/medidas.mjs').read_bytes(), 'El proxy generado no coincide con su fuente.')
-    esperado = (ROOT / 'src/gui/medidas.mjs').read_text(encoding='utf-8').replace('../frontend_business_logic/medidas.mjs','./logicaFake/medidas.mjs')
+    esperado = (ROOT / 'src/gui/medidas.mjs').read_text(encoding='utf-8').replace('../frontend_business_logic/medidas.mjs','./logicaFake/medidas.mjs').replace('Nombre: medidas.mjs','Nombre: medidas.js')
     exigir(esperado == (ROOT / 'servidor/public/ux/medidas.js').read_text(encoding='utf-8'), 'La GUI generada no coincide con su fuente.')
     fuentes = [p for p in (ROOT / 'src').rglob('*') if p.suffix in {'.php','.mjs','.java','.h','.ino'} and not any(x in p.parts for x in ['build','.gradle','.idea'])]
     fuentes += [ROOT / 'servidor/public/api/index.php']
@@ -122,8 +169,13 @@ def main():
     seguidos = subprocess.run(['git','ls-files'], cwd=ROOT, capture_output=True, text=True, check=True).stdout.splitlines()
     secretos = [p for p in seguidos if Path(p).name in {'config.php','local.properties','.env'} or Path(p).suffix in {'.apk','.jks','.keystore'}]
     exigir(not secretos, 'Hay configuración privada o binarios en los archivos versionados: '+str(secretos))
+    extensiones = {'.php','.java','.mjs','.js','.h','.ino','.cpp','.py','.sql','.html','.css','.gradle','.xml','.properties','.yml','.pro'}
+    archivos = [ROOT / p for p in seguidos if Path(p).suffix in extensiones and '/gradle/wrapper/' not in p]
+    for archivo in archivos:
+        verificar_cabecera_archivo(archivo)
     exigir((ROOT / 'outputs/2026-10-16/Julia_Valen_de_Oliveira_review.md').is_file(), 'Falta el informe por autora y fecha.')
     print(f'Revision estatica correcta: {len(componentes)} componentes; {total} declaraciones con cabecera; modelo MVP y capas coherentes.')
+    print(f'Rubrica oficial: {len(archivos)} cabeceras de fichero, 7 criterios de componente y 8 prompts comprobados.')
     print('Limites: no interpreta toda la semantica ni acredita frecuencia historica, hardware o calificacion.')
 
 

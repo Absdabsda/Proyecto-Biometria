@@ -1,3 +1,9 @@
+-- Nombre: crear.sql
+-- Descripción: Esquema mínimo de medidas: identificador, tipo, valor y fecha.
+-- Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+-- Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+-- Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+-- Aportación: Modelo mínimo viable y documentación; sin UUID ni contador persistidos.
 -- Producto mínimo viable del Sprint 0: solo ID, tipo, valor y fecha.
 -- Si existe el esquema anterior, usar bd/migrar_mvp.sql.
 SET SESSION time_zone = '+00:00';

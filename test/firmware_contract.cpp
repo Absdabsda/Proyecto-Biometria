@@ -1,3 +1,11 @@
+/**
+ * Nombre: firmware_contract.cpp
+ * Descripción: Pruebas automáticas del contrato firmware_contract del Sprint 0.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Verificación de casos válidos, límites, errores y aislamiento de pruebas.
+ */
 /** Pruebas del Publicador real con una emisora sustituida: sin placa, radio ni esperas. */
 #include <array>
 #include <algorithm>

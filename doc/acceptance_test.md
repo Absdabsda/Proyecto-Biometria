@@ -4,13 +4,13 @@
 
 | Entregable | Criterio reproducible | Comprobación |
 | --- | --- | --- |
-| Firmware | Publica UUID del proyecto, tipo 11, contador y valor 1234; conserva el signo y mantiene el anuncio | test/firmware_contract.cpp: 15 combinaciones de valor/contador; compilación completa y prueba física |
-| Android | Reconoce los 16 bytes del UUID, interpreta major/minor, muestra 1234 y delega en LogicaFake | TramaIBeaconTest y LogicaFakeTest: 19 pruebas; dispositivo físico para permisos/radio |
-| Negocio | Valida exclusivamente tipo/valor, persiste cuatro campos y lista por fecha/ID descendentes | servidor/tests/rest.php y test/backend_integration.php |
-| Base de datos | Exactamente medidaID, tipo, valor y fecha; migración conserva datos y respaldo | test/backend_integration.php y test/migration_integration.php en MySQL/MariaDB |
-| REST | POST válido produce 201 y medida confirmada; GET lista medidas; entradas inválidas se rechazan | servidor/tests/rest.php; integración CI con persistencia real |
-| Proxy web | Mantiene la firma de listarMedidas y valida límite, tipo, valor, fecha e ID textual | servidor/tests/medidas.test.mjs |
-| GUI web | La primera fila corresponde a la última medida almacenada; presenta vacío/error/recuperación sin comunicación directa | test/gui.test.mjs y orden comprobado en negocio |
+| firmware | Publica UUID del proyecto, tipo 11, contador y valor 1234; conserva el signo y mantiene el anuncio | test/firmware_contract.cpp: 15 combinaciones de valor/contador; compilación completa y prueba física |
+| android | Reconoce los 16 bytes del UUID, interpreta major/minor, muestra 1234 y delega en LogicaFake | TramaIBeaconTest y LogicaFakeTest: 19 pruebas; dispositivo físico para permisos/radio |
+| business_logic | Valida exclusivamente tipo/valor, persiste cuatro campos y lista por fecha/ID descendentes | servidor/tests/rest.php y test/backend_integration.php |
+| database | Exactamente medidaID, tipo, valor y fecha; migración conserva datos y respaldo | test/backend_integration.php y test/migration_integration.php en MySQL/MariaDB |
+| communication | POST válido produce 201 y medida confirmada; GET lista medidas; entradas inválidas se rechazan | servidor/tests/rest.php; integración CI con persistencia real |
+| frontend_business_logic | Mantiene la firma de listarMedidas y valida límite, tipo, valor, fecha e ID textual | servidor/tests/medidas.test.mjs |
+| gui | La primera fila corresponde a la última medida almacenada; presenta vacío/error/recuperación sin comunicación directa | test/gui.test.mjs y orden comprobado en negocio |
 | Repositorio/documentación | Componentes/diseños coinciden, hay cabeceras y trazabilidad, master/develop existen | scripts/verificar_revision.py y comprobación de ramas en GitHub |
 
 ## Ejecución automática

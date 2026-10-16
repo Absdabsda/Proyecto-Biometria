@@ -4,7 +4,7 @@
 
 ```text
 MedidaEntrada = (tipo: N, valor: Z)
-Medida = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
+Medida = (medida_id: Text, tipo: N, valor: Z, fecha: Text)
 ```
 tipo 0..255; valor -32768..32767. ID decimal positivo como texto y fecha ISO 8601 UTC.
 
@@ -12,8 +12,12 @@ tipo 0..255; valor -32768..32767. ID decimal positivo como texto y fecha ISO 860
 limit: N --> listarMedidas() --> medidas: [Medida]
 entrada: MedidaEntrada --> guardarMedida() --> medida: Medida
 ```
-Coincide con el subconjunto de lectura del backend. Valida límite 1..100, consulta,
-verifica ID, tipo, valor y fecha y devuelve solo esos cuatro campos.
+Las firmas coinciden con los subconjuntos del backend. La web usa listarMedidas:
+valida límite 1..100, consulta, verifica ID, tipo, valor y fecha y devuelve solo
+esos cuatro campos. Android usa guardarMedida mediante LogicaFake, cuya fuente
+está en src/android/Prueba2025/app/src/main/java/org/jordi/prueba2025/.
+Los metadatos BLE locales sirven para deduplicar; no cambian la medida persistida.
+android_design.md detalla el adaptador, la ejecución serial, el reloj y los reintentos.
 Errores: límite, conexión, estado incorrecto o respuesta inválida.
 Implementación `src/frontend_business_logic/medidas.mjs`; GUI en src/gui/.
 

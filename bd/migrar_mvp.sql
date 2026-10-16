@@ -1,3 +1,9 @@
+-- Nombre: migrar_mvp.sql
+-- Descripción: Instalación, prueba o migración del modelo mínimo viable de medidas.
+-- Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+-- Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+-- Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+-- Aportación: Preservación de identificadores y datos, respaldo y compatibilidad MySQL/MariaDB.
 -- Una sola ejecución en la base correcta. Exportar primero la base desde phpMyAdmin.
 -- Requiere permisos CREATE, INSERT, SELECT, LOCK TABLES y ALTER/RENAME.
 -- Aplicar junto al backend MVP, con la captura de medidas detenida.
