@@ -28,18 +28,30 @@ devuelve CompletableFuture<Medida>; la promesa representa la asincronía, no cam
 el resultado lógico. Medida agrupa los campos de entrada mediante `entrada`.
 
 ```text
-              -------- LogicaFake --------------------
-              | intentos: [Intento]
-              | pendiente: Intento | Ausente
-              | cerrada: B
-              |
-              |
-entrada:MedidaEntrada --> guardarMedida() -->
-medida:Medida  <--
-              |
-              |
-              cerrar() -->
-              ---------------------------------------
+                                                                                    -------- LogicaFake ----------------------------
+                                                                                    | red: EjecutorSerial
+                                                                                    | reloj: Reloj
+                                                                                    | transporte: PersistenciaRemota
+                                                                                    | intentos: [Intento]
+                                                                                    | pendiente: Intento | Ausente
+                                                                                    | cerrada: B
+                                                                                    | entrada:MedidaEntrada, intento:Intento --> ejecutar() -->
+                                                                                    | error:Error --> fallo() --x
+                                                                                    | resultado:Medida|Error|Pendiente <--
+                                                                                    |
+                                                                                    |
+                                                             destino:Text --> LogicaFake() -->
+                                                                                    |
+                                                                                    |
+           transporte:PersistenciaRemota, reloj:Reloj, red:EjecutorSerial --> LogicaFake() -->
+                                                                                    |
+                                                                                    |
+                                                   entrada:MedidaEntrada --> guardarMedida() -->
+                                                                  medida:Medida <--
+                                                                                    |
+                                                                                    |
+                                                                                cerrar() -->
+                                                                                    -----------------------------------------------
 ```
 
 MainActivity posee el escáner, los textos y el proxy. TramaIBeacon interpreta
@@ -60,6 +72,151 @@ una operación distinta en curso. Cerrar impide nuevos envíos y cancela el resu
 pendiente. Una inserción remota ya iniciada puede terminar; no hay cola offline ni
 garantía de entrega exactamente una vez.
 
+### Clases de dominio y adaptadores
+
+Los tipos MedidaEntrada y Medida anteriores describen el intercambio con el
+backend. El objeto local MedidaEntrada conserva además uuid:Text, gas:N y
+contador:N; gas es un alias de tipo. Medida agrupa tipo y valor mediante entrada.
+Estos campos públicos finales son datos inmutables, no estado privado.
+
+```text
+Intento = (resultado: Medida | Error | Pendiente, instante: N, exito: B)
+Error = (mensaje: Text)
+PersistenciaRemota = (destino: Text)
+Reloj = (instante_monotono: N)
+EjecutorSerial = (ocupado: B)
+```
+
+```text
+                                                                                    -------- MedidaEntrada ----------------------------
+                                                                                    |
+                                                                                    |
+                                   uuid:Text, gas:N, valor:Z, contador:N --> MedidaEntrada() -->
+                                                                                    |
+                                                                                    |
+                                                         tipo:N, valor:Z --> MedidaEntrada() -->
+                                                                                    |
+                                                                                    |
+                                                              trama:Trama --> desdeTrama() --x
+                                                          entrada:MedidaEntrada <--
+                                                                                    |
+                                                                                    |
+                                       tipo:N, valor:Z, uuid:Text, gas:N, contador:N [publico]
+                                                                                    -----------------------------------------------
+```
+```text
+                                                                                    -------- Medida ----------------------------
+                                                                                    |
+                                                                                    |
+                      identificador:Text, entrada:MedidaEntrada, fecha:Text --> Medida() -->
+                                                                                    |
+                                                                                    |
+                                   medida_id:Text, entrada:MedidaEntrada, fecha:Text [publico]
+                                                                                    -----------------------------------------------
+```
+```text
+                                                                                    -------- TramaIBeacon ----------------------------
+                                                                                    | uuid_proyecto: [N]_16 (constante compartida)
+                                                                                    | uuid: [N]_16
+                                                                                    | major: N
+                                                                                    | minor: N
+                                                                                    | potencia: Z
+                                                                                    |
+                                                                                    |
+                                                                 datos:[N] --> esIBeacon() --x
+                                                                       valido:B <--
+                                                                                    |
+                                                                                    |
+                                                               datos:[N] --> TramaIBeacon() -->
+                                                                                    |
+                                                                                    |
+                                                                         esNuestroDispositivo() <--
+                                                                      nuestro:B <--
+                                                                                    |
+                                                                                    |
+                                                                               getMajor() <--
+                                                                        major:N <--
+                                                                                    |
+                                                                                    |
+                                                                               getMinor() <--
+                                                                        minor:N <--
+                                                                                    |
+                                                                                    |
+                                                                               getValor() <--
+                                                                        valor:Z <--
+                                                                                    |
+                                                                                    |
+                                                                            getTipoMedicion() <--
+                                                                         tipo:N <--
+                                                                                    |
+                                                                                    |
+                                                                              getContador() <--
+                                                                     contador:N <--
+                                                                                    |
+                                                                                    |
+                                                                              getTxPower() <--
+                                                                     potencia:Z <--
+                                                                                    |
+                                                                                    |
+                                                                                getUUID() <--
+                                                                    uuid:[N]_16 <--
+                                                                                    |
+                                                                                    |
+                                                                        getDescripcionMedicion() <--
+                                                               descripcion:Text <--
+                                                                                    |
+                                                                                    |
+                                                            fabricante_apple: N = 76 [publico]
+                                                                                    -----------------------------------------------
+```
+```text
+                                                                                    -------- Utilidades ----------------------------
+                                                                                    | Utilidades() --> (constructor privado)
+                                                                                    |
+                                                                                    |
+                                                                datos:[N] --> bytesToInt() --x
+                                                                        valor:Z <--
+                                                                                    -----------------------------------------------
+```
+```text
+                                                                                    -------- PeticionarioREST ----------------------------
+                                                                                    | destino: Text
+                                                                                    |
+                                                                                    |
+                                                          destino:Text --> PeticionarioREST() -->
+                                                                                    |
+                                                                                    |
+                                                   entrada:MedidaEntrada --> guardarMedida() -->
+                                                                  medida:Medida <--
+                                                                                    -----------------------------------------------
+```
+```text
+                                                                                    -------- Transporte ----------------------------
+                                                                                    |
+                                                                                    |
+                                                   entrada:MedidaEntrada --> guardarMedida() -->
+                                                                  medida:Medida <--
+                                                                                    -----------------------------------------------
+```
+```text
+                                                                                    -------- Intento (privada de LogicaFake) ----------------------------
+                                                                                    |
+                                                                                    |
+                                                                 instante:N --> Intento() -->
+                                                                                    |
+                                                                                    |
+                               resultado:Medida|Error|Pendiente, instante:N, exito:B [publico]
+                                                                                    -----------------------------------------------
+```
+LogicaFake posee además transporte:PersistenciaRemota y las dependencias de
+ejecución serial y reloj. Sus auxiliares privados ejecutar y fallo resuelven la
+operación o representan el error. Intento es privado de LogicaFake: constructor
+instante:N y campos resultado, instante y exito. Las dependencias de pruebas
+del constructor no forman parte de la firma de dominio guardarMedida.
+MainActivity y sus eventos son la GUI Android: su diseño de pantalla se describe
+arriba; la revisión formal de la GUI queda fuera del alcance del agente aportado.
+
+
 ## Design Clarifications
 
 - Código en `src/android/Prueba2025/app/src/main/java/org/jordi/prueba2025/`.
@@ -71,6 +228,9 @@ garantía de entrega exactamente una vez.
 ## General Rules
 
 - Programming Language: Java 8 y Android SDK 34.
-- Function/Method Headers: incluir diseño lógico, precondiciones, poscondiciones y errores en un bloque delimitado por `-------------------`.
+- Function/Method Headers: incluir descripción, diseño lógico y parámetros; indicar precondiciones, resultados y errores relevantes en un bloque delimitado por `-------------------`.
 - Code Readability: nombres claros y código autoexplicativo; comentarios adicionales solo cuando aporten contexto.
 - Automated Testing: generar pruebas unitarias o de integración para todas las funciones críticas, con límites y errores.
+
+bytesToInt conserva el patrón binario de hasta cuatro bytes en Z: con cuatro
+bytes el resultado Java puede ser negativo; con uno o dos representa N.

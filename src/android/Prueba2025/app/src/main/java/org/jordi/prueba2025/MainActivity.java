@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                     + "\nContador: " + trama.getContador()
                     + "\nMajor: " + trama.getMajor() + " | Minor: " + trama.getMinor();
             textoEstado.setText(R.string.recibiendo_nuestro);
-            // Envío solo el gas del prototipo actual; la placa también anuncia temperatura.
+            // Envío solo el tipo 11 del Sprint 0; otros tipos se muestran sin enviarlos.
             if (trama.getTipoMedicion() == 11) {
                 textoEnvio.setText("Enviando medida " + trama.getValor() + "...");
                 logicaFake.guardarMedida(MedidaEntrada.desdeTrama(trama)).whenComplete((medida, error) ->

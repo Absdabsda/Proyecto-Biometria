@@ -24,6 +24,7 @@ tipo y valor a negocio. Los errores de validación y persistencia se tratan por 
 | author.md | Autoría |
 | doc/ | Diseños de componentes y API |
 | context/ | Notación lógica y formato de tablas del revisor |
+| examples/ | Material docente de referencia; no forma parte de los componentes activos |
 | src/business_logic/ | Validación y acceso SQL independiente del transporte |
 | src/communication/ | Adaptación de la API REST |
 | src/database/ | Esquema mínimo canónico |
@@ -50,10 +51,13 @@ Este flujo no acredita una frecuencia histórica de commits que no se haya produ
 node --test servidor/tests/medidas.test.mjs test/gui.test.mjs
 php servidor/tests/rest.php
 python scripts/preparar_plesk.py
+python scripts/verificar_revision.py
 ```
 
 La integración SQL y la migración se ejecutan con bases desechables en GitHub Actions,
 contra MySQL 8.4 y MariaDB 10.11. La configuración de pruebas está en el workflow.
+CI también ejecuta el Publicador real con una radio sustituida: 15 combinaciones
+de valor y contador, los campos de iBeacon y el comportamiento de los ejemplos.
 Android Studio: abrir src/android/Prueba2025; para compilar y probar, usar Gradle 8.7 y SDK 34.
 En este Windows hay que trabajar en una carpeta sin tildes para cargar sus pruebas.
 

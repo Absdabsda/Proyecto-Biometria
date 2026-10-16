@@ -16,6 +16,11 @@
 // alReves() utilidad
 // pone al revés el contenido de una array en el mismo array
 // ----------------------------------------------------
+/** -------------------
+ * Descripción: invierte en el mismo almacenamiento los primeros n elementos.
+ * Diseño: elementos:[Elemento], n:N --> alReves() --> [Elemento]
+ * Parámetros: colección con al menos n elementos; n no negativo.
+ * ------------------- */
 template< typename T >
 T *  alReves( T * p, int n ) {
   T aux;
@@ -99,8 +104,8 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Construye y configura una característica del servicio BLE.
-	 * Diseño: nombreCaracteristica_:Text, props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N --> Caracteristica() --> Caracteristica
-	 * Parámetros: nombreCaracteristica_:Text, props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N.
+	 * Diseño: nombreCaracteristica_:Text, props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N --> Caracteristica() --> Caracteristica
+	 * Parámetros: nombreCaracteristica_:Text, props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N.
 	 * ------------------- */
 	Caracteristica( const char * nombreCaracteristica_ ,
 					uint8_t props,
@@ -132,8 +137,8 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Configura los permisos de lectura y escritura.
-	 * Diseño: permisoRead:SecureMode_t, permisoWrite:SecureMode_t --> asignarPermisos()
-	 * Parámetros: permisoRead:SecureMode_t, permisoWrite:SecureMode_t.
+	 * Diseño: permisoRead:ModoPermiso, permisoWrite:ModoPermiso --> asignarPermisos()
+	 * Parámetros: permisoRead:ModoPermiso, permisoWrite:ModoPermiso.
 	 * ------------------- */
 	void asignarPermisos( SecureMode_t permisoRead, SecureMode_t permisoWrite ) {
 	  // no puedo escribir AUN si el constructor llama a esto: Serial.println( "laCaracteristica.setPermission( permisoRead, permisoWrite ); " );
@@ -159,8 +164,8 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Aplica conjuntamente propiedades, permisos y longitud.
-	 * Diseño: props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N --> asignarPropiedadesPermisosYTamanyoDatos()
-	 * Parámetros: props:N, permisoRead:SecureMode_t, permisoWrite:SecureMode_t, tam:N.
+	 * Diseño: props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N --> asignarPropiedadesPermisosYTamanyoDatos()
+	 * Parámetros: props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N.
 	 * ------------------- */
 	void asignarPropiedadesPermisosYTamanyoDatos( uint8_t props,
 												 SecureMode_t permisoRead,
@@ -317,6 +322,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: entrega el servicio subyacente al adaptador Bluefruit sin copiarlo.
+   * Diseño: servicioSubyacente() --> ServicioBLE
+   * Parámetros: ninguno; conversión implícita del adaptador de implementación.
+   * ------------------- */
   operator BLEService&() {
 	// "conversión de tipo": si pongo esta clase en un sitio donde necesitan un BLEService
 	return elServicio;

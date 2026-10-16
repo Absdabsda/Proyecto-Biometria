@@ -47,6 +47,12 @@ jobs:
         run: php test/migration_integration.php
       - name: Verificar paquete Plesk
         run: python scripts/preparar_plesk.py
+      - name: Auditar estructura y contratos del revisor
+        run: python scripts/verificar_revision.py
+      - name: Probar el publicador real de firmware sin radio
+        run: |
+          g++ -std=c++17 -Wall -Wextra -pedantic -Werror test/firmware_contract.cpp -o /tmp/firmware-contract
+          /tmp/firmware-contract
   android:
     runs-on: ubuntu-latest
     steps:
