@@ -10,6 +10,7 @@ tipo 0..255; valor -32768..32767. ID decimal positivo como texto y fecha ISO 860
 
 ```text
 limit: N --> listarMedidas() --> medidas: [Medida]
+entrada: MedidaEntrada --> guardarMedida() --> medida: Medida
 ```
 Coincide con el subconjunto de lectura del backend. Valida límite 1..100, consulta,
 verifica ID, tipo, valor y fecha y devuelve solo esos cuatro campos.
@@ -25,7 +26,7 @@ Implementación `src/frontend_business_logic/medidas.mjs`; GUI en src/gui/.
 
 ## General Rules
 
-- Programming Language: JavaScript ES modules.
+- Programming Language: JavaScript ES modules para web y Java 8 para el proxy Android.
 - Function/Method Headers: incluir descripción, diseño lógico y parámetros en un bloque delimitado por `-------------------`.
 - Code Readability: nombres claros y código autoexplicativo.
 - Automated Testing: probar funciones críticas, límites, errores y persistencia de forma independiente.

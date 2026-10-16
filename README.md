@@ -40,9 +40,16 @@ tipo y valor a negocio. Los errores de validación y persistencia se tratan por 
 El material docente adicional se conserva con sus atribuciones. Los componentes activos se encuentran en src/. Dentro de android/ y firmware/
 se conserva el nombre de proyecto necesario para Android Studio y Arduino IDE.
 
+## Rúbrica y trazabilidad
+
+La rúbrica oficial del Sprint 0 está contrastada en doc/rubrica_correcta_revision.md.
+Los criterios reproducibles están en doc/acceptance_test.md; la arquitectura y los
+patrones en doc/architecture.md. doc/ai_traceability.md identifica el uso real de IA
+y los prompts de revisión, sin presentarlos como un historial anterior.
+
 ## Pruebas y despliegue
 
-Flujo de Git: main contiene la entrega verificada; develop sirve de base de desarrollo.
+Flujo de Git: master contiene la entrega verificada; develop sirve de base de desarrollo.
 Cada cambio se trabaja en una rama y se integra mediante pull request con las pruebas
 automáticas aprobadas. Las ramas codex/ conservan las revisiones realizadas en esta sesión.
 Este flujo no acredita una frecuencia histórica de commits que no se haya producido.
