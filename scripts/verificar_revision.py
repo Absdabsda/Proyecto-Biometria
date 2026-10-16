@@ -108,6 +108,15 @@ def verificar_documentos_rubrica(raiz):
                '05_frontend','06_gui','07_firmware','08_auditoria']
     for nombre in prompts:
         exigir((raiz / 'doc/prompts' / (nombre+'.md')).is_file(), 'Falta prompt: '+nombre)
+    especificaciones = ['01_base_datos','02_negocio_backend','03_servidor_rest',
+                        '04_fake_telefono','05_fake_navegador','06_ux_navegador']
+    for nombre in especificaciones:
+        fichero = raiz / 'doc/especificaciones_entrega' / (nombre+'.md')
+        exigir(fichero.is_file(), 'Falta especificación de entrega: '+nombre)
+        contenido = fichero.read_text(encoding='utf-8')
+        for seccion in ['## Diseño formal incorporado','## Aclaraciones concretas',
+                        '## Directrices de implementación y revisión','## Tests y aceptación','```text']:
+            exigir(seccion in contenido, 'Especificación incompleta '+nombre+': '+seccion)
     traza = (raiz / 'doc/ai_traceability.md').read_text(encoding='utf-8')
     exigir('después de la' in traza and 'implementación inicial' in traza,
            'La trazabilidad debe distinguir los prompts actuales de la implementación inicial.')
@@ -175,7 +184,7 @@ def main():
         verificar_cabecera_archivo(archivo)
     exigir((ROOT / 'outputs/2026-10-16/Julia_Valen_de_Oliveira_review.md').is_file(), 'Falta el informe por autora y fecha.')
     print(f'Revision estatica correcta: {len(componentes)} componentes; {total} declaraciones con cabecera; modelo MVP y capas coherentes.')
-    print(f'Rubrica oficial: {len(archivos)} cabeceras de fichero, 7 criterios de componente y 8 prompts comprobados.')
+    print(f'Rubrica oficial: {len(archivos)} cabeceras de fichero, 7 criterios, 8 prompts de revision y 6 especificaciones de entrega comprobados.')
     print('Limites: no interpreta toda la semantica ni acredita frecuencia historica, hardware o calificacion.')
 
 

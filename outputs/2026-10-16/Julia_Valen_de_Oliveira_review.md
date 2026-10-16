@@ -58,8 +58,10 @@ autoría y decisiones de esquema/BLE no son los de este proyecto.
 
 - ❌ Frecuencia histórica: crear las ramas ahora no demuestra contribuciones periódicas anteriores.
   Remediación: mostrar el historial auténtico y conservar el flujo de trabajo futuro; no inventar commits.
-- ❌ Tareas obligatorias de PoliformaT: sus enunciados y entregas no se han aportado.
-  Remediación: contrastar y completar esas tareas; el repositorio por sí solo no acredita su entrega.
+- ✅ Enunciados de PoliformaT contrastados: ingeniería inversa manuscrita y seis especificaciones de generación. Julia confirma que el manuscrito ya está entregado; su contenido no se ha aportado para revisión.
+- ✅ Seis especificaciones autocontenidas en doc/especificaciones_entrega/: BD, negocio, REST, fake teléfono, fake navegador y UX. Incluyen diseño, aclaraciones, comentarios y tests; ZIP preparado para la entrega.
+- ❌ Confirmación de entrega de las seis especificaciones: el repositorio y el ZIP no acreditan haberlas depositado en PoliformaT.
+  Remediación: entregar esos seis documentos si aún no se han presentado y conservar el justificante.
 - La trazabilidad corresponde a la revisión actual y su ampliación real del verificador; no reconstruye el uso inicial de IA.
 - No se detectan otros incumplimientos técnicos/documentales en el alcance revisado. No es una garantía de nota ni de requisitos de otros sprints.
 

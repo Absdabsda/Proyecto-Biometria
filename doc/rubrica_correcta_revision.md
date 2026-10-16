@@ -8,6 +8,7 @@ Cambios de esta revisión:
 - main se renombra a master conservando el historial; master es la rama predeterminada y develop la de integración.
 - Se completan cabeceras de fichero con nombre, descripción, copyright, fecha de revisión, autoría y aportación.
 - Se documentan aceptación por entregable, patrones de arquitectura, correspondencia de código/diseño y uso real de IA.
+- Al recibir el enunciado de PoliformaT se preparan sus seis especificaciones de generación autocontenidas; Julia confirma que ya entregó el manuscrito de ingeniería inversa.
 - Se refuerza la auditoría automática para detectar estos requisitos de documentación.
 - Se mantiene la base mínima medidaID/tipo/valor/fecha, el valor ficticio 1234 y las rutas de apertura de Android/Arduino.
 
@@ -26,5 +27,6 @@ MySQL y MariaDB, web, Publicador C++ y Android. La prueba física de 1234 ya fue
 confirmada por Julia y observada en la web; debe poder repetirse en la defensa.
 La trazabilidad añadida identifica cuándo se escribieron los prompts y distingue
 la revisión actual de la generación anterior; no se inventa un historial previo.
-No se puede acreditar retroactivamente una frecuencia de commits ni el cumplimiento
-de tareas de PoliformaT que no se hayan aportado.
+No se puede acreditar retroactivamente una frecuencia de commits. La entrega del
+manuscrito se registra por confirmación de Julia, no por revisión del documento;
+la entrega de las seis especificaciones en PoliformaT aún debe confirmarla ella.

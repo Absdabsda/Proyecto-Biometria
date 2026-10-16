@@ -10,8 +10,8 @@ y los siete diseños. Mantén las comprobaciones existentes de capas y MVP.
 
 Contrato lógico de la ampliación:
 ```text
-archivo:Text --> verificar_cabecera_archivo() --> ()
-raiz:Text --> verificar_documentos_rubrica() --> ()
+archivo:Text --> verificar_cabecera_archivo()
+raiz:Text --> verificar_documentos_rubrica()
 ```
 Una condición incumplida debe detener el proceso con una explicación. Leer archivos
 y metadatos Git es válido; no se permite escribir en Plesk, modificar datos o usar red.
@@ -35,3 +35,10 @@ Debe pasar en la copia de trabajo y en CI. Para comprobar que detecta fallos,
 invoca las funciones sobre fixtures temporales: una cabecera incompleta debe
 rechazarse y una completa aceptarse. Los fixtures se eliminan al terminar.
 No fabriques historial de IA ni declares todas las tareas de PoliformaT cumplidas.
+
+## Ampliación al recibir el enunciado de PoliformaT
+
+Verifica también las seis especificaciones de generación de doc/especificaciones_entrega/:
+BD, negocio, REST, fake teléfono, fake navegador y UX. Cada una debe incorporar
+diseño formal, aclaraciones, directrices de implementación/comentarios y tests.
+No confundas estas especificaciones de entrega con los ocho prompts de revisión.

@@ -47,6 +47,12 @@ Los criterios reproducibles están en doc/acceptance_test.md; la arquitectura y 
 patrones en doc/architecture.md. doc/ai_traceability.md identifica el uso real de IA
 y los prompts de revisión, sin presentarlos como un historial anterior.
 
+Las **seis especificaciones de generación solicitadas en PoliformaT** están en
+`doc/especificaciones_entrega/`: BD, negocio, REST, fake teléfono, fake navegador
+y UX. Incluyen los diseños dentro de cada documento, aclaraciones y tests.
+Julia confirma que el diseño manuscrito de ingeniería inversa ya fue entregado;
+el contenido de esa entrega no se ha revisado aquí.
+
 ## Pruebas y despliegue
 
 Flujo de Git: master contiene la entrega verificada; develop sirve de base de desarrollo.

@@ -15,6 +15,11 @@ El nuevo prompt 08 guía la ampliación de la auditoría automática en esta rev
 
 ## Cadena de revisión
 
+Tras recibir el enunciado de PoliformaT se preparan además seis especificaciones
+de generación autocontenidas en doc/especificaciones_entrega/. Incorporan los
+diseños y las directrices solicitadas. Su finalidad es la entrega y la reproducción
+del código vigente; no se presentan como los prompts históricos de generación.
+
 | Diseño previo/documento | Prompt de esta revisión | Implementación o resultado revisado | Verificación |
 | --- | --- | --- | --- |
 | database_design.md | prompts/01_database.md | Esquema de cuatro campos y metadatos de cabecera | Integración y migración MySQL/MariaDB |
