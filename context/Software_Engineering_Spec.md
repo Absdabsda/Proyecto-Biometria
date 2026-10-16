@@ -1,6 +1,9 @@
 
-# Logical Design  Software Engineering Specification, Logical Desgin
-*A Language-Agnostic Formal Notation for Designing or Extracting Program Structure*
+# Logical Design & Reverse Engineering Specification (v3)
+*A Language-Agnostic Formal Notation for Extracting Program Structure*
+
+Contrastado con Notacion oficial.pdf aportado el 16/10/2026: tipos abstractos,
+colecciones, firmas y reglas de diagramas de clases coinciden con esta notación.
 
 > **Core Definition:** In this framework, **reverse engineering** is defined as the process of discovering and formalizing the high-level **logical design** of an existing software system, completely independent of programming language, syntax, memory layout, or low-level implementation details.
 

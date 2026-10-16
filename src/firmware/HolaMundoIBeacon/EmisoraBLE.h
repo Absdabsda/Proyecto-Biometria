@@ -1,3 +1,11 @@
+/**
+ * Nombre: EmisoraBLE.h
+ * Descripción: Apoyo del firmware para radio, servicios, diagnóstico o señalización de la placa.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Adaptación e integración del Sprint 0 y cabeceras formales; atribuciones docentes conservadas.
+ */
 /** EmisoraBLE: encapsula Bluefruit y la publicación de anuncios y servicios BLE. */
 // -*- mode: c++ -*-
 
@@ -41,7 +49,7 @@ public:
   // .........................................................
   /** -------------------
    * Descripción: Configura nombre, fabricante y potencia de la emisora.
-   * Diseño: nombreEmisora_:Text, fabricanteID_:N, txPower_:Z --> EmisoraBLE() --> EmisoraBLE
+   * Diseño: nombre_emisora_:Text, fabricante_id_:N, tx_power_:Z --> EmisoraBLE() --> EmisoraBLE
    * Parámetros: nombreEmisora_:Text, fabricanteID_:N, txPower_:Z.
    * ------------------- */
   EmisoraBLE( const char * nombreEmisora_, const uint16_t fabricanteID_,
@@ -95,7 +103,7 @@ public:
   // .........................................................
   /** -------------------
    * Descripción: Inicializa Bluefruit y configura la emisora para anunciar.
-   * Diseño: cbce:CallbackConexionEstablecida, cbct:CallbackConexionTerminada --> encenderEmisora()
+   * Diseño: cbce:EventoConexion, cbct:EventoDesconexion --> encenderEmisora()
    * Parámetros: cbce:CallbackConexionEstablecida, cbct:CallbackConexionTerminada.
    * ------------------- */
   void encenderEmisora( CallbackConexionEstablecida cbce,
@@ -140,7 +148,7 @@ public:
   // .........................................................
   /** -------------------
    * Descripción: Construye el anuncio iBeacon a partir de UUID, major, minor y referencia de potencia.
-   * Diseño: beaconUUID:[N], major:N, minor:Z, rssi:Z --> emitirAnuncioIBeacon()
+   * Diseño: beacon_uuid:[N], major:N, minor:Z, rssi:Z --> emitirAnuncioIBeacon()
    * Parámetros: beaconUUID:[N], major:N, minor:Z, rssi:Z.
    * ------------------- */
   void emitirAnuncioIBeacon( uint8_t * beaconUUID, uint16_t major, int16_t minor, int8_t rssi ) {
@@ -238,7 +246,7 @@ public:
   */
   /** -------------------
    * Descripción: Publica una carga libre de ejemplo limitada por el tamaño recibido.
-   * Diseño: carga:Text, tamanyoCarga:N --> emitirAnuncioIBeaconLibre()
+   * Diseño: carga:Text, tamanyo_carga:N --> emitirAnuncioIBeaconLibre()
    * Parámetros: carga:Text, tamanyoCarga:N.
    * ------------------- */
   void emitirAnuncioIBeaconLibre( const char * carga, const uint8_t tamanyoCarga ) {
@@ -340,7 +348,7 @@ public:
   template <typename ... T>
   /** -------------------
    * Descripción: Añade un servicio y sus características al conjunto configurado.
-   * Diseño: servicio:ServicioEnEmisora, caracteristica:Caracteristica, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicas() --> B
+   * Diseño: servicio:ServicioEnEmisora, caracteristica:Caracteristica, resto_caracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicas() --> B
    * Parámetros: servicio:ServicioEnEmisora, caracteristica:Caracteristica, restoCaracteristicas:[Caracteristica].
    * ------------------- */
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio,
@@ -357,7 +365,7 @@ public:
   template <typename ... T>
   /** -------------------
    * Descripción: Añade el servicio con características y lo activa.
-   * Diseño: servicio:ServicioEnEmisora, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicasYActivar() --> B
+   * Diseño: servicio:ServicioEnEmisora, resto_caracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicasYActivar() --> B
    * Parámetros: servicio:ServicioEnEmisora, restoCaracteristicas:[Caracteristica].
    * ------------------- */
   bool anyadirServicioConSusCaracteristicasYActivar( ServicioEnEmisora & servicio,
@@ -376,7 +384,7 @@ public:
   // .........................................................
   /** -------------------
    * Descripción: Registra el manejador del evento de conexión.
-   * Diseño: cb:CallbackConexionEstablecida --> instalarCallbackConexionEstablecida()
+   * Diseño: cb:EventoConexion --> instalarCallbackConexionEstablecida()
    * Parámetros: cb:CallbackConexionEstablecida.
    * ------------------- */
   void instalarCallbackConexionEstablecida( CallbackConexionEstablecida cb ) {
@@ -387,7 +395,7 @@ public:
   // .........................................................
   /** -------------------
    * Descripción: Registra el manejador del evento de desconexión.
-   * Diseño: cb:CallbackConexionTerminada --> instalarCallbackConexionTerminada()
+   * Diseño: cb:EventoDesconexion --> instalarCallbackConexionTerminada()
    * Parámetros: cb:CallbackConexionTerminada.
    * ------------------- */
   void instalarCallbackConexionTerminada( CallbackConexionTerminada cb ) {

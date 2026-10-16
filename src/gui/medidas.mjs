@@ -1,3 +1,11 @@
+/**
+ * Nombre: medidas.mjs
+ * Descripción: Consulta y presentación de medidas con estados de carga, vacío y error.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Pantalla morada accesible, actualización y uso exclusivo del proxy.
+ */
 import { listarMedidas } from '../frontend_business_logic/medidas.mjs';
 
 /** -------------------

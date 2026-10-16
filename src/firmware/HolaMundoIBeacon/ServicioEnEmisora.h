@@ -1,3 +1,11 @@
+/**
+ * Nombre: ServicioEnEmisora.h
+ * Descripción: Apoyo del firmware para radio, servicios, diagnóstico o señalización de la placa.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Adaptación e integración del Sprint 0 y cabeceras formales; atribuciones docentes conservadas.
+ */
 /** ServicioEnEmisora y Caracteristica: configuran servicios GATT, permisos y callbacks. */
 // -*- mode: c++ -*-
 
@@ -37,7 +45,7 @@ T *  alReves( T * p, int n ) {
 // ----------------------------------------------------
 /** -------------------
  * Descripción: Copia el texto en orden inverso hasta el máximo de bytes permitido.
- * Diseño: pString:Text, pUint:[N], tamMax:Z --> stringAUint8AlReves() --> [N]
+ * Diseño: p_string:Text, p_uint:[N], tam_max:Z --> stringAUint8AlReves() --> [N]
  * Parámetros: pString:Text, pUint:[N], tamMax:Z.
  * ------------------- */
 uint8_t * stringAUint8AlReves( const char * pString, uint8_t * pUint, int tamMax ) {
@@ -90,7 +98,7 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Construye y configura una característica del servicio BLE.
-	 * Diseño: nombreCaracteristica_:Text --> Caracteristica() --> Caracteristica
+	 * Diseño: nombre_caracteristica_:Text --> Caracteristica() --> Caracteristica
 	 * Parámetros: nombreCaracteristica_:Text.
 	 * ------------------- */
 	Caracteristica( const char * nombreCaracteristica_ )
@@ -104,7 +112,7 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Construye y configura una característica del servicio BLE.
-	 * Diseño: nombreCaracteristica_:Text, props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N --> Caracteristica() --> Caracteristica
+	 * Diseño: nombre_caracteristica_:Text, props:N, permiso_read:ModoPermiso, permiso_write:ModoPermiso, tam:N --> Caracteristica() --> Caracteristica
 	 * Parámetros: nombreCaracteristica_:Text, props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N.
 	 * ------------------- */
 	Caracteristica( const char * nombreCaracteristica_ ,
@@ -137,7 +145,7 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Configura los permisos de lectura y escritura.
-	 * Diseño: permisoRead:ModoPermiso, permisoWrite:ModoPermiso --> asignarPermisos()
+	 * Diseño: permiso_read:ModoPermiso, permiso_write:ModoPermiso --> asignarPermisos()
 	 * Parámetros: permisoRead:ModoPermiso, permisoWrite:ModoPermiso.
 	 * ------------------- */
 	void asignarPermisos( SecureMode_t permisoRead, SecureMode_t permisoWrite ) {
@@ -164,7 +172,7 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Aplica conjuntamente propiedades, permisos y longitud.
-	 * Diseño: props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N --> asignarPropiedadesPermisosYTamanyoDatos()
+	 * Diseño: props:N, permiso_read:ModoPermiso, permiso_write:ModoPermiso, tam:N --> asignarPropiedadesPermisosYTamanyoDatos()
 	 * Parámetros: props:N, permisoRead:ModoPermiso, permisoWrite:ModoPermiso, tam:N.
 	 * ------------------- */
 	void asignarPropiedadesPermisosYTamanyoDatos( uint8_t props,
@@ -213,7 +221,7 @@ public:
 	// .........................................................
 	/** -------------------
 	 * Descripción: Registra el manejador de escritura de la característica.
-	 * Diseño: cb:CallbackCaracteristicaEscrita --> instalarCallbackCaracteristicaEscrita()
+	 * Diseño: cb:EventoEscritura --> instalarCallbackCaracteristicaEscrita()
 	 * Parámetros: cb:CallbackCaracteristicaEscrita.
 	 * ------------------- */
 	void instalarCallbackCaracteristicaEscrita( CallbackCaracteristicaEscrita cb ) {
@@ -263,7 +271,7 @@ public:
   // .........................................................
   /** -------------------
    * Descripción: Construye el servicio a partir de su identificador textual.
-   * Diseño: nombreServicio_:Text --> ServicioEnEmisora() --> ServicioEnEmisora
+   * Diseño: nombre_servicio_:Text --> ServicioEnEmisora() --> ServicioEnEmisora
    * Parámetros: nombreServicio_:Text.
    * ------------------- */
   ServicioEnEmisora( const char * nombreServicio_ )

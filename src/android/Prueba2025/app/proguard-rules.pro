@@ -1,3 +1,9 @@
+# Nombre: proguard-rules.pro
+# Descripción: Configuración, recursos o pruebas de la aplicación Android del Sprint 0.
+# Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+# Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+# Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+# Aportación: Integración de recepción, proxy y datos del Sprint 0; documentación y comprobaciones.
 # Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.

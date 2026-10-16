@@ -1,3 +1,9 @@
+# Nombre: verificar.yml
+# Descripción: Configuración o adaptador de despliegue y comprobación del Sprint 0.
+# Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+# Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+# Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+# Aportación: Integración con las fuentes canónicas y documentación de la entrega.
 name: Verificar servidor y cliente
 on: [push, pull_request, workflow_dispatch]
 jobs:
@@ -49,6 +55,8 @@ jobs:
         run: python scripts/preparar_plesk.py
       - name: Auditar estructura y contratos del revisor
         run: python scripts/verificar_revision.py
+      - name: Probar detección de incumplimientos de la rúbrica
+        run: python -m unittest discover -s test -p 'revision_test.py' -v
       - name: Probar el publicador real de firmware sin radio
         run: |
           g++ -std=c++17 -Wall -Wextra -pedantic -Werror test/firmware_contract.cpp -o /tmp/firmware-contract
