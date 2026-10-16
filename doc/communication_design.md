@@ -26,6 +26,6 @@ No expone errores de conexión ni credenciales. Cabecera Allow en 405.
 ## General Rules
 
 - Programming Language: PHP 7.4 o superior.
-- Function/Method Headers: incluir diseño lógico, precondiciones, poscondiciones y errores en un bloque delimitado por `-------------------`.
+- Function/Method Headers: incluir descripción, diseño lógico y parámetros; indicar precondiciones, resultados y errores relevantes en un bloque delimitado por `-------------------`.
 - Code Readability: nombres claros y código autoexplicativo; comentarios adicionales solo cuando aporten contexto.
 - Automated Testing: generar pruebas unitarias o de integración para todas las funciones críticas, con límites y errores.

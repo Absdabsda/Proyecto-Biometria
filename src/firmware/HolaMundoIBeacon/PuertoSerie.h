@@ -47,8 +47,8 @@ public:
   template<typename T>
   /** -------------------
    * Descripción: Escribe el mensaje en el puerto serie.
-   * Diseño: mensaje:T --> escribir()
-   * Parámetros: mensaje:T.
+   * Diseño: mensaje:Elemento --> escribir()
+   * Parámetros: mensaje:Elemento.
    * ------------------- */
   void escribir (T mensaje) {
 	Serial.print( mensaje );

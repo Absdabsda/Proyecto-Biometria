@@ -5,6 +5,7 @@
 ```text
 MedidaEntrada = (tipo: N, valor: Z)
 Medida = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
+RegistroSQL = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
 ```
 tipo 0..255; valor -32768..32767. ID decimal positivo como texto y fecha ISO 8601 UTC.
 
@@ -21,24 +22,27 @@ tipo, valor y fecha. No almacena identificadores de placa ni contadores de anunc
 Implementación: `src/business_logic/Logica.php`; dependencia de persistencia PDO.
 
 ```text
-                       -------- Logica ----------------------
-                       | bd: Persistencia
-                       | tipo_permitido: N | Ausente
-                       |
-bd:Persistencia, tipo_permitido:N|Ausente --> __construct() -->
-                       |
-entrada:MedidaEntrada --> guardarMedida() -->
-medida:Medida         <--
-                       |
-limit:N              --> listarMedidas() <--
-medidas:[Medida]      <--
-                       |
-entrada:MedidaEntrada, tipo_permitido:N|Ausente --> validarMedida() --x
-entrada:MedidaEntrada <--
-                       |
-                       | fila:RegistroSQL --> serializar() --x
-                       | medida:Medida    <--
-                       ---------------------------------------
+                                                                                    -------- Logica ----------------------------
+                                                                                    | bd: Persistencia
+                                                                                    | tipo_permitido: N | Ausente
+                                                                                    | fila:RegistroSQL --> serializar() --x
+                                                                                    | medida:Medida <--
+                                                                                    |
+                                                                                    |
+                                bd:Persistencia, tipo_permitido:N|Ausente --> __construct() -->
+                                                                                    |
+                                                                                    |
+                                                   entrada:MedidaEntrada --> guardarMedida() -->
+                                                                  medida:Medida <--
+                                                                                    |
+                                                                                    |
+                                                                 limit:N --> listarMedidas() <--
+                                                               medidas:[Medida] <--
+                                                                                    |
+                                                                                    |
+                         entrada:MedidaEntrada, tipo_permitido:N|Ausente --> validarMedida() --x
+                                                          entrada:MedidaEntrada <--
+                                                                                    -----------------------------------------------
 ```
 
 Persistencia representa la conexión a las cuatro columnas del diseño de base de datos.

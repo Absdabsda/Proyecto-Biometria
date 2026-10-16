@@ -340,8 +340,8 @@ public:
   template <typename ... T>
   /** -------------------
    * Descripción: Añade un servicio y sus características al conjunto configurado.
-   * Diseño: servicio:ServicioEnEmisora, caracteristica:ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicas() --> B
-   * Parámetros: servicio:ServicioEnEmisora, caracteristica:ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica].
+   * Diseño: servicio:ServicioEnEmisora, caracteristica:Caracteristica, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicas() --> B
+   * Parámetros: servicio:ServicioEnEmisora, caracteristica:Caracteristica, restoCaracteristicas:[Caracteristica].
    * ------------------- */
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio,
 											 ServicioEnEmisora::Caracteristica & caracteristica,
@@ -357,8 +357,8 @@ public:
   template <typename ... T>
   /** -------------------
    * Descripción: Añade el servicio con características y lo activa.
-   * Diseño: servicio:ServicioEnEmisora, caracteristica:// ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicasYActivar() --> B
-   * Parámetros: servicio:ServicioEnEmisora, caracteristica:// ServicioEnEmisora::Caracteristica, restoCaracteristicas:[Caracteristica].
+   * Diseño: servicio:ServicioEnEmisora, restoCaracteristicas:[Caracteristica] --> anyadirServicioConSusCaracteristicasYActivar() --> B
+   * Parámetros: servicio:ServicioEnEmisora, restoCaracteristicas:[Caracteristica].
    * ------------------- */
   bool anyadirServicioConSusCaracteristicasYActivar( ServicioEnEmisora & servicio,
 													 // ServicioEnEmisora::Caracteristica & caracteristica,
@@ -396,6 +396,11 @@ public:
 
   // .........................................................
   // .........................................................
+  /** -------------------
+   * Descripción: consulta la conexión BLE identificada por el manejador recibido.
+   * Diseño: identificador:N --> getConexion() --> ConexionBLE|Ausente
+   * Parámetros: identificador asignado por Bluefruit; ausente si no existe conexión.
+   * ------------------- */
   BLEConnection * getConexion( uint16_t connHandle ) {
 	return Bluefruit.Connection( connHandle );
   } // ()

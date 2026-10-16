@@ -2,7 +2,7 @@
 
 ## Decisiones y correspondencia con los diseños
 
-El README anterior mencionaba una propuesta Node.js que no se puede contrastar con los adjuntos actuales. Esta implementación adapta el lenguaje a PHP 7.4 o superior, siguiendo el servidor PHP del repositorio y el alojamiento Plesk. `servidorREST/ReglasREST.php` adapta HTTP; `logica/Logica.php` valida y accede mediante SQL parametrizado; `public/api/index.php` configura el servidor y la conexión. No se mezcla Bluetooth con persistencia. Pendiente validar esta adaptación en la entrega académica.
+El backend utiliza PHP 7.4 o superior, compatible con el alojamiento Plesk. Las fuentes canónicas están en `src/communication/` y `src/business_logic/`: comunicación adapta HTTP y negocio valida y accede mediante SQL parametrizado. `public/api/index.php` configura el servidor y la conexión. Los archivos de `servidorREST/` y `logica/` son adaptadores para la ejecución local; el generador de despliegue empaqueta las fuentes canónicas. UUID y contador se descartan antes de persistir.
 
 ## Modelo mínimo viable
 
