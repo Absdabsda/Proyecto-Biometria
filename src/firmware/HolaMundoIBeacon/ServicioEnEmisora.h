@@ -1,3 +1,4 @@
+/** ServicioEnEmisora y Caracteristica: configuran servicios GATT, permisos y callbacks. */
 // -*- mode: c++ -*-
 
 // ----------------------------------------------------------

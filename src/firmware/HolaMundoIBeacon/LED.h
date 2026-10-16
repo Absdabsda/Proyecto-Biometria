@@ -1,3 +1,4 @@
+/** LED: controla el estado y los destellos del diodo de la placa. */
 // -*- mode: c++ -*-
 
 #ifndef LED_H_INCLUIDO

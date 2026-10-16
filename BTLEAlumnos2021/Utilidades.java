@@ -1,3 +1,4 @@
+/** Ejemplo docente de recepción BLE; la aplicación entregable está en src/android/. */
 package org.jordi.btlealumnos2021;
 
 

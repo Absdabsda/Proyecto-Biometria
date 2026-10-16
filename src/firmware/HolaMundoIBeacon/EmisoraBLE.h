@@ -1,3 +1,4 @@
+/** EmisoraBLE: encapsula Bluefruit y la publicación de anuncios y servicios BLE. */
 // -*- mode: c++ -*-
 
 // ----------------------------------------------------------

@@ -11,6 +11,11 @@ import java.util.concurrent.atomic.AtomicLong;
 public class LogicaFakeTest {
     private final MedidaEntrada entrada = new MedidaEntrada("EPSG-GTI-PROY-3A", 11, 1234, 1);
 
+    /** -------------------
+     * Descripción: Verifica que devuelve la medida confirmada y deduplica durante sesenta segundos; falla ante una aserción incumplida.
+     * Diseño: devuelveLaMedidaConfirmadaYDeduplicaDuranteSesentaSegundos() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void devuelveLaMedidaConfirmadaYDeduplicaDuranteSesentaSegundos() throws Exception {
         AtomicLong reloj = new AtomicLong();
         AtomicInteger llamadas = new AtomicInteger();
@@ -31,6 +36,11 @@ public class LogicaFakeTest {
         } finally { cliente.cerrar(); }
     }
 
+    /** -------------------
+     * Descripción: Verifica que un fallo no se considera guardado y permite reintento tras diez segundos; falla ante una aserción incumplida.
+     * Diseño: unFalloNoSeConsideraGuardadoYPermiteReintentoTrasDiezSegundos() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void unFalloNoSeConsideraGuardadoYPermiteReintentoTrasDiezSegundos() throws Exception {
         AtomicLong reloj = new AtomicLong();
         AtomicInteger llamadas = new AtomicInteger();
@@ -50,6 +60,11 @@ public class LogicaFakeTest {
         } finally { cliente.cerrar(); }
     }
 
+    /** -------------------
+     * Descripción: Verifica que solo existe una peticion en curso y se comparte el mismo anuncio; falla ante una aserción incumplida.
+     * Diseño: soloExisteUnaPeticionEnCursoYSeComparteElMismoAnuncio() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void soloExisteUnaPeticionEnCursoYSeComparteElMismoAnuncio() throws Exception {
         CountDownLatch iniciada = new CountDownLatch(1);
         CountDownLatch liberar = new CountDownLatch(1);
@@ -71,6 +86,11 @@ public class LogicaFakeTest {
         } finally { liberar.countDown(); cliente.cerrar(); }
     }
 
+    /** -------------------
+     * Descripción: Verifica que cerrar impide envios nuevos; falla ante una aserción incumplida.
+     * Diseño: cerrarImpideEnviosNuevos() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void cerrarImpideEnviosNuevos() throws Exception {
         LogicaFake cliente = new LogicaFake(dato -> { throw new AssertionError("No debe enviar"); }, () -> 0, Executors.newSingleThreadExecutor());
         cliente.cerrar();
@@ -78,6 +98,11 @@ public class LogicaFakeTest {
         catch (ExecutionException error) { assertTrue(error.getCause() instanceof IllegalStateException); }
     }
 
+    /** -------------------
+     * Descripción: Verifica que contrato de entrada y resultado preserva limites y rechaza datos invalidos; falla ante una aserción incumplida.
+     * Diseño: contratoDeEntradaYResultadoPreservaLimitesYRechazaDatosInvalidos() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void contratoDeEntradaYResultadoPreservaLimitesYRechazaDatosInvalidos() {
         assertEquals(11, new MedidaEntrada(11, 1234).tipo);
         assertEquals(-32768, new MedidaEntrada(entrada.uuid, 0, -32768, 0).valor);

@@ -62,8 +62,8 @@ garantía de entrega exactamente una vez.
 
 ## Design Clarifications
 
-- Código en `Prueba2025/app/src/main/java/org/jordi/prueba2025/`.
-- Se conserva la ubicación del proyecto Android para facilitar su apertura en Android Studio.
+- Código en `src/android/Prueba2025/app/src/main/java/org/jordi/prueba2025/`.
+- Abrir src/android/Prueba2025 en Android Studio; el traslado no cambia el paquete ni la aplicación instalada.
 - 19 pruebas Android automáticas: 14 del parser y 5 del proxy y los datos de dominio.
 - En este Windows, Gradle necesita una ruta sin tildes para cargar correctamente sus pruebas.
 - La API aloja la fecha de recepción; el móvil no inventa ID ni fecha de persistencia.

@@ -1,3 +1,4 @@
+/** Programa Sprint 0: inicializa la placa y anuncia periódicamente el valor ficticio 1234. */
 // -*-c++-*-
 
 // --------------------------------------------------------------

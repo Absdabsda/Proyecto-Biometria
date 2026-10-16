@@ -11,6 +11,7 @@ require_once __DIR__ . '/../servidorREST/ReglasREST.php';
 function comprobar(bool $condicion): void {
     if (!$condicion) { throw new RuntimeException('Prueba fallida.'); }
 }
+/** Doble de negocio: permite verificar REST sin conexión a una base de datos. */
 final class LogicaPrueba {
     /** -------------------
      * entrada:MedidaEntrada --> guardarMedida() --> Medida

@@ -5,22 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Medidas · Sprint 0</title>
   <style>
-    :root { font: 16px/1.5 system-ui, sans-serif; color: #16332d; background: #f2f6f3; }
+    /* Paleta violeta compartida por fondo, textos, controles y tabla. */
+    :root { font: 16px/1.5 system-ui, sans-serif; color: #302044; background: #f6f2fb; }
     body { margin: 0; padding: 24px; }
     main { max-width: 1000px; margin: 32px auto; }
     header { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
     h1 { margin: 4px 0; font-size: clamp(1.8rem, 5vw, 2.5rem); }
     p { margin: 8px 0; }
-    .etiqueta { color: #42645a; font-weight: 600; }
-    button { font: inherit; padding: 10px 20px; border: 0; border-radius: 8px; color: white; background: #176047; cursor: pointer; }
+    .etiqueta { color: #715486; font-weight: 600; }
+    button { font: inherit; padding: 10px 20px; border: 0; border-radius: 8px; color: white; background: #7543a5; cursor: pointer; }
     button:disabled { opacity: .6; cursor: wait; }
-    button:focus-visible { outline: 3px solid #d09b16; outline-offset: 3px; }
-    .tabla { margin-top: 24px; background: white; border: 1px solid #d3dfd8; border-radius: 12px; overflow: auto; }
+    button:focus-visible { outline: 3px solid #b67bd5; outline-offset: 3px; }
+    /* La tabla permite desplazamiento horizontal en pantallas pequeñas. */
+    .tabla { margin-top: 24px; background: white; border: 1px solid #ded1ed; border-radius: 12px; overflow: auto; }
     table { border-collapse: collapse; width: 100%; text-align: left; white-space: nowrap; }
     caption { text-align: left; padding: 18px; font-weight: 600; }
-    th, td { padding: 14px 18px; border-top: 1px solid #e1e9e4; }
-    th { background: #eaf1ed; }
-    .nota, footer { color: #4c625b; font-size: .9rem; }
+    th, td { padding: 14px 18px; border-top: 1px solid #e8dff1; }
+    th { background: #eee5f7; }
+    .nota, footer { color: #6d587c; font-size: .9rem; }
     footer { margin-top: 24px; }
     #estado { min-height: 1.5em; margin-top: 24px; }
   </style>

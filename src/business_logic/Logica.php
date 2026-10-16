@@ -1,12 +1,15 @@
 <?php
 declare(strict_types=1);
 
+/** Negocio de medidas: valida el dominio y persiste en medidas mediante PDO, sin transporte. */
 final class Logica {
     private PDO $bd;
     private ?int $tipoPermitido;
 
     /** -------------------
- * bd:Persistencia, tipoPermitido:N|Ausente --> __construct() --> Logica
+     * Descripción: configura la persistencia y el filtro opcional de tipo.
+     * Diseño: bd:Persistencia, tipoPermitido:N|Ausente --> __construct() --> Logica
+     * Parámetros: conexión de datos y tipo admitido; ausente permite cualquier tipo válido.
      * Pre: conexión configurada en UTC. Post: conserva dependencias. Errores: tipos.
  * ------------------- */
     public function __construct(PDO $bd, ?int $tipoPermitido = null) {
@@ -15,7 +18,9 @@ final class Logica {
     }
 
     /** -------------------
- * entrada:MedidaEntrada, tipoPermitido:N|null --> validarMedida() --> entrada:MedidaEntrada
+     * Descripción: exige los dos campos del modelo mínimo y sus rangos enteros.
+     * Diseño: entrada:MedidaEntrada, tipoPermitido:N|Ausente --> validarMedida() --> entrada:MedidaEntrada
+     * Parámetros: tipo y valor recibidos, y filtro opcional del tipo de medida.
      * Pre: datos JSON decodificados. Post: campos exactos y rangos válidos.
      * Errores: InvalidArgumentException.
  * ------------------- */
@@ -37,7 +42,9 @@ final class Logica {
     }
 
     /** -------------------
- * entrada:MedidaEntrada --> guardarMedida() --> medida:Medida
+     * Descripción: inserta una medida y recupera su identidad y fecha asignadas por la base.
+     * Diseño: entrada:MedidaEntrada --> guardarMedida() --> medida:Medida
+     * Parámetros: medida de dominio formada únicamente por tipo y valor.
      * Pre: conexión disponible. Post: guarda una fila y devuelve su ID y fecha.
      * Errores: validación o PDOException.
  * ------------------- */
@@ -54,7 +61,9 @@ final class Logica {
     }
 
     /** -------------------
- * limit:N --> listarMedidas() --> medidas:[Medida]
+     * Descripción: recupera las últimas medidas de la tabla mínima.
+     * Diseño: limit:N --> listarMedidas() --> medidas:[Medida]
+     * Parámetros: máximo de filas solicitado, entre 1 y 100.
      * Pre: 1 <= limit <= 100. Post: orden fecha e ID descendente.
      * Errores: validación o PDOException.
  * ------------------- */
@@ -67,7 +76,9 @@ final class Logica {
     }
 
     /** -------------------
- * fila:RegistroSQL --> serializar() --> medida:Medida
+     * Descripción: normaliza los tipos y expresa la fecha de recepción en UTC.
+     * Diseño: fila:RegistroSQL --> serializar() --> medida:Medida
+     * Parámetros: fila con medidaID, tipo, valor y fecha de la tabla medidas.
      * Pre: fecha recibida en UTC. Post: fecha ISO UTC, números con tipo estable.
      * Errores: fecha inválida.
  * ------------------- */

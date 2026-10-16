@@ -1,3 +1,4 @@
+/** Ejemplo docente de peticiones REST; el adaptador activo está en src/android/. */
 package org.jordi.clienterestandroid;
 
 //-----------------------------------------------------------------------------

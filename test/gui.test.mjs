@@ -2,6 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { iniciarPantalla } from '../src/gui/medidas.mjs';
 
+/** -------------------
+ * Descripción: construye un documento aislado para comprobar los estados de la GUI.
+ * Diseño: pantalla() --> PantallaDePrueba
+ * Parámetros: ninguno. Cada llamada crea nodos nuevos sin estado compartido.
+ * ------------------- */
 function pantalla() {
     const nodo = () => ({textContent: '', disabled: false, children: [],
         appendChild(child) { this.children.push(child); },

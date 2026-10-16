@@ -10,6 +10,7 @@ import java.util.function.LongSupplier;
 
 /** Proxy de dominio: comparte guardarMedida con el backend y delega la red a un adaptador. */
 public final class LogicaFake {
+    /** Adaptador sustituible: persiste una entrada y devuelve la medida confirmada. */
     public interface Transporte {
         /** -------------------
          * entrada:MedidaEntrada --> guardarMedida() --> Medida
@@ -25,6 +26,7 @@ public final class LogicaFake {
     private Intento pendiente;
     private boolean cerrada;
 
+    /** Estado local de una operación: resultado compartido, instante y confirmación. */
     private static final class Intento {
         final CompletableFuture<Medida> resultado = new CompletableFuture<>();
         long instante;

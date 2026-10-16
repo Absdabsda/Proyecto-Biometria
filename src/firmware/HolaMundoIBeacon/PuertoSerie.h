@@ -1,3 +1,4 @@
+/** PuertoSerie: encapsula la inicialización y escritura del puerto de diagnóstico. */
 
 // -*- mode: c++ -*-
 

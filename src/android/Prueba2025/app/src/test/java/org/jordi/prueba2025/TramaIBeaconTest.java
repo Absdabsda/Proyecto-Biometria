@@ -7,6 +7,11 @@ import static org.junit.Assert.*;
 
 /** Compruebo el formato compartido con Arduino sin necesitar una conexión Bluetooth. */
 public class TramaIBeaconTest {
+    /** -------------------
+     * Descripción: Verifica que interpreta bytes emitidos por bluefruit para1234; falla ante una aserción incumplida.
+     * Diseño: interpretaBytesEmitidosPorBluefruitPara1234() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void interpretaBytesEmitidosPorBluefruitPara1234() {
         // Manufacturer data tras separar 4c 00: UUID literal, Major 0b 01, Minor 04 d2.
         byte[] datos = {0x02, 0x15, 0x45, 0x50, 0x53, 0x47, 0x2d, 0x47, 0x54, 0x49,
@@ -18,6 +23,11 @@ public class TramaIBeaconTest {
         assertEquals(1234, trama.getValor());
         assertEquals(-53, trama.getTxPower());
     }
+    /** -------------------
+     * Descripción: Construye un anuncio binario aislado para las pruebas.
+     * Diseño: major:N, minor:N --> anuncio() --> [N]_23
+     * Parámetros: major y minor sin signo de 16 bits.
+     * ------------------- */
     private byte[] anuncio(int major, int minor) {
         byte[] datos = new byte[23];
         datos[0] = 0x02;
@@ -32,6 +42,11 @@ public class TramaIBeaconTest {
         return datos;
     }
 
+    /** -------------------
+     * Descripción: Verifica que reconoce los dieciseis bytes del uuid de arduino; falla ante una aserción incumplida.
+     * Diseño: reconoceLosDieciseisBytesDelUuidDeArduino() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void reconoceLosDieciseisBytesDelUuidDeArduino() {
         TramaIBeacon trama = new TramaIBeacon(anuncio(0x0bff, 42));
         assertTrue(trama.esNuestroDispositivo());
@@ -44,12 +59,22 @@ public class TramaIBeaconTest {
         assertTrue(trama.getDescripcionMedicion().contains("42 ppb"));
     }
 
+    /** -------------------
+     * Descripción: Verifica que distingue otro uuid aunque coincidan los primeros quince bytes; falla ante una aserción incumplida.
+     * Diseño: distingueOtroUuidAunqueCoincidanLosPrimerosQuinceBytes() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void distingueOtroUuidAunqueCoincidanLosPrimerosQuinceBytes() {
         byte[] datos = anuncio(0x0b00, 0);
         datos[17] = 1;
         assertFalse(new TramaIBeacon(datos).esNuestroDispositivo());
     }
 
+    /** -------------------
+     * Descripción: Verifica que rechaza datos ausentes cortos largos y de otro formato; falla ante una aserción incumplida.
+     * Diseño: rechazaDatosAusentesCortosLargosYDeOtroFormato() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void rechazaDatosAusentesCortosLargosYDeOtroFormato() {
         assertFalse(TramaIBeacon.esIBeacon(null));
         for (int longitud = 0; longitud < 23; longitud++) {
@@ -64,20 +89,40 @@ public class TramaIBeaconTest {
         assertFalse(TramaIBeacon.esIBeacon(datos));
     }
 
+    /** -------------------
+     * Descripción: Verifica que el constructor rechaza una trama incompleta; falla ante una aserción incumplida.
+     * Diseño: elConstructorRechazaUnaTramaIncompleta() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test(expected = IllegalArgumentException.class)
     public void elConstructorRechazaUnaTramaIncompleta() { new TramaIBeacon(new byte[2]); }
 
+    /** -------------------
+     * Descripción: Verifica que lee minor sin signo y contador al volver a cero; falla ante una aserción incumplida.
+     * Diseño: leeMinorSinSignoYContadorAlVolverACero() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void leeMinorSinSignoYContadorAlVolverACero() {
         TramaIBeacon trama = new TramaIBeacon(anuncio(0x0b00, 65535));
         assertEquals(65535, trama.getMinor());
         assertEquals(0, trama.getContador());
     }
 
+    /** -------------------
+     * Descripción: Verifica que recupera temperaturas negativas; falla ante una aserción incumplida.
+     * Diseño: recuperaTemperaturasNegativas() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void recuperaTemperaturasNegativas() {
         TramaIBeacon trama = new TramaIBeacon(anuncio(0x0c01, -12));
         assertEquals("Temperatura: -12 °C", trama.getDescripcionMedicion());
     }
 
+    /** -------------------
+     * Descripción: Verifica que preserva1234 y valores con signo para r e s t; falla ante una aserción incumplida.
+     * Diseño: preserva1234YValoresConSignoParaREST() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void preserva1234YValoresConSignoParaREST() {
         assertEquals(1234, new TramaIBeacon(anuncio(0x0b01, 1234)).getValor());
         assertEquals(-32768, new TramaIBeacon(anuncio(0x0bff, -32768)).getValor());
@@ -85,12 +130,22 @@ public class TramaIBeaconTest {
         assertEquals(-1, new TramaIBeacon(anuncio(0x0b00, 65535)).getValor());
     }
 
+    /** -------------------
+     * Descripción: Verifica que no asigna ppm a un tipo desconocido; falla ante una aserción incumplida.
+     * Diseño: noAsignaPpmAUnTipoDesconocido() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void noAsignaPpmAUnTipoDesconocido() {
         String descripcion = new TramaIBeacon(anuncio(0x0d01, 5)).getDescripcionMedicion();
         assertFalse(descripcion.contains("ppm"));
         assertTrue(descripcion.contains("sin unidad definida"));
     }
 
+    /** -------------------
+     * Descripción: Verifica que protege el uuid de cambios externos; falla ante una aserción incumplida.
+     * Diseño: protegeElUuidDeCambiosExternos() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void protegeElUuidDeCambiosExternos() {
         byte[] datos = anuncio(0x0b01, 1);
         TramaIBeacon trama = new TramaIBeacon(datos);
@@ -99,18 +154,38 @@ public class TramaIBeaconTest {
         assertTrue(trama.esNuestroDispositivo());
     }
 
+    /** -------------------
+     * Descripción: Verifica que convierte bytes en orden big endian; falla ante una aserción incumplida.
+     * Diseño: convierteBytesEnOrdenBigEndian() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test public void convierteBytesEnOrdenBigEndian() {
         assertEquals(255, Utilidades.bytesToInt(new byte[]{(byte) 0xff}));
         assertEquals(32768, Utilidades.bytesToInt(new byte[]{(byte) 0x80, 0}));
         assertEquals(0x12345678, Utilidades.bytesToInt(new byte[]{0x12, 0x34, 0x56, 0x78}));
     }
 
+    /** -------------------
+     * Descripción: Verifica que rechaza conversion vacia; falla ante una aserción incumplida.
+     * Diseño: rechazaConversionVacia() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test(expected = IllegalArgumentException.class)
     public void rechazaConversionVacia() { Utilidades.bytesToInt(new byte[0]); }
 
+    /** -------------------
+     * Descripción: Verifica que rechaza conversion nula; falla ante una aserción incumplida.
+     * Diseño: rechazaConversionNula() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test(expected = IllegalArgumentException.class)
     public void rechazaConversionNula() { Utilidades.bytesToInt(null); }
 
+    /** -------------------
+     * Descripción: Verifica que rechaza conversion demasiado larga; falla ante una aserción incumplida.
+     * Diseño: rechazaConversionDemasiadoLarga() --> ()
+     * Parámetros: ninguno; datos y dependencias nuevos en cada prueba.
+     * ------------------- */
     @Test(expected = IllegalArgumentException.class)
     public void rechazaConversionDemasiadoLarga() { Utilidades.bytesToInt(new byte[5]); }
 }
