@@ -1,3 +1,11 @@
+/**
+ * Nombre: medidas.mjs
+ * Descripción: Proxy de lectura de medidas; encapsula la comunicación para la GUI web.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Paridad con negocio y validación de la respuesta mínima de cuatro campos.
+ */
 /** -------------------
  * Descripción: consulta y valida las medidas persistidas, aislando la comunicación de la GUI.
  * Diseño: limit:N --> listarMedidas() --> medidas:[Medida]

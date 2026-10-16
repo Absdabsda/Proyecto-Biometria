@@ -1,3 +1,11 @@
+/**
+ * Nombre: HolaMundoIBeacon.ino
+ * Descripción: Programa de la placa: anuncia periódicamente el valor ficticio 1234.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Adaptación e integración del Sprint 0 y cabeceras formales; atribuciones docentes conservadas.
+ */
 /** Programa Sprint 0: inicializa la placa y anuncia periódicamente el valor ficticio 1234. */
 // -*-c++-*-
 

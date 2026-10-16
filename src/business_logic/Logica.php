@@ -1,4 +1,13 @@
 <?php
+/**
+ * Nombre: Logica.php
+ * Descripción: Validación de dominio y persistencia de medidas independiente del transporte.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Modelo MVP, operaciones guardarMedida/listarMedidas y validación de límites.
+ */
+
 declare(strict_types=1);
 
 /** Negocio de medidas: valida el dominio y persiste en medidas mediante PDO, sin transporte. */
@@ -8,7 +17,7 @@ final class Logica {
 
     /** -------------------
      * Descripción: configura la persistencia y el filtro opcional de tipo.
-     * Diseño: bd:Persistencia, tipoPermitido:N|Ausente --> __construct() --> Logica
+     * Diseño: bd:Persistencia, tipo_permitido:N|Ausente --> __construct() --> Logica
      * Parámetros: conexión de datos y tipo admitido; ausente permite cualquier tipo válido.
      * Pre: conexión configurada en UTC. Post: conserva dependencias. Errores: tipos.
  * ------------------- */
@@ -19,7 +28,7 @@ final class Logica {
 
     /** -------------------
      * Descripción: exige los dos campos del modelo mínimo y sus rangos enteros.
-     * Diseño: entrada:MedidaEntrada, tipoPermitido:N|Ausente --> validarMedida() --> entrada:MedidaEntrada
+     * Diseño: entrada:MedidaEntrada, tipo_permitido:N|Ausente --> validarMedida() --> entrada:MedidaEntrada
      * Parámetros: tipo y valor recibidos, y filtro opcional del tipo de medida.
      * Pre: datos JSON decodificados. Post: campos exactos y rangos válidos.
      * Errores: InvalidArgumentException.

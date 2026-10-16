@@ -4,7 +4,7 @@
 
 ```text
 MedidaEntrada = (tipo: N, valor: Z)
-Medida = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
+Medida = (medida_id: Text, tipo: N, valor: Z, fecha: Text)
 Trama = (uuid: [N]_16, major: N, minor: N, tx_power: Z)
 
 datos: [N] --> esIBeacon() --> B
@@ -217,7 +217,78 @@ MainActivity y sus eventos son la GUI Android: su diseño de pantalla se describ
 arriba; la revisión formal de la GUI queda fuera del alcance del agente aportado.
 
 
+### Pantalla Android y eventos de plataforma
+
+La rúbrica oficial pide describir la arquitectura de todo el código activo; por
+eso se documenta también MainActivity aunque el agente excluya la verificación
+formal de GUI. Los tipos de Android se abstraen como datos y sesiones lógicas:
+
+```text
+EstadoGuardado = (restaurada: B)
+Control = { BUSCAR_TODOS, BUSCAR_PROYECTO, DETENER }
+AnuncioBLE = (direccion: Text, nombre: Text, rssi: Z, fabricante: N, datos: [N])
+SesionBusqueda = (activa: B, solo_proyecto: B)
+DispositivoVista = (direccion: Text, descripcion: Text)
+EstadoPantalla = (resultados: Text, estado: Text, envio: Text)
+
+                                                          -------- MainActivity ----------------------
+                                                          | escaner: SesionBusqueda | Ausente
+                                                          | receptor: SesionBusqueda | Ausente
+                                                          | pantalla: EstadoPantalla
+                                                          | logica_fake: LogicaFake
+                                                          | solo_nuestro: B
+                                                          | actualizacion_pendiente: B
+                                                          | dispositivos: [DispositivoVista]
+                                                          | cola_pantalla: EjecutorSerial
+                                                          | solo_nuestro:B --> iniciarBusqueda() -->
+                                                          | sesion:SesionBusqueda, anuncio:AnuncioBLE --> recibirResultado() -->
+                                                          | anuncio:AnuncioBLE --> mostrarDispositivo() -->
+                                                          | prepararEscanner() <-- preparado:B
+                                                          | permisosNecesarios() <-- permisos:[Text]
+                                                          | tengoPermisos() <-- concedidos:B
+                                                          | pedirPermisos() -->
+                                                          | detenerBusqueda() -->
+                                                          | actualizarPantalla() -->
+                                                          | estado:EstadoGuardado|Ausente --> onCreate() -->
+                                                          | onStop() -->
+                                                          | onDestroy() -->
+                                                          |
+                                                          |
+                                    control:Control --> botonBuscarDispositivosBTLEPulsado() -->
+                                                          |
+                                                          |
+                                    control:Control --> botonBuscarNuestroDispositivoBTLEPulsado() -->
+                                                          |
+                                                          |
+                                    control:Control --> botonDetenerBusquedaDispositivosBTLEPulsado() -->
+                                                          |
+                                                          |
+    codigo:Z, permisos:[Text], resultados:[Z] --> onRequestPermissionsResult() -->
+                                                          ---------------------------------------------
+
+                                            -------- ReceptorEscaneo (anonimo) --------
+                                            |
+                                            |
+         tipo:Z, anuncio:AnuncioBLE --> onScanResult() -->
+                                            |
+                                            |
+                   anuncios:[AnuncioBLE] --> onBatchScanResults() -->
+                                            |
+                                            |
+                                 codigo:Z --> onScanFailed() -->
+                                            ---------------------------------------------
+```
+
+onCreate/onStop/onDestroy son eventos protegidos de la plataforma; se mantienen
+dentro del bloque. El receptor anónimo pertenece a una sesión y descarta eventos
+de sesiones anteriores. actualizarPantalla es una operación diferida, implementada
+mediante Runnable; acumula anuncios durante 500 ms y limita la lista a 100 equipos.
+Los controles son eventos sin datos de dominio adicionales; View/Bundle, callbacks
+y Handler son mecanismos de implementación, no tipos de las interfaces de negocio.
+
 ## Design Clarifications
+
+- bytesToInt conserva el patrón de hasta cuatro bytes en Z; con uno o dos bytes representa N.
 
 - Código en `src/android/Prueba2025/app/src/main/java/org/jordi/prueba2025/`.
 - Abrir src/android/Prueba2025 en Android Studio; el traslado no cambia el paquete ni la aplicación instalada.
@@ -231,6 +302,3 @@ arriba; la revisión formal de la GUI queda fuera del alcance del agente aportad
 - Function/Method Headers: incluir descripción, diseño lógico y parámetros; indicar precondiciones, resultados y errores relevantes en un bloque delimitado por `-------------------`.
 - Code Readability: nombres claros y código autoexplicativo; comentarios adicionales solo cuando aporten contexto.
 - Automated Testing: generar pruebas unitarias o de integración para todas las funciones críticas, con límites y errores.
-
-bytesToInt conserva el patrón binario de hasta cuatro bytes en Z: con cuatro
-bytes el resultado Java puede ser negativo; con uno o dos representa N.

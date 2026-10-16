@@ -1,3 +1,11 @@
+/**
+ * Nombre: Publicador.h
+ * Descripción: Empaqueta y publica los anuncios iBeacon del prototipo.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Adaptación e integración del Sprint 0 y cabeceras formales; atribuciones docentes conservadas.
+ */
 /** Publicador: codifica tipo, contador y valor en los campos del anuncio iBeacon. */
 // -*- mode: c++ -*-
 
@@ -71,7 +79,7 @@ public:
   // ............................................................
   /** -------------------
    * Descripción: Empaqueta tipo 11 y contador en major y valor con signo en minor.
-   * Diseño: valorCO2:Z, contador:N, tiempoEspera:Z --> publicarCO2()
+   * Diseño: valor_co2:Z, contador:N, tiempo_espera:Z --> publicarCO2()
    * Parámetros: valorCO2:Z, contador:N, tiempoEspera:Z.
    * ------------------- */
   void publicarCO2( int16_t valorCO2, uint8_t contador,
@@ -112,7 +120,7 @@ public:
   // ............................................................
   /** -------------------
    * Descripción: Empaqueta tipo 12 y contador, anuncia durante el intervalo y detiene el anuncio.
-   * Diseño: valorTemperatura:Z, contador:N, tiempoEspera:Z --> publicarTemperatura()
+   * Diseño: valor_temperatura:Z, contador:N, tiempo_espera:Z --> publicarTemperatura()
    * Parámetros: valorTemperatura:Z, contador:N, tiempoEspera:Z.
    * ------------------- */
   void publicarTemperatura( int16_t valorTemperatura,

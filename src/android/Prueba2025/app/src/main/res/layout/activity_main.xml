@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Nombre: activity_main.xml
+Descripción: Configuración, recursos o pruebas de la aplicación Android del Sprint 0.
+Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+Aportación: Integración de recepción, proxy y datos del Sprint 0; documentación y comprobaciones.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

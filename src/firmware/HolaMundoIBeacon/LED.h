@@ -1,3 +1,11 @@
+/**
+ * Nombre: LED.h
+ * Descripción: Apoyo del firmware para radio, servicios, diagnóstico o señalización de la placa.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Adaptación e integración del Sprint 0 y cabeceras formales; atribuciones docentes conservadas.
+ */
 /** LED: controla el estado y los destellos del diodo de la placa. */
 // -*- mode: c++ -*-
 

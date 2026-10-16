@@ -1,3 +1,11 @@
+/**
+ * Nombre: MainActivity.java
+ * Descripción: Pantalla Android, permisos y recepción BLE delegando el guardado al proxy.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (aportaciones); base docente según atribuciones conservadas.
+ * Aportación: Integración de recepción, proxy y datos del Sprint 0; documentación y comprobaciones.
+ */
 package org.jordi.prueba2025;
 
 import android.Manifest;
@@ -57,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     /** -------------------
      * Descripción: Inicializa la pantalla y el proxy de medidas; solicita permisos necesarios.
-     * Diseño: savedInstanceState:Bundle --> onCreate()
-     * Parámetros: savedInstanceState:Bundle.
+     * Diseño: estado_guardado:EstadoGuardado|Ausente --> onCreate()
+     * Parámetros: estado_guardado:EstadoGuardado|Ausente.
      * ------------------- */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,20 +84,20 @@ public class MainActivity extends AppCompatActivity {
     // Los dos botones comparten el mismo proceso. Solo cambia el filtro de resultados.
     /** -------------------
      * Descripción: Inicia la búsqueda de todos los anuncios compatibles.
-     * Diseño: vista:View --> botonBuscarDispositivosBTLEPulsado()
-     * Parámetros: vista:View.
+     * Diseño: control:Control --> botonBuscarDispositivosBTLEPulsado()
+     * Parámetros: control:Control.
      * ------------------- */
     public void botonBuscarDispositivosBTLEPulsado(View vista) { iniciarBusqueda(false); }
     /** -------------------
      * Descripción: Inicia la búsqueda filtrada al UUID del proyecto.
-     * Diseño: vista:View --> botonBuscarNuestroDispositivoBTLEPulsado()
-     * Parámetros: vista:View.
+     * Diseño: control:Control --> botonBuscarNuestroDispositivoBTLEPulsado()
+     * Parámetros: control:Control.
      * ------------------- */
     public void botonBuscarNuestroDispositivoBTLEPulsado(View vista) { iniciarBusqueda(true); }
     /** -------------------
      * Descripción: Detiene la búsqueda y actualiza el estado visible.
-     * Diseño: vista:View --> botonDetenerBusquedaDispositivosBTLEPulsado()
-     * Parámetros: vista:View.
+     * Diseño: control:Control --> botonDetenerBusquedaDispositivosBTLEPulsado()
+     * Parámetros: control:Control.
      * ------------------- */
     public void botonDetenerBusquedaDispositivosBTLEPulsado(View vista) {
         detenerBusqueda();
@@ -98,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
     /** -------------------
      * Descripción: Valida permisos y adaptador, limpia resultados y registra un único escaneo.
-     * Diseño: soloNuestro:B --> iniciarBusqueda()
-     * Parámetros: soloNuestro:B.
+     * Diseño: solo_nuestro:B --> iniciarBusqueda()
+     * Parámetros: solo_nuestro:B.
      * ------------------- */
     private void iniciarBusqueda(boolean soloNuestro) {
         // Paro la búsqueda anterior para no registrar dos escaneos al cambiar de botón.
@@ -117,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             /** -------------------
              * Descripción: Entrega un resultado individual al procesamiento de la pantalla.
-             * Diseño: tipo:Z, resultado:ScanResult --> onScanResult()
-             * Parámetros: tipo:Z, resultado:ScanResult.
+             * Diseño: tipo:Z, anuncio:AnuncioBLE --> onScanResult()
+             * Parámetros: tipo:Z, anuncio:AnuncioBLE.
              * ------------------- */
             public void onScanResult(int tipo, ScanResult resultado) {
                 recibirResultado(this, resultado);
@@ -126,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             /** -------------------
              * Descripción: Procesa los anuncios entregados en lote por Android.
-             * Diseño: resultados:List<ScanResult> --> onBatchScanResults()
-             * Parámetros: resultados:List<ScanResult>.
+             * Diseño: anuncios:[AnuncioBLE] --> onBatchScanResults()
+             * Parámetros: anuncios:[AnuncioBLE].
              * ------------------- */
             public void onBatchScanResults(List<ScanResult> resultados) {
                 // También proceso los resultados si el móvil los entrega en un lote.
@@ -162,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
     /** -------------------
      * Descripción: Descarta resultados de escaneos antiguos y procesa el actual en el hilo principal.
-     * Diseño: origen:ScanCallback, resultado:ScanResult --> recibirResultado()
-     * Parámetros: origen:ScanCallback, resultado:ScanResult.
+     * Diseño: sesion:SesionBusqueda, anuncio:AnuncioBLE --> recibirResultado()
+     * Parámetros: sesion:SesionBusqueda, anuncio:AnuncioBLE.
      * ------------------- */
     private void recibirResultado(ScanCallback origen, ScanResult resultado) {
         runOnUiThread(() -> {
@@ -174,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
 
     /** -------------------
      * Descripción: Interpreta iBeacon, actualiza filas y delega el envío de tipo 11 al proxy.
-     * Diseño: resultado:ScanResult --> mostrarDispositivo()
-     * Parámetros: resultado:ScanResult.
+     * Diseño: anuncio:AnuncioBLE --> mostrarDispositivo()
+     * Parámetros: anuncio:AnuncioBLE.
      * ------------------- */
     private void mostrarDispositivo(ScanResult resultado) {
         ScanRecord registro = resultado.getScanRecord();

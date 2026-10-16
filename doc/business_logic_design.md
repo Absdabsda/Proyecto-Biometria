@@ -4,8 +4,8 @@
 
 ```text
 MedidaEntrada = (tipo: N, valor: Z)
-Medida = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
-RegistroSQL = (medidaID: Text, tipo: N, valor: Z, fecha: Text)
+Medida = (medida_id: Text, tipo: N, valor: Z, fecha: Text)
+RegistroSQL = (medida_id: Text, tipo: N, valor: Z, fecha: Text)
 ```
 tipo 0..255; valor -32768..32767. ID decimal positivo como texto y fecha ISO 8601 UTC.
 

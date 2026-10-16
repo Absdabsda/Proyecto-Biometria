@@ -1,3 +1,11 @@
+/**
+ * Nombre: ServicioEscuharBeacons.java
+ * Descripción: Ejemplo docente de referencia; no pertenece al producto activo del Sprint 0.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (catalogación); autoría original según atribuciones del archivo.
+ * Aportación: Catalogación y documentación de referencia; se conservan la autoría y el código docente.
+ */
 /** Ejemplo docente de servicio Android; no forma parte de la aplicación activa del Sprint 0. */
 package org.jordi.holamundoservicio;
 

@@ -1,3 +1,11 @@
+/**
+ * Nombre: MainActivity.java
+ * Descripción: Ejemplo docente de referencia; no pertenece al producto activo del Sprint 0.
+ * Copyright: 2026 Julia Valén de Oliveira, solo aportaciones propias; se conservan derechos y atribuciones anteriores.
+ * Fecha: 2026-10-16 (revisión; fechas originales conservadas si constan).
+ * Autor: Julia Valén de Oliveira (catalogación); autoría original según atribuciones del archivo.
+ * Aportación: Catalogación y documentación de referencia; se conservan la autoría y el código docente.
+ */
 /** Ejemplo docente de recepción BLE; la aplicación entregable está en src/android/. */
 
 package org.jordi.btlealumnos2021;
